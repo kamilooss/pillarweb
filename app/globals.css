@@ -172,3 +172,89 @@
 .animate-fade-in {
   animation: fade-in 0.6s var(--ease-out-expo) backwards;
 }
+
+/* =============================================
+   INDUSTRIES MARQUEE
+   Pozioma taśma branż — sklejona z dolną
+   krawędzią Hero (bez marginesu).
+   ============================================= */
+.industries-marquee {
+  position: relative;
+  width: 100%;
+  margin-top: 0;
+  background: var(--color-accent);
+  color: #ffffff;
+  border-top: 1px solid var(--color-accent);
+  border-bottom: 1px solid var(--color-accent);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.industries-marquee__viewport {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding-block: clamp(1.1rem, 1.8vw, 1.75rem);
+  /* Cienkie linie nad i pod tekstem — w kolorze marki,
+     lekko przyciemnione dla widoczności na lime */
+  border-top: 1px solid rgba(10, 10, 10, 0.18);
+  border-bottom: 1px solid rgba(10, 10, 10, 0.18);
+}
+
+.industries-marquee__track {
+  display: flex;
+  align-items: center;
+  gap: 2.75rem;
+  width: max-content;
+  white-space: nowrap;
+  animation: industries-marquee-scroll 55s linear infinite;
+  will-change: transform;
+}
+
+@media (min-width: 768px) {
+  .industries-marquee__track {
+    gap: 3.5rem;
+  }
+}
+
+.industries-marquee:hover .industries-marquee__track,
+.industries-marquee:focus-within .industries-marquee__track {
+  animation-play-state: paused;
+}
+
+.industries-marquee__item {
+  flex-shrink: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(0.9rem, 1.75vw, 1.45rem);
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: #000000;
+  line-height: 1;
+}
+
+.industries-marquee__sep {
+  flex-shrink: 0;
+  display: inline-block;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+@keyframes industries-marquee-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    /* -50% bo zawartość jest podwojona — pętla bez sklejki */
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .industries-marquee__track {
+    animation: none;
+    transform: none;
+  }
+}

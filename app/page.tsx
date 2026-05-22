@@ -1,5 +1,6 @@
 import { Header } from "./components/Header";
 import { Hero } from "./components/Hero";
+import { IndustriesMarquee } from "./components/IndustriesMarquee";
 import { PillarsSection } from "./components/PillarsSection";
 import { Testimonials } from "./components/Testimonials";
 import { ContentVideoSection } from "./components/ContentVideoSection";
@@ -19,6 +20,7 @@ export default function HomePage() {
       <Header />
       <main>
         <Hero />
+        <IndustriesMarquee />
         <PillarsSection />
         <Testimonials />
         <ContentVideoSection />
