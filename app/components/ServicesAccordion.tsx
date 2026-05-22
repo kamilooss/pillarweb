@@ -45,11 +45,11 @@ export function ServicesAccordion() {
 
   return (
     <section
-      className="relative bg-background py-24 lg:py-36"
+      className="relative bg-background pt-16 lg:pt-24 pb-28 lg:pb-44"
       aria-label="Co dostajesz w ramach współpracy"
     >
       <div className="container-content">
-        <div className="grid lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] gap-12 lg:gap-20 items-start">
+        <div className="grid lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] gap-12 lg:gap-24 items-start">
           {/* LEFT — accordion */}
           <ul className="lg:order-1 order-2">
             {SERVICES.map((item, i) => {
@@ -65,7 +65,7 @@ export function ServicesAccordion() {
                     onClick={() => setActive(i)}
                     aria-expanded={isActive}
                     aria-controls={panelId}
-                    className="group w-full text-left py-6 lg:py-7 flex items-start gap-5 lg:gap-6 cursor-pointer"
+                    className="group w-full text-left py-8 lg:py-10 flex items-start gap-5 lg:gap-6 cursor-pointer"
                   >
                     <span
                       className={`flex-1 font-display font-bold leading-[1.15] tracking-tight text-[clamp(1.35rem,2.6vw,2.15rem)] transition-colors duration-300 ${
@@ -106,7 +106,7 @@ export function ServicesAccordion() {
                         transition={{ duration: 0.5, ease: EASE }}
                         className="overflow-hidden"
                       >
-                        <div className="pb-7 lg:pb-8 pr-6 lg:pr-10">
+                        <div className="pb-9 lg:pb-12 pr-6 lg:pr-10">
                           <p className="text-muted-strong text-[15px] lg:text-[17px] leading-[1.7] max-w-prose">
                             {item.description}
                           </p>

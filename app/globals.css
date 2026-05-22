@@ -44,10 +44,23 @@
   }
 
   html {
-    scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+  }
+
+  /* Lenis — wymagane dla poprawnego pomiaru wysokości i braku jankowania */
+  html.lenis {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
   }
 
   body {
@@ -266,7 +279,8 @@
   position: relative;
   width: 100%;
   background: var(--color-background);
-  padding-block: clamp(2.5rem, 5vw, 4.5rem);
+  padding-top: clamp(4.5rem, 8vw, 8rem);
+  padding-bottom: clamp(5.75rem, 10vw, 10rem);
   color: var(--color-foreground);
 }
 
@@ -274,7 +288,7 @@
   display: flex;
   align-items: center;
   column-gap: 1.25rem;
-  margin-bottom: clamp(0.5rem, 1vw, 1rem);
+  margin-bottom: clamp(1.75rem, 3vw, 3rem);
 }
 
 @media (min-width: 768px) {
