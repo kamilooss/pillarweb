@@ -1,11 +1,60 @@
 "use client";
 
+import { Fragment, useEffect, useRef } from "react";
 import { motion } from "motion/react";
-import Image from "next/image";
+import gsap from "gsap";
 import { Button } from "./Button";
 import { HERO } from "../lib/content";
 
+const line1Words = HERO.titleLine1.split(" ");
+const line2AccentWords = HERO.titleLine2Accent.split(" ");
+const subtitleTokens = HERO.subtitleParts.flatMap((part) =>
+  part.text.split(" ").map((text) => ({ text, accent: part.accent }))
+);
+
 export function Hero() {
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const subtitleRef = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    const h1 = headingRef.current;
+    const h2 = subtitleRef.current;
+    if (!h1 || !h2) return;
+
+    const h1Words = h1.querySelectorAll<HTMLElement>(".hero-word");
+    const h2Words = h2.querySelectorAll<HTMLElement>(".hero-word");
+
+    gsap.set([...h1Words, ...h2Words], { yPercent: 110 });
+    h1.style.visibility = "visible";
+    h2.style.visibility = "visible";
+
+    const tl = gsap.timeline();
+    tl.to(
+      h1Words,
+      {
+        yPercent: 0,
+        duration: 1,
+        stagger: 0.08,
+        ease: "expo.out",
+      },
+      0.15
+    );
+    tl.to(
+      h2Words,
+      {
+        yPercent: 0,
+        duration: 0.8,
+        stagger: 0.04,
+        ease: "expo.out",
+      },
+      "-=0.55"
+    );
+
+    return () => {
+      tl.kill();
+    };
+  }, []);
+
   return (
     <section
       id="main"
@@ -25,7 +74,6 @@ export function Hero() {
         >
           <source src={HERO.videoSrc} type="video/mp4" />
         </video>
-        {/* Gradient overlay dla czytelności tekstu */}
         <div
           className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-black/30"
           aria-hidden="true"
@@ -36,77 +84,70 @@ export function Hero() {
         />
       </div>
 
-      {/* Content */}
-      <div className="relative container-content pt-32 pb-16 lg:pt-40 lg:pb-24 min-h-screen flex flex-col">
-        <div className="flex-1 flex flex-col justify-end max-w-4xl">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="text-foreground tracking-[0.2em] text-sm font-medium mb-6"
+      {/* Content — wyśrodkowane w obszarze wideo (video zaczyna się od top-20) */}
+      <div className="relative container-content min-h-screen flex items-center justify-center pt-20">
+        <div className="flex flex-col items-center text-center max-w-6xl">
+          <h1
+            ref={headingRef}
+            style={{ visibility: "hidden" }}
+            className="font-display font-extrabold tracking-tight leading-[0.95] text-[clamp(2.25rem,5.8vw,5.25rem)] uppercase"
           >
-            {HERO.brandLine}
-          </motion.div>
+            <span className="block overflow-hidden pb-[0.08em]">
+              {line1Words.map((w, i) => (
+                <Fragment key={`l1-${i}`}>
+                  {i > 0 && " "}
+                  <span className="hero-word inline-block">{w}</span>
+                </Fragment>
+              ))}
+            </span>
+            <span className="block overflow-hidden pb-[0.08em] md:whitespace-nowrap">
+              <span className="hero-word inline-block">
+                {HERO.titleLine2Prefix}
+              </span>
+              {line2AccentWords.map((w, i) => (
+                <Fragment key={`l2-${i}`}>
+                  {" "}
+                  <span className="hero-word inline-block text-accent">
+                    {w}
+                  </span>
+                </Fragment>
+              ))}
+            </span>
+          </h1>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="font-display font-extrabold tracking-tight leading-[0.95] text-[clamp(2.25rem,6vw,5rem)] uppercase"
+          <h2
+            ref={subtitleRef}
+            style={{ visibility: "hidden" }}
+            aria-label={HERO.subtitle}
+            className="mt-6 lg:mt-8 max-w-4xl font-display font-bold tracking-wide leading-snug uppercase text-muted-strong text-[clamp(0.95rem,1.7vw,1.5rem)]"
           >
-            {HERO.titleLine1}
-            <br />
-            {HERO.titleLine2Prefix}{" "}
-            <span className="text-accent">{HERO.titleLine2Accent}</span>
-          </motion.h1>
-
-          <ul className="mt-12 lg:mt-16 grid gap-6 max-w-2xl">
-            {HERO.pillars.map((pillar, i) => (
-              <motion.li
-                key={pillar.title}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{
-                  duration: 0.6,
-                  delay: 0.4 + i * 0.12,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
-                className="flex items-start gap-4"
-              >
-                <div className="flex-shrink-0 w-12 h-12 lg:w-14 lg:h-14 flex items-center justify-center">
-                  <Image
-                    src={pillar.icon}
-                    alt=""
-                    width={56}
-                    height={56}
-                    className="w-full h-full"
-                    unoptimized
-                  />
-                </div>
-                <div>
-                  <h2 className="font-bold text-lg lg:text-xl">
-                    {pillar.title}
-                  </h2>
-                  <p className="text-muted-strong text-[15px] mt-1 leading-relaxed">
-                    {pillar.description}
-                  </p>
-                </div>
-              </motion.li>
+            {subtitleTokens.map((token, i) => (
+              <Fragment key={`s-${i}`}>
+                {i > 0 && " "}
+                <span className="inline-block overflow-hidden align-bottom pb-[0.15em]">
+                  <span
+                    className={`hero-word inline-block${
+                      token.accent ? " text-accent" : ""
+                    }`}
+                  >
+                    {token.text}
+                  </span>
+                </span>
+              </Fragment>
             ))}
-          </ul>
-        </div>
+          </h2>
 
-        {/* Centered CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
-          className="flex justify-center pt-12 pb-4"
-        >
-          <Button href={HERO.cta.href} size="lg" className="min-w-[260px]">
-            {HERO.cta.label}
-          </Button>
-        </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 36 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.3, delay: 1.4, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-12"
+          >
+            <Button href={HERO.cta.href} size="lg" className="min-w-[260px]">
+              {HERO.cta.label}
+            </Button>
+          </motion.div>
+        </div>
       </div>
     </section>
   );

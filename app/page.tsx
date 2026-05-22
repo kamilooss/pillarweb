@@ -1,5 +1,6 @@
 import { Header } from "./components/Header";
 import { Hero } from "./components/Hero";
+import { PillarsSection } from "./components/PillarsSection";
 import { Testimonials } from "./components/Testimonials";
 import { ContentVideoSection } from "./components/ContentVideoSection";
 import { DifferentiatorSection } from "./components/DifferentiatorSection";
@@ -18,6 +19,7 @@ export default function HomePage() {
       <Header />
       <main>
         <Hero />
+        <PillarsSection />
         <Testimonials />
         <ContentVideoSection />
         <DifferentiatorSection />

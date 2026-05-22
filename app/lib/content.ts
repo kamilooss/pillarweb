@@ -53,12 +53,19 @@ export const NAV_LINKS = [
 ] as const;
 
 export const HERO = {
-  brandLine: "PILLARWEB",
+  brandLine: "Dominate Web System",
   // "FIRM BUDOWLANYCH" zostanie automatycznie podświetlony na lime.
   // Pierwsza linia to "STRONY INTERNETOWE", druga "DLA FIRM BUDOWLANYCH"
   titleLine1: "STRONY INTERNETOWE",
   titleLine2Prefix: "DLA",
   titleLine2Accent: "FIRM BUDOWLANYCH",
+  subtitle:
+    "indywidualne projekty z copywritingiem, Analityką, SEO, wykorzystując najnowocześniejsze technologie AI.",
+  subtitleParts: [
+    { text: "indywidualne projekty", accent: true },
+    { text: "z copywritingiem, Analityką, SEO, wykorzystując", accent: false },
+    { text: "najnowocześniejsze technologie AI.", accent: true },
+  ],
   videoSrc: `${ASSET_BASE}/pillarweb-film-instruktazowy-hero.mp4`,
   pillars: [
     {
@@ -80,7 +87,7 @@ export const HERO = {
         "Copywriting, analityka, automatyzacje i pełne wdrożenie dopięte w jednym procesie.",
     },
   ],
-  cta: { label: "Zobacz, jak pracujemy", href: "#jak-pracujemy" },
+  cta: { label: "Umów się na rozmowę konsultacyjną", href: "#jak-pracujemy" },
 } as const;
 
 export const TESTIMONIALS = [
