@@ -2,7 +2,7 @@ import { Header } from "./components/Header";
 import { Hero } from "./components/Hero";
 import { IndustriesMarquee } from "./components/IndustriesMarquee";
 import { LogosShowcase } from "./components/LogosShowcase";
-import { PillarsSection } from "./components/PillarsSection";
+import { ServicesAccordion } from "./components/ServicesAccordion";
 import { Testimonials } from "./components/Testimonials";
 import { ContentVideoSection } from "./components/ContentVideoSection";
 import { DifferentiatorSection } from "./components/DifferentiatorSection";
@@ -23,7 +23,7 @@ export default function HomePage() {
         <Hero />
         <IndustriesMarquee />
         <LogosShowcase />
-        <PillarsSection />
+        <ServicesAccordion />
         <Testimonials />
         <ContentVideoSection />
         <DifferentiatorSection />
