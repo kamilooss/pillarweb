@@ -1,16 +1,42 @@
+"use client";
+
+import { useRef } from "react";
 import Image from "next/image";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useReducedMotion,
+} from "motion/react";
 import { Reveal } from "./Reveal";
 import { TESTIMONIALS } from "../lib/content";
 
 export function Testimonials() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const reduced = useReducedMotion();
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+
+  // Nagłówek dryfuje wyraźniej do góry w trakcie przewijania sekcji
+  const headingY = useTransform(scrollYProgress, [0, 1], [90, -180]);
+
   return (
-    <section className="py-24 lg:py-36">
+    <section
+      ref={sectionRef}
+      className="pt-16 lg:pt-24 pb-24 lg:pb-36"
+    >
       <div className="container-content">
-        <Reveal as="h2" className="text-accent font-display font-bold text-center text-[clamp(1.75rem,3.5vw,2.75rem)] leading-tight tracking-tight max-w-4xl mx-auto">
+        <motion.h2
+          style={reduced ? undefined : { y: headingY }}
+          className="text-accent font-display font-bold text-center text-[clamp(1.75rem,3.5vw,2.75rem)] leading-tight tracking-tight max-w-4xl mx-auto will-change-transform"
+        >
           To nie są obietnice.
           <br />
-          To głosy firm, z którymi pracowaliśmy
-        </Reveal>
+          To wyniki firm, które nam zaufały
+        </motion.h2>
 
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 mt-20 lg:mt-28 max-w-6xl mx-auto">
           {TESTIMONIALS.map((t, i) => (

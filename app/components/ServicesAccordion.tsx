@@ -45,7 +45,7 @@ export function ServicesAccordion() {
 
   return (
     <section
-      className="relative bg-background pt-16 lg:pt-24 pb-28 lg:pb-44"
+      className="relative bg-background pt-16 lg:pt-24 pb-[clamp(5.75rem,10vw,10rem)]"
       aria-label="Co dostajesz w ramach współpracy"
     >
       <div className="container-content">
