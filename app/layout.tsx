@@ -3,6 +3,7 @@ import { Manrope } from "next/font/google";
 import "./globals.css";
 import "lenis/dist/lenis.css";
 import SmoothScroll from "./components/SmoothScroll";
+import { FloatingCTA } from "./components/FloatingCTA";
 
 const manrope = Manrope({
   subsets: ["latin", "latin-ext"],
@@ -57,6 +58,7 @@ export default function RootLayout({
           Przejdź do treści
         </a>
         {children}
+        <FloatingCTA />
       </body>
     </html>
   );

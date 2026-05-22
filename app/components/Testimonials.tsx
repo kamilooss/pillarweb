@@ -9,7 +9,8 @@ import {
   useTransform,
   useReducedMotion,
 } from "motion/react";
-import { STATS, TESTIMONIALS } from "../lib/content";
+import { Button } from "./Button";
+import { SITE, STATS, TESTIMONIALS } from "../lib/content";
 
 type Stat = (typeof STATS)[number];
 
@@ -66,6 +67,7 @@ function StatItem({ stat, index }: { stat: Stat; index: number }) {
 
 export function Testimonials() {
   const sectionRef = useRef<HTMLElement>(null);
+  const ctaRef = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
 
   // Krótka, szybka animacja wejścia nagłówka — od ~60px poniżej do pozycji
@@ -77,6 +79,13 @@ export function Testimonials() {
   const headingY = useTransform(scrollYProgress, [0, 0.25], [60, 0], {
     clamp: true,
   });
+
+  // CTA pojawia się płynnie przy scrollu — opacity 0 → 1
+  const { scrollYProgress: ctaProgress } = useScroll({
+    target: ctaRef,
+    offset: ["start end", "start 0.6"],
+  });
+  const ctaOpacity = useTransform(ctaProgress, [0, 1], [0, 1]);
 
   const testimonial = TESTIMONIALS[0];
 
@@ -135,6 +144,20 @@ export function Testimonials() {
               <div className="text-sm text-muted">{testimonial.role}</div>
             </div>
           </div>
+
+          <motion.div
+            ref={ctaRef}
+            style={reduced ? undefined : { opacity: ctaOpacity }}
+            className="mt-20 lg:mt-28 will-change-[opacity]"
+          >
+            <Button
+              href={SITE.contactAnchor}
+              size="lg"
+              className="min-w-[260px]"
+            >
+              Wznieś swój biznes na wyższy poziom
+            </Button>
+          </motion.div>
         </div>
       </div>
     </section>

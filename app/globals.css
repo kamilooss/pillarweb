@@ -377,3 +377,50 @@
     transform: none;
   }
 }
+
+/* =============================================
+   FLOATING CTA — "Porozmawiajmy"
+   Sticky circle button (desktop), pulsing,
+   scales on hover. Inspired by cybernauticdesign.com.
+   ============================================= */
+.floating-cta {
+  position: relative;
+  box-shadow: 0 0 0 0 rgba(199, 245, 66, 0.55),
+    0 14px 34px rgba(0, 0, 0, 0.35);
+  transition: transform 0.32s var(--ease-out-quart),
+    box-shadow 0.32s var(--ease-out-quart);
+  animation: cta-pulse 2.4s var(--ease-out-quart) infinite;
+  will-change: transform;
+}
+
+.floating-cta:hover {
+  transform: scale(1.08);
+  animation-play-state: paused;
+  box-shadow: 0 0 0 12px rgba(199, 245, 66, 0.22),
+    0 18px 40px rgba(0, 0, 0, 0.4);
+}
+
+.floating-cta:active {
+  transform: scale(0.96);
+}
+
+@keyframes cta-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(199, 245, 66, 0.5),
+      0 14px 34px rgba(0, 0, 0, 0.35);
+  }
+  70% {
+    box-shadow: 0 0 0 22px rgba(199, 245, 66, 0),
+      0 14px 34px rgba(0, 0, 0, 0.35);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(199, 245, 66, 0),
+      0 14px 34px rgba(0, 0, 0, 0.35);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floating-cta {
+    animation: none;
+  }
+}
