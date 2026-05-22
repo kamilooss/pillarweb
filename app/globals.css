@@ -194,7 +194,8 @@
   position: relative;
   width: 100%;
   overflow: hidden;
-  padding-block: clamp(1.1rem, 1.8vw, 1.75rem);
+  /* Węższy pasek — mniejszy padding pionowy */
+  padding-block: clamp(0.55rem, 0.9vw, 0.9rem);
   /* Cienkie linie nad i pod tekstem — w kolorze marki,
      lekko przyciemnione dla widoczności na lime */
   border-top: 1px solid rgba(10, 10, 10, 0.18);
@@ -204,7 +205,7 @@
 .industries-marquee__track {
   display: flex;
   align-items: center;
-  gap: 2.75rem;
+  gap: 2.25rem;
   width: max-content;
   white-space: nowrap;
   animation: industries-marquee-scroll 55s linear infinite;
@@ -213,20 +214,16 @@
 
 @media (min-width: 768px) {
   .industries-marquee__track {
-    gap: 3.5rem;
+    gap: 3rem;
   }
-}
-
-.industries-marquee:hover .industries-marquee__track,
-.industries-marquee:focus-within .industries-marquee__track {
-  animation-play-state: paused;
 }
 
 .industries-marquee__item {
   flex-shrink: 0;
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(0.9rem, 1.75vw, 1.45rem);
+  /* Mniejszy tekst — dopasowany do węższego paska */
+  font-size: clamp(0.75rem, 1.2vw, 1.05rem);
   letter-spacing: 0.01em;
   text-transform: uppercase;
   color: #000000;
@@ -236,8 +233,8 @@
 .industries-marquee__sep {
   flex-shrink: 0;
   display: inline-block;
-  width: 0.45rem;
-  height: 0.45rem;
+  width: 0.35rem;
+  height: 0.35rem;
   border-radius: 9999px;
   background: rgba(0, 0, 0, 0.7);
 }
@@ -325,11 +322,6 @@
   /* Animacja w prawo (przeciwnie do paska branż powyżej) */
   animation: logos-marquee-scroll 45s linear infinite;
   will-change: transform;
-}
-
-.logos-marquee:hover .logos-marquee__track,
-.logos-marquee:focus-within .logos-marquee__track {
-  animation-play-state: paused;
 }
 
 .logos-marquee__slot {
