@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
 import "./globals.css";
+import "lenis/dist/lenis.css";
+import SmoothScroll from "./components/SmoothScroll";
 
 const manrope = Manrope({
   subsets: ["latin", "latin-ext"],
@@ -50,6 +52,7 @@ export default function RootLayout({
   return (
     <html lang="pl" className={manrope.variable}>
       <body>
+        <SmoothScroll />
         <a href="#main" className="skip-link">
           Przejdź do treści
         </a>
