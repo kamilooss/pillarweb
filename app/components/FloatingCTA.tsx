@@ -7,13 +7,19 @@ import { SITE } from "../lib/content";
 
 export function FloatingCTA() {
   const reduced = useReducedMotion();
-  const [shown, setShown] = useState(false);
+  const [pastHero, setPastHero] = useState(false);
   const [hideForContact, setHideForContact] = useState(false);
 
-  // Opóźnione pojawienie po załadowaniu strony
+  // Pojawia się dopiero gdy Hero jest w większości przewinięte (≤30% widoczne)
   useEffect(() => {
-    const t = setTimeout(() => setShown(true), 1400);
-    return () => clearTimeout(t);
+    const hero = document.getElementById("main");
+    if (!hero) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setPastHero(!entry.isIntersecting),
+      { threshold: 0.3 }
+    );
+    observer.observe(hero);
+    return () => observer.disconnect();
   }, []);
 
   // Znika gdy sekcja kontaktowa wchodzi w viewport
@@ -28,7 +34,7 @@ export function FloatingCTA() {
     return () => observer.disconnect();
   }, []);
 
-  const visible = shown && !hideForContact;
+  const visible = pastHero && !hideForContact;
 
   return (
     <motion.div
