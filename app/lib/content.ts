@@ -90,12 +90,55 @@ export const HERO = {
   cta: { label: "Umów się na rozmowę konsultacyjną", href: "#jak-pracujemy" },
 } as const;
 
-export const TESTIMONIALS = [
+export const STATS = [
+  {
+    value: 147,
+    prefix: "",
+    suffix: "",
+    label: "zapytań w jednym miesiącu",
+  },
+  {
+    value: 15,
+    prefix: "",
+    suffix: "",
+    label: "domkniętych projektów",
+  },
+  {
+    value: 330000,
+    prefix: "~$",
+    suffix: "",
+    label: "wartości pozyskanych zleceń",
+  },
+] as const;
+
+type QuoteSegment = { text: string; accent?: boolean };
+type Testimonial = {
+  quote: QuoteSegment[][];
+  author: string;
+  role: string;
+  avatar: string;
+};
+
+export const TESTIMONIALS: Testimonial[] = [
   {
     quote: [
-      "Przez lata działałem tylko na poleceniach. W końcu zrozumiałem — to nie jest system. To coś, na co nie mam wpływu. Przez to bałem się skalować i zatrudniać nowe brygady.",
-      "Współpraca zaskoczyła mnie od pierwszego dnia. Dedykowany komunikator, konkretni ludzie, zawsze dostępni. Terminy dotrzymane. Zero niespodzianek. Rozmowa jak między ludźmi — nie klient z korporacją.",
-      "No i wyniki — 147 zapytań w jednym miesiącu. Nigdy wcześniej nie miałem tylu kontaktów naraz. Serdecznie polecam.",
+      [
+        { text: "Przez lata działałem tylko na poleceniach.", accent: true },
+        {
+          text: " W końcu zrozumiałem — to nie jest system. Bałem się skalować, bo nie miałem wpływu na to, skąd przyjdą kolejne zlecenia.",
+        },
+      ],
+      [
+        { text: "Współpraca zaskoczyła mnie od pierwszego dnia. " },
+        {
+          text: "Konkretni ludzie, terminy dotrzymane, rozmowa jak między partnerami.",
+          accent: true,
+        },
+      ],
+      [
+        { text: "147 zapytań w jednym miesiącu.", accent: true },
+        { text: " Nigdy wcześniej nie miałem tylu kontaktów naraz. Serdecznie polecam." },
+      ],
     ],
     author: "Krzysztof Głaz",
     role: "właściciel Glaz Construction, Hickory Hills, IL",
@@ -103,9 +146,21 @@ export const TESTIMONIALS = [
   },
   {
     quote: [
-      "Umowa bez niespodzianek, kontakt zawsze natychmiastowy i jakość wykonania na najwyższym poziomie. Od pierwszego spotkania czułem, że jestem w dobrych rękach. Wszystko było jasno ustalone, bez chaosu i bez niepotrzebnego przeciągania tematu.",
-      "Współpraca przebiegała bardzo sprawnie. Na każdym etapie wiedziałem, co się dzieje, a każda moja wiadomość spotykała się z szybką i konkretną odpowiedzią. Całość była prowadzona profesjonalnie, ale bez sztywnej atmosfery — po prostu normalna, uczciwa współpraca.",
-      "Strona gotowa, działa bez zarzutu i dokładnie tego oczekiwałem. Firma została pokazana tak, jak powinna, a ja od początku do końca miałem poczucie, że jestem w dobrych rękach. Serdecznie polecam każdemu z branży budowlanej.",
+      [
+        {
+          text: "Umowa bez niespodzianek, kontakt zawsze natychmiastowy i jakość wykonania na najwyższym poziomie. Od pierwszego spotkania czułem, że jestem w dobrych rękach. Wszystko było jasno ustalone, bez chaosu i bez niepotrzebnego przeciągania tematu.",
+        },
+      ],
+      [
+        {
+          text: "Współpraca przebiegała bardzo sprawnie. Na każdym etapie wiedziałem, co się dzieje, a każda moja wiadomość spotykała się z szybką i konkretną odpowiedzią. Całość była prowadzona profesjonalnie, ale bez sztywnej atmosfery — po prostu normalna, uczciwa współpraca.",
+        },
+      ],
+      [
+        {
+          text: "Strona gotowa, działa bez zarzutu i dokładnie tego oczekiwałem. Firma została pokazana tak, jak powinna, a ja od początku do końca miałem poczucie, że jestem w dobrych rękach. Serdecznie polecam każdemu z branży budowlanej.",
+        },
+      ],
     ],
     author: "Michał Płonka",
     role: "właściciel Pergole do ogrodu, Kraków",
