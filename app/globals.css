@@ -258,3 +258,116 @@
     transform: none;
   }
 }
+
+/* =============================================
+   LOGOS SHOWCASE
+   Sekcja z rotującymi logotypami pod marquee.
+   Mechanika wzorowana na Wpromote — heading
+   z linią po prawej, 4 sloty x cross-fade 8s.
+   ============================================= */
+.logos-showcase {
+  position: relative;
+  width: 100%;
+  background: var(--color-background);
+  padding-block: clamp(2.5rem, 5vw, 4.5rem);
+  color: var(--color-foreground);
+}
+
+.logos-showcase__heading {
+  display: flex;
+  align-items: center;
+  column-gap: 1.25rem;
+  margin-bottom: clamp(0.5rem, 1vw, 1rem);
+}
+
+@media (min-width: 768px) {
+  .logos-showcase__heading {
+    column-gap: 1.75rem;
+  }
+}
+
+.logos-showcase__heading::after {
+  content: "";
+  flex: 1;
+  display: inline-block;
+  height: 1px;
+  background-color: var(--color-accent);
+}
+
+.logos-showcase__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--color-foreground);
+  margin: 0;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.logos-marquee {
+  position: relative;
+  width: 100%;
+}
+
+.logos-marquee__viewport {
+  width: 100%;
+  overflow: hidden;
+}
+
+.logos-marquee__track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  /* Brak gap — slot ma swój wewnętrzny "oddech" przez max-width na obrazku */
+  gap: 0;
+  /* Animacja w prawo (przeciwnie do paska branż powyżej) */
+  animation: logos-marquee-scroll 45s linear infinite;
+  will-change: transform;
+}
+
+.logos-marquee:hover .logos-marquee__track,
+.logos-marquee:focus-within .logos-marquee__track {
+  animation-play-state: paused;
+}
+
+.logos-marquee__slot {
+  flex-shrink: 0;
+  /* 25vw × 4 = 100vw → 4 logosami szczelnie wypełniają szerokość strony */
+  width: max(220px, 25vw);
+  /* Slot 2:1 jak u Wpromote — proporcjonalny do szerokości */
+  aspect-ratio: 2 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logos-marquee__img {
+  /* Box obrazka — % slotu (jak u Wpromote: width 85%, height 100%).
+     Bez tego SVG-i renderują się w swoim intrinsic size (kilkadziesiąt px).
+     max-* tylko capują, nie skalują w górę. */
+  width: 85%;
+  height: 100%;
+  max-width: clamp(160px, 16vw, 280px);
+  max-height: clamp(80px, 8vw, 140px);
+  object-fit: contain;
+  /* Loga są monochromatyczne (czarne) — odwracamy do bieli na ciemnym tle */
+  filter: brightness(0) invert(1);
+}
+
+@keyframes logos-marquee-scroll {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logos-marquee__track {
+    animation: none;
+    transform: none;
+  }
+}

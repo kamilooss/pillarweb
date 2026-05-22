@@ -1,6 +1,7 @@
 import { Header } from "./components/Header";
 import { Hero } from "./components/Hero";
 import { IndustriesMarquee } from "./components/IndustriesMarquee";
+import { LogosShowcase } from "./components/LogosShowcase";
 import { PillarsSection } from "./components/PillarsSection";
 import { Testimonials } from "./components/Testimonials";
 import { ContentVideoSection } from "./components/ContentVideoSection";
@@ -21,6 +22,7 @@ export default function HomePage() {
       <main>
         <Hero />
         <IndustriesMarquee />
+        <LogosShowcase />
         <PillarsSection />
         <Testimonials />
         <ContentVideoSection />
