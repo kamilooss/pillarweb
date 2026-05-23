@@ -182,11 +182,11 @@ export const CONTENT_SECTION = {
     items: [
       {
         title: "Wygląd strony obniża wiarygodność",
-        body: "Jeśli strona wygląda staro, chaotycznie albo przypadkowo, klient zaczyna tak samo patrzeć na firmę. To nie kwestia estetyki — to kwestia zaufania. Według raportu Stanford **75% użytkowników ocenia wiarygodność firmy na podstawie wyglądu strony internetowej**.",
+        body: "Jeśli strona wygląda staro, chaotycznie albo przypadkowo, klient zaczyna tak samo patrzeć na firmę. To nie kwestia estetyki — to kwestia zaufania i tego, czy klient w ogóle do Ciebie zadzwoni. Według raportu Stanford **75% użytkowników ocenia wiarygodność firmy na podstawie wyglądu strony internetowej**.",
       },
       {
         title: "Strona nie wykorzystuje ruchu, za który już płacisz",
-        body: "Możesz inwestować w reklamy, SEO, artykuły sponsorowane albo wizytówkę Google, ale jeśli strona nie pomaga użytkownikowi zrobić kolejnego kroku, część tego ruchu po prostu się marnuje. Dobrze zaprojektowana strona ma pomagać zamieniać wejścia na realne zapytania.",
+        body: "Możesz inwestować w reklamy, SEO, artykuły sponsorowane albo wizytówkę Google, ale jeśli strona nie pomaga użytkownikowi zrobić kolejnego kroku, płacisz za ruch, który odpływa do Twojej konkurencji. Dobrze zaprojektowana strona ma pomagać zamieniać wejścia na realne zapytania.",
       },
       {
         title: "Firma robi dobrą robotę, ale online tego nie widać",
@@ -195,7 +195,7 @@ export const CONTENT_SECTION = {
     ],
     image: `${ASSET_BASE}/strona-internetowa-a-pozyskiwanie-klientow-pillarweb-1024x572.webp`,
     summary:
-      "Dobrze zaprojektowana strona nie jest dodatkiem do marketingu. To miejsce, które realnie wpływa na decyzję klienta i pomaga zamieniać zainteresowanie w kontakt.",
+      "Problemem nie jest to, że firma budowlana nie ma strony. Problemem jest to, że wiele stron wygląda nieprofesjonalnie, nie budzi zaufania i nie pomaga zdobywać zapytań od potencjalnych klientów. A jeśli klient trafia na taką stronę po np. reklamie / z Social Mediów etc., bardzo często po prostu wychodzi.",
     cta: { label: "Wznieś swój biznes na wyższy poziom", href: "#kontakt" },
   },
 } as const;
