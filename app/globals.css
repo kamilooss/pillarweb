@@ -350,13 +350,8 @@
 }
 
 .logos-marquee__img {
-  /* Box obrazka — % slotu (jak u Wpromote: width 85%, height 100%).
-     Bez tego SVG-i renderują się w swoim intrinsic size (kilkadziesiąt px).
-     max-* tylko capują, nie skalują w górę. */
-  width: 85%;
-  height: 100%;
-  max-width: clamp(160px, 16vw, 280px);
-  max-height: clamp(80px, 8vw, 140px);
+  width: auto;
+  height: 36px;
   object-fit: contain;
   /* Loga są monochromatyczne (czarne) — odwracamy do bieli na ciemnym tle */
   filter: brightness(0) invert(1);
