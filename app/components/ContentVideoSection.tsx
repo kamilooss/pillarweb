@@ -1,4 +1,13 @@
+"use client";
+
+import { useRef } from "react";
 import Image from "next/image";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useReducedMotion,
+} from "motion/react";
 import { Reveal } from "./Reveal";
 import { Button } from "./Button";
 import { CONTENT_SECTION } from "../lib/content";
@@ -26,9 +35,30 @@ function FormattedText({ text }: { text: string }) {
 export function ContentVideoSection() {
   const { heading, videoSrc, problems } = CONTENT_SECTION;
 
+  const sectionRef = useRef<HTMLElement>(null);
+  const reduced = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+  const headingY = useTransform(scrollYProgress, [0, 0.25], [60, 0], {
+    clamp: true,
+  });
+
   return (
-    <section className="bg-background">
-      {/* Video hero z nagłówkiem */}
+    <section ref={sectionRef} className="bg-background pt-16 lg:pt-24">
+      {/* Nagłówek nad filmem — animacja i rozmiar spójny z Testimonials */}
+      <div className="container-content">
+        <motion.h2
+          style={reduced ? undefined : { y: headingY }}
+          className="font-display font-bold text-center text-[clamp(1.75rem,3.5vw,2.75rem)] leading-tight tracking-tight max-w-5xl mx-auto mb-12 lg:mb-16 will-change-transform"
+        >
+          {heading.prefix}{" "}
+          <span className="text-accent">{heading.accent}</span>
+        </motion.h2>
+      </div>
+
+      {/* Video bez overlay'owego nagłówka */}
       <div className="container-content">
         <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl">
           <video
@@ -42,16 +72,6 @@ export function ContentVideoSection() {
           >
             <source src={videoSrc} type="video/mp4" />
           </video>
-          <div
-            className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/40"
-            aria-hidden="true"
-          />
-          <div className="absolute inset-0 flex items-end p-8 lg:p-14">
-            <Reveal as="h2" className="font-display font-bold text-[clamp(1.75rem,4vw,3.25rem)] leading-[1.1] max-w-5xl">
-              {heading.prefix}{" "}
-              <span className="text-accent">{heading.accent}</span>
-            </Reveal>
-          </div>
         </div>
       </div>
 
