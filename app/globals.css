@@ -351,7 +351,7 @@
 
 .logos-marquee__img {
   width: auto;
-  height: 36px;
+  height: 38px;
   object-fit: contain;
   /* Loga są monochromatyczne (czarne) — odwracamy do bieli na ciemnym tle */
   filter: brightness(0) invert(1);

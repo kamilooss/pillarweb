@@ -68,7 +68,7 @@ export function ServicesAccordion() {
                     className="group w-full text-left py-8 lg:py-10 flex items-start gap-5 lg:gap-6 cursor-pointer"
                   >
                     <span
-                      className={`flex-1 font-display font-bold leading-[1.15] tracking-tight text-[clamp(1.35rem,2.6vw,2.15rem)] transition-colors duration-300 ${
+                      className={`flex-1 font-display font-bold leading-[1.2] tracking-tight text-[clamp(1.2rem,2.25vw,1.85rem)] transition-colors duration-300 ${
                         isActive
                           ? "text-accent"
                           : "text-foreground/75 group-hover:text-foreground"
