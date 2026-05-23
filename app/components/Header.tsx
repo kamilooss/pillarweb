@@ -134,7 +134,7 @@ export function Header() {
             </svg>
             <span className="font-medium">{SITE.phone}</span>
           </a>
-          <Button href={SITE.contactAnchor}>{SITE.cta}</Button>
+          <Button href={SITE.contactAnchor} className="header-cta-pulse ml-2">{SITE.cta}</Button>
         </div>
 
         {/* Mobile burger */}

@@ -53,9 +53,9 @@ export function FloatingCTA() {
       <Link
         href={SITE.contactAnchor}
         aria-label="Porozmawiajmy — przejdź do formularza kontaktowego"
-        className="floating-cta group flex items-center justify-center w-[120px] h-[120px] rounded-full bg-accent text-accent-foreground font-display font-extrabold uppercase tracking-tight text-center"
+        className="floating-cta group flex items-center justify-center w-[110px] h-[110px] rounded-full bg-accent text-accent-foreground font-display font-extrabold uppercase tracking-tight text-center"
       >
-        <span className="text-[12px] leading-[1.1] tracking-tight px-2">
+        <span className="text-[11px] leading-[1.1] tracking-tight px-2">
           Porozmawiajmy
         </span>
       </Link>
