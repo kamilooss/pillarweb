@@ -422,17 +422,17 @@
 
 /* Header sticky CTA — to samo pulsowanie co floating-cta,
    ale dopasowane do prostokąta (mniejszy promień rings). */
-.header-cta-pulse {
+.cta-pulse {
   position: relative;
-  animation: header-cta-pulse 2.4s var(--ease-out-quart) infinite;
+  animation: cta-pulse 2.4s var(--ease-out-quart) infinite;
   will-change: box-shadow;
 }
 
-.header-cta-pulse:hover {
+.cta-pulse:hover {
   animation-play-state: paused;
 }
 
-@keyframes header-cta-pulse {
+@keyframes cta-pulse {
   0% {
     box-shadow: 0 0 0 0 rgba(199, 245, 66, 0.5);
   }
@@ -445,7 +445,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .header-cta-pulse {
+  .cta-pulse {
     animation: none;
   }
 }

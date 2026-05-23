@@ -8,7 +8,6 @@ import {
   useTransform,
   useReducedMotion,
 } from "motion/react";
-import { Reveal } from "./Reveal";
 import { Button } from "./Button";
 import { CONTENT_SECTION } from "../lib/content";
 
@@ -36,12 +35,25 @@ export function ContentVideoSection() {
   const { heading, videoSrc, problems } = CONTENT_SECTION;
 
   const sectionRef = useRef<HTMLElement>(null);
+  const problemsRef = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
+
+  // Nagłówek nad wideo — slide-up wraz z wejściem sekcji w viewport
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"],
   });
   const headingY = useTransform(scrollYProgress, [0, 0.25], [60, 0], {
+    clamp: true,
+  });
+
+  // Cały blok "Problemy + dyptyk" — wspólny slide-up, elementy nie zmieniają
+  // pozycji względem siebie
+  const { scrollYProgress: problemsProgress } = useScroll({
+    target: problemsRef,
+    offset: ["start end", "end start"],
+  });
+  const problemsY = useTransform(problemsProgress, [0, 0.25], [60, 0], {
     clamp: true,
   });
 
@@ -75,56 +87,54 @@ export function ContentVideoSection() {
         </div>
       </div>
 
-      {/* Problemy + dyptyk */}
-      <div className="container-content py-24 lg:py-32">
+      {/* Problemy + dyptyk — cały blok animowany razem (slide-up jako grupa) */}
+      <motion.div
+        ref={problemsRef}
+        style={reduced ? undefined : { y: problemsY }}
+        className="container-content pt-40 lg:pt-60 pb-24 lg:pb-32 will-change-transform"
+      >
         <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] gap-12 lg:gap-20 items-start">
           <div>
-            <Reveal as="h3" className="text-accent font-display font-bold text-[clamp(1.4rem,2.5vw,2.1rem)] leading-tight tracking-tight max-w-md">
+            <h3 className="text-accent font-display font-bold text-[clamp(1.75rem,3.5vw,2.75rem)] leading-tight tracking-tight max-w-2xl">
               {problems.title}
-            </Reveal>
+            </h3>
 
             <ol className="mt-12 space-y-10">
               {problems.items.map((item, i) => (
-                <Reveal key={i} delay={i * 0.05} as="div">
+                <div key={i}>
                   <h4 className="text-accent font-bold text-lg lg:text-xl mb-3">
                     {i + 1}. {item.title}
                   </h4>
                   <p className="text-muted-strong leading-relaxed">
                     <FormattedText text={item.body} />
                   </p>
-                </Reveal>
+                </div>
               ))}
             </ol>
           </div>
 
           <div className="flex flex-col gap-10">
-            <Reveal>
-              <div className="aspect-[16/10] rounded-xl overflow-hidden">
-                <Image
-                  src={problems.image}
-                  alt="Porównanie problemu i efektów dobrze działającej strony internetowej dla firmy budowlanej"
-                  width={1024}
-                  height={572}
-                  className="w-full h-full object-cover"
-                  unoptimized
-                />
-              </div>
-            </Reveal>
+            <div className="aspect-[16/10] rounded-xl overflow-hidden">
+              <Image
+                src={problems.image}
+                alt="Porównanie problemu i efektów dobrze działającej strony internetowej dla firmy budowlanej"
+                width={1024}
+                height={572}
+                className="w-full h-full object-cover"
+                unoptimized
+              />
+            </div>
 
-            <Reveal delay={0.1}>
-              <p className="text-foreground text-lg lg:text-xl leading-snug font-medium">
-                {problems.summary}
-              </p>
-            </Reveal>
+            <p className="text-foreground text-lg lg:text-xl leading-snug font-medium">
+              {problems.summary}
+            </p>
 
-            <Reveal delay={0.2}>
-              <Button href={problems.cta.href} size="lg">
-                {problems.cta.label}
-              </Button>
-            </Reveal>
+            <Button href={problems.cta.href} size="lg">
+              {problems.cta.label}
+            </Button>
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
