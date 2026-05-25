@@ -261,7 +261,7 @@ export const GUARANTEES = {
       number: "1.",
       title: "Gwarancja satysfakcji",
       image: `${ASSET_BASE}/gwarancja-satysfakcji-pillarweb.webp`,
-      body: "Jeśli po etapie strategii i projektu uznasz, że to nie jest kierunek dla Ciebie, zwracamy pieniądze i kończymy współpracę. Otrzymujesz projekt. Zobaczysz jak Twoja strona będzie wyglądać, a następnie decydujesz czy działamy dalej.",
+      body: "Najpierw pokazujemy Ci gotowy projekt strony — widzisz dokładnie, jak będzie wyglądać, zanim cokolwiek zostanie wdrożone. Jeśli uznajesz, że to nie ten kierunek — zwracamy pieniądze.",
     },
     {
       number: "2.",
@@ -273,11 +273,9 @@ export const GUARANTEES = {
       number: "3.",
       title: "Gwarancja techniczna",
       image: `${ASSET_BASE}/gwarancja-techniczna-pillarweb.webp`,
-      body: "Po wdrożeniu zapewniamy miesiąc wsparcia technicznego, abyś miał pewność, że wszystko będzie działać tak jak powinno.",
+      body: "Po wdrożeniu masz 30 dni bezpłatnego wsparcia technicznego. Jeśli cokolwiek nie działa jak powinno — naprawiamy to bez żadnych dodatkowych kosztów.",
     },
   ],
-  outro:
-    "Po wdrożeniu zapewniamy miesiąc wsparcia technicznego, abyś miał pewność, że wszystko będzie działać tak jak powinno.",
 } as const;
 
 export const PROCESS = {
@@ -286,8 +284,13 @@ export const PROCESS = {
     accent: "przejmujemy cały temat",
     suffix: "strony od A do Z.",
   },
-  important:
-    "Przez cały okres trwania naszej współpracy, możesz kontaktować się z nami za pośrednictwem komunikatora Slack (otrzymasz instrukcję instalacji tego narzędzia). Możesz do nas napisać kiedy tylko chcesz. Na bieżąco wiesz, co robimy, na jakim jesteśmy etapie i co dzieje się dalej. Pracujemy według jasnego planu i regularnie raportujemy postępy.",
+  important: {
+    prefix:
+      "Przez cały okres trwania naszej współpracy, możesz kontaktować się z nami za pośrednictwem komunikatora Slack (otrzymasz instrukcję instalacji tego narzędzia).",
+    accent:
+      "Możesz do nas napisać kiedy tylko chcesz. Na bieżąco wiesz, co robimy, na jakim jesteśmy etapie i co dzieje się dalej.",
+    suffix: "Pracujemy według jasnego planu i regularnie raportujemy postępy.",
+  },
   image: `${ASSET_BASE}/proces-wspolpracy-pillarweb-768x1024.webp`,
   steps: [
     {

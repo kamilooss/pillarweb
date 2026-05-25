@@ -42,7 +42,9 @@ export function ProcessSection() {
         </Reveal>
 
         <Reveal delay={0.05} as="p" className="text-foreground text-center mt-10 max-w-3xl mx-auto leading-relaxed">
-          <strong className="text-accent">WAŻNE!</strong> {important}
+          <strong className="text-accent">WAŻNE!</strong> {important.prefix}{" "}
+          <strong className="text-accent">{important.accent}</strong>{" "}
+          {important.suffix}
         </Reveal>
 
         {/* Layout: lewa lista | prawa sticky image */}

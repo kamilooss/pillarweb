@@ -3,7 +3,7 @@ import { Reveal } from "./Reveal";
 import { GUARANTEES } from "../lib/content";
 
 export function GuaranteesSection() {
-  const { headingLine1, headingLine2, subheadingPrefix, subheadingAccent, items, outro } = GUARANTEES;
+  const { headingLine1, headingLine2, subheadingPrefix, subheadingAccent, items } = GUARANTEES;
 
   return (
     <section className="pt-16 lg:pt-24 pb-24 lg:pb-36">
@@ -40,10 +40,6 @@ export function GuaranteesSection() {
             </Reveal>
           ))}
         </div>
-
-        <Reveal delay={0.1} as="p" className="text-accent text-center text-lg lg:text-xl mt-16 lg:mt-24 max-w-4xl mx-auto leading-relaxed font-medium">
-          {outro}
-        </Reveal>
       </div>
     </section>
   );
