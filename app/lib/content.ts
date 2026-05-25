@@ -211,7 +211,7 @@ export const DIFFERENTIATOR = {
       body: "Rozumiemy, jakie pytania zadają, czego się obawiają, czego oczekują od firm Twojego pokroju i co wpływa na ich decyzję. Dzięki temu strona może mówić językiem, który brzmi naturalnie i trafia do właściwych klientów.",
     },
     {
-      title: "Wiemy, jak ułożyć stronę, żeby wspierała sprzedaż",
+      title: "Wiemy, jak ułożyć stronę, żeby wspierała sprzedaż. Każda sekcja ma znaczenie.",
       body: "Każda sekcja ma swoje zadanie. Strona nie ma tylko „być”, ale prowadzić użytkownika od pierwszego wrażenia do kontaktu i budować zaufanie po drodze.",
     },
     {
@@ -219,8 +219,8 @@ export const DIFFERENTIATOR = {
       body: "Firmy budowlane nie potrzebują przypadkowych rozwiązań ani modnych sztuczek. Potrzebują strony, która wygląda profesjonalnie, wzmacnia markę i pomaga domykać więcej wartościowych klientów.",
     },
     {
-      title: "Dlatego osiągamy tak dobre wyniki",
-      body: "Właśnie dzięki takim działaniom osiągamy konkretne wyniki dla firm budowlanych. Przykładem może być kampania Google Ads, którą przeprowadziliśmy na wcześniej przygotowanej przez nas stronie internetowej, stworzonej z myślą o pozyskiwaniu potencjalnych klientów.",
+      title: "Zero eksperymentów na Twoim projekcie — tylko to, co działa",
+      body: "Właśnie dlatego nasze strony nie są tylko wizytówkami — są zaprojektowane pod pozyskiwanie zapytań od pierwszego dnia. Przykład? Kampania Google Ads uruchomiona na stronie, którą stworzyliśmy: 46 zapytań w 27 dni, koszt jednego kontaktu — 37,74 zł.",
     },
   ],
   results: {
