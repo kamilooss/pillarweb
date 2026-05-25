@@ -33,7 +33,7 @@ export function ProcessSection() {
   }, []);
 
   return (
-    <section id="jak-pracujemy" className="py-24 lg:py-36">
+    <section id="jak-pracujemy" className="pt-16 lg:pt-24 pb-24 lg:pb-36">
       <div className="container-content">
         <Reveal as="h2" className="font-display font-bold text-center text-[clamp(1.6rem,3.2vw,2.5rem)] leading-tight tracking-tight max-w-4xl mx-auto">
           {heading.prefix}{" "}

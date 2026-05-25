@@ -6,7 +6,7 @@ export function GuaranteesSection() {
   const { headingLine1, headingLine2, subheadingPrefix, subheadingAccent, items, outro } = GUARANTEES;
 
   return (
-    <section className="py-24 lg:py-36">
+    <section className="pt-16 lg:pt-24 pb-24 lg:pb-36">
       <div className="container-content">
         <Reveal as="h2" className="font-display font-bold text-center text-[clamp(1.5rem,3vw,2.75rem)] leading-tight tracking-tight whitespace-normal lg:whitespace-nowrap">
           {headingLine1}{" "}

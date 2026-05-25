@@ -35,7 +35,7 @@ export function PricingSection() {
   const { heading, description, plans, footnote } = PRICING;
 
   return (
-    <section id="cennik" className="py-24 lg:py-36">
+    <section id="cennik" className="pt-16 lg:pt-24 pb-24 lg:pb-36">
       <div className="container-content">
         <Reveal as="h2" className="text-accent font-display font-bold text-center text-[clamp(2rem,4vw,3rem)] tracking-tight">
           {heading}

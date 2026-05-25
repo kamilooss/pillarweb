@@ -31,7 +31,7 @@ export function SpecializationsSection() {
   });
 
   return (
-    <section className="pt-44 lg:pt-64 pb-20 lg:pb-28">
+    <section className="pt-16 lg:pt-24 pb-24 lg:pb-36">
       <div ref={sectionRef} className="container-content">
         <motion.h2
           style={reduced ? undefined : { y: headingY }}

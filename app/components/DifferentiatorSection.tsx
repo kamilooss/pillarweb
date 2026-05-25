@@ -170,7 +170,7 @@ export function DifferentiatorSection() {
           (pt-16 lg:pt-24 nad nagłówkiem, motion.h2 z y 60→0). */}
       <div
         ref={resultsRef}
-        className="container-content pt-16 lg:pt-24"
+        className="container-content pt-16 lg:pt-24 pb-24 lg:pb-36"
       >
         <motion.h2
           style={reduced ? undefined : { y: resultsHeadingY }}

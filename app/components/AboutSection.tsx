@@ -6,7 +6,7 @@ export function AboutSection() {
   const { heading, paragraphs, image, imageAlt } = ABOUT;
 
   return (
-    <section className="py-24 lg:py-36">
+    <section className="pt-16 lg:pt-24 pb-24 lg:pb-36">
       <div className="container-content">
         <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-12 lg:gap-20 items-start">
           <div>

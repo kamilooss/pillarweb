@@ -29,7 +29,7 @@ export function ContactSection() {
   };
 
   return (
-    <section id="kontakt" className="py-24 lg:py-36">
+    <section id="kontakt" className="pt-16 lg:pt-24 pb-24 lg:pb-36">
       <div className="container-content">
         <Reveal as="h2" className="font-display font-bold text-center text-[clamp(1.75rem,3.5vw,3rem)] leading-tight tracking-tight">
           {CONTACT.headingLine1}
