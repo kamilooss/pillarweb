@@ -254,8 +254,8 @@ export const SPECIALIZATIONS = {
 export const GUARANTEES = {
   headingLine1: "Możesz czuć się bezpiecznie.",
   headingLine2: "Nasze gwarancje:",
-  subheading:
-    "Jesteśmy tak pewni jakości naszej usługi, że dajemy gwarancje, których nie otrzymasz nigdzie indziej.",
+  subheadingPrefix: "Jesteśmy tak pewni jakości naszej usługi, że",
+  subheadingAccent: "dajemy gwarancje, których nie otrzymasz nigdzie indziej.",
   items: [
     {
       number: "1.",

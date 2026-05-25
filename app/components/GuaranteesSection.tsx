@@ -3,19 +3,19 @@ import { Reveal } from "./Reveal";
 import { GUARANTEES } from "../lib/content";
 
 export function GuaranteesSection() {
-  const { headingLine1, headingLine2, subheading, items, outro } = GUARANTEES;
+  const { headingLine1, headingLine2, subheadingPrefix, subheadingAccent, items, outro } = GUARANTEES;
 
   return (
     <section className="py-24 lg:py-36">
       <div className="container-content">
-        <Reveal as="h2" className="font-display font-bold text-center text-[clamp(1.75rem,3.5vw,3rem)] leading-tight tracking-tight">
-          {headingLine1}
-          <br />
+        <Reveal as="h2" className="font-display font-bold text-center text-[clamp(1.5rem,3vw,2.75rem)] leading-tight tracking-tight whitespace-normal lg:whitespace-nowrap">
+          {headingLine1}{" "}
           <span className="text-accent">{headingLine2}</span>
         </Reveal>
 
-        <Reveal delay={0.05} as="p" className="text-accent text-center text-lg lg:text-xl mt-6 max-w-3xl mx-auto leading-relaxed">
-          {subheading}
+        <Reveal delay={0.05} as="p" className="text-center text-lg lg:text-xl mt-6 max-w-3xl mx-auto leading-relaxed">
+          {subheadingPrefix}{" "}
+          <span className="text-accent">{subheadingAccent}</span>
         </Reveal>
 
         <div className="grid md:grid-cols-3 gap-8 lg:gap-10 mt-16 lg:mt-24">
