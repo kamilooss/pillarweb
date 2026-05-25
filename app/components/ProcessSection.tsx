@@ -84,7 +84,7 @@ export function ProcessSection() {
                     <h3 className="font-display font-bold text-2xl lg:text-3xl">
                       {step.title}
                     </h3>
-                    <span className="text-xl lg:text-2xl font-light text-muted">
+                    <span className="text-xl lg:text-2xl font-light text-accent">
                       {step.number}
                     </span>
                   </motion.div>
