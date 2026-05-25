@@ -186,16 +186,16 @@ export const CONTENT_SECTION = {
       },
       {
         title: "Strona nie wykorzystuje ruchu, za który już płacisz",
-        body: "Możesz inwestować w reklamy, SEO, artykuły sponsorowane albo wizytówkę Google, ale jeśli strona nie pomaga użytkownikowi zrobić kolejnego kroku, płacisz za ruch, który odpływa do Twojej konkurencji. Dobrze zaprojektowana strona ma pomagać zamieniać wejścia na realne zapytania.",
+        body: "Możesz inwestować w reklamy, SEO, artykuły sponsorowane albo wizytówkę Google, ale jeśli strona nie pomaga użytkownikowi zrobić kolejnego kroku, płacisz za ruch, który odpływa do Twojej konkurencji. **Dobrze zaprojektowana strona ma pomagać zamieniać wejścia na realne zapytania.**",
       },
       {
         title: "Firma robi dobrą robotę, ale online tego nie widać",
-        body: "W branży budowlanej decyzje zapadają na podstawie zaufania. Jeśli klient nie widzi profesjonalnej prezentacji firmy, realizacji, opinii i jasnej oferty, nie ma wystarczająco dużo powodów, żeby się odezwać.",
+        body: "**W branży budowlanej decyzje zapadają na podstawie zaufania.** Jeśli klient nie widzi profesjonalnej prezentacji firmy, realizacji, opinii i jasnej oferty, nie ma wystarczająco dużo powodów, żeby się odezwać.",
       },
     ],
     image: `${ASSET_BASE}/strona-internetowa-a-pozyskiwanie-klientow-pillarweb-1024x572.webp`,
     summary:
-      "Problemem nie jest to, że firma budowlana nie ma strony. Problemem jest to, że wiele stron wygląda nieprofesjonalnie, nie budzi zaufania i nie pomaga zdobywać zapytań od potencjalnych klientów. A jeśli klient trafia na taką stronę po np. reklamie / z Social Mediów etc., bardzo często po prostu wychodzi.",
+      "Problemem nie jest to, że firma budowlana nie ma strony. **Problemem jest to, że wiele stron wygląda nieprofesjonalnie, nie budzi zaufania i nie pomaga zdobywać zapytań od potencjalnych klientów.** A jeśli klient trafia na taką stronę po np. reklamie / z Social Mediów etc., bardzo często po prostu wychodzi.",
     cta: { label: "Wznieś swój biznes na wyższy poziom", href: "#kontakt" },
   },
 } as const;
@@ -510,7 +510,7 @@ export const ABOUT = {
     "Zadaniem Pillar Web jest przejęcie całej odpowiedzialności i uporządkowanie wieloetapowego procesu, tworząc stronę internetową, która od razu jest gotowa do startu z marketingiem i reklamami, bez obaw, że jakiegokolwiek elementu zabraknie.",
     "Dajemy więcej niżeli nasi konkurenci. Twoja strona będzie zawierała wszystko, co potrzebne. To właśnie nas wyróżnia.",
   ],
-  image: `${ASSET_BASE}/kamil-tomczyk-o-nas-pillarweb-pionowo-767x1024.webp`,
+  image: "/images/kim-jestesmy-pillarweb.webp",
   imageAlt:
     "Kamil Tomczyk i branża budowlana oraz marketing internetowy w ujęciu wizerunkowym Pillar Web",
 } as const;

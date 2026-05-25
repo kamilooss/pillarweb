@@ -20,9 +20,9 @@ function FormattedText({ text }: { text: string }) {
     <>
       {parts.map((p, i) =>
         p.startsWith("**") && p.endsWith("**") ? (
-          <strong key={i} className="font-bold text-foreground">
+          <span key={i} className="text-accent">
             {p.slice(2, -2)}
-          </strong>
+          </span>
         ) : (
           <span key={i}>{p}</span>
         )
@@ -190,7 +190,7 @@ export function ContentVideoSection() {
                     }
                     className="text-foreground text-lg lg:text-xl leading-snug font-medium will-change-[opacity,transform]"
                   >
-                    {problems.summary}
+                    <FormattedText text={problems.summary} />
                   </motion.p>
 
                   <motion.div
