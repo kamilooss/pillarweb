@@ -12,24 +12,40 @@ export function ProcessSection() {
   const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const idx = stepRefs.current.findIndex((el) => el === entry.target);
-            if (idx !== -1) setActiveIdx(idx);
-          }
-        });
-      },
-      {
-        // aktywny gdy element jest w środkowej 30% viewportu
-        rootMargin: "-35% 0px -35% 0px",
-        threshold: 0,
-      }
-    );
-
-    stepRefs.current.forEach((el) => el && observer.observe(el));
-    return () => observer.disconnect();
+    /**
+     * Aktywny krok wybierany jest deterministycznie: ten, którego środek jest
+     * najbliżej środka viewportu. Symetryczne dla scrolla w górę i w dół —
+     * nie pomijamy kroków przy zmianie kierunku.
+     */
+    let rafId: number | null = null;
+    const update = () => {
+      rafId = null;
+      const viewportCenter = window.innerHeight / 2;
+      let bestIdx = 0;
+      let bestDistance = Infinity;
+      stepRefs.current.forEach((el, idx) => {
+        if (!el) return;
+        const rect = el.getBoundingClientRect();
+        const elCenter = (rect.top + rect.bottom) / 2;
+        const distance = Math.abs(elCenter - viewportCenter);
+        if (distance < bestDistance) {
+          bestDistance = distance;
+          bestIdx = idx;
+        }
+      });
+      setActiveIdx(bestIdx);
+    };
+    const onScroll = () => {
+      if (rafId === null) rafId = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (rafId !== null) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   return (
@@ -58,7 +74,7 @@ export function ProcessSection() {
                   ref={(el) => {
                     stepRefs.current[i] = el;
                   }}
-                  className="border-t border-card-border first:border-t-0 py-8"
+                  className="border-t border-card-border first:border-t-0 py-12"
                 >
                   <motion.div
                     animate={{ opacity: isActive ? 1 : 0.35 }}
