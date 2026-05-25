@@ -36,7 +36,15 @@ export function GuaranteesSection() {
                 />
               </div>
 
-              <p className="text-muted-strong leading-relaxed">{item.body}</p>
+              <p className="text-muted-strong leading-relaxed">
+                {item.bodyParts.map((part, j) =>
+                  "accent" in part && part.accent ? (
+                    <span key={j} className="text-accent">{part.text}</span>
+                  ) : (
+                    <span key={j}>{part.text}</span>
+                  )
+                )}
+              </p>
             </Reveal>
           ))}
         </div>

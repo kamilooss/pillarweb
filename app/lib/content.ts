@@ -261,19 +261,29 @@ export const GUARANTEES = {
       number: "1.",
       title: "Gwarancja satysfakcji",
       image: `${ASSET_BASE}/gwarancja-satysfakcji-pillarweb.webp`,
-      body: "Najpierw pokazujemy Ci gotowy projekt strony — widzisz dokładnie, jak będzie wyglądać, zanim cokolwiek zostanie wdrożone. Jeśli uznajesz, że to nie ten kierunek — zwracamy pieniądze.",
+      bodyParts: [
+        { text: "Najpierw pokazujemy Ci gotowy projekt strony — widzisz dokładnie, jak będzie wyglądać, zanim cokolwiek zostanie wdrożone. " },
+        { text: "Jeśli uznajesz, że to nie ten kierunek — zwracamy pieniądze.", accent: true },
+      ],
     },
     {
       number: "2.",
       title: "Gwarancja terminowości",
       image: `${ASSET_BASE}/gwarancja-terminowosci-pillarweb.webp`,
-      body: "Jeśli nie dotrzymamy terminu ustalonego w umowie, oddajemy 50% naszego wynagrodzenia (Nawet jeżeli spóźnimy się jeden dzień).",
+      bodyParts: [
+        { text: "Jeśli nie dotrzymamy terminu ustalonego w umowie, " },
+        { text: "oddajemy 50% naszego wynagrodzenia", accent: true },
+        { text: " (Nawet jeżeli spóźnimy się jeden dzień)." },
+      ],
     },
     {
       number: "3.",
       title: "Gwarancja techniczna",
       image: `${ASSET_BASE}/gwarancja-techniczna-pillarweb.webp`,
-      body: "Po wdrożeniu masz 30 dni bezpłatnego wsparcia technicznego. Jeśli cokolwiek nie działa jak powinno — naprawiamy to bez żadnych dodatkowych kosztów.",
+      bodyParts: [
+        { text: "Po wdrożeniu masz 30 dni bezpłatnego wsparcia technicznego.", accent: true },
+        { text: " Jeśli cokolwiek nie działa jak powinno — naprawiamy to bez żadnych dodatkowych kosztów." },
+      ],
     },
   ],
 } as const;
@@ -295,8 +305,8 @@ export const PROCESS = {
   steps: [
     {
       number: "01",
-      title: "Rozmowa i konsultacja",
-      body: "Poznajemy Twoją firmę, cele i to, jak dziś wygląda Twoja obecność online. Sprawdzamy, czy nasza współpraca ma sens i czy faktycznie tego potrzebujesz.",
+      title: "Rozmowa i konsultacja (pozostawiasz do siebie kontakt)",
+      body: "Rozmawiamy o Twojej firmie i celach. Sprawdzamy, czy faktycznie potrzebujesz naszej pomocy. Mówimy Ci to wprost, zanim podpiszesz cokolwiek.",
     },
     {
       number: "02",
@@ -311,22 +321,22 @@ export const PROCESS = {
     {
       number: "04",
       title: "Projekt i wykonanie strony",
-      body: "Tworzymy indywidualny projekt strony, dopracowany wizualnie i funkcjonalnie.",
+      body: "Otrzymujesz gotowy projekt strony do oceny. Widzisz ją w szczegółach, zgłaszasz uwagi bądź zatwierdzasz.",
     },
     {
       number: "05",
       title: "Treści, SEO i widoczność",
-      body: "Przygotowujemy teksty, ustawienia SEO i elementy, które pomagają stronie lepiej działać. Tworzymy podwaliny pod to, aby Twoja firma wyświetlała się w Google coraz wyżej.",
+      body: "Przygotowujemy teksty, ustawienia SEO i elementy, które pomagają stronie lepiej pozycjonować się w Google. (Tworzymy podwaliny pod to, aby Twoja firma wyświetlała się w Google coraz wyżej.).",
     },
     {
       number: "06",
       title: "Automatyzacje i elementy wspierające sprzedaż",
-      body: "Wdrażamy rozwiązania, które ułatwiają kontakt i pomagają zbierać dane kontaktowe od Twoich potencjalnych klientów. Sukcesywnie wykorzystujemy najnowsze rozwiązania bazujące na AI. Chatbota, który będzie sprzedawać za Ciebie i odciąży Cię niwelując telefony z błahymi pytaniami użytkowników.",
+      body: "Wdrażamy chatbota AI uczonego na wiedzy o Twojej firmie, formularze i automatyczne powiadomienia. Strona zbiera zapytania i odpowiada na pytania klientów — nieważne gdzie jesteś.",
     },
     {
       number: "07",
       title: "Wdrożenie, szkolenie i opieka",
-      body: "Publikujemy stronę, pokazujemy Ci, jak z niej korzystać, i zapewniamy wsparcie po wdrożeniu.",
+      body: "Strona jest live. Pokazujemy Ci jak z niej korzystać i jesteśmy dostępni przez 30 dni — żebyś miał pewność, że wszystko działa jak powinno.",
     },
   ],
 } as const;
