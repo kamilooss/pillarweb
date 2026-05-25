@@ -340,10 +340,10 @@
 
 .logos-marquee__slot {
   flex-shrink: 0;
-  /* 25vw × 4 = 100vw → 4 logosami szczelnie wypełniają szerokość strony */
-  width: max(220px, 25vw);
-  /* Slot 2:1 jak u Wpromote — proporcjonalny do szerokości */
-  aspect-ratio: 2 / 1;
+  /* Równy odstęp między logami: left+right padding łączą się w stały gap.
+     Wymóg dla bezszwowej pętli — każdy slot ma identyczny padding po obu stronach. */
+  padding: 0 36px;
+  min-height: 96px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -357,9 +357,15 @@
   filter: brightness(0) invert(1);
 }
 
+.logos-marquee__img--prominent {
+  height: 64px;
+}
+
 @keyframes logos-marquee-scroll {
+  /* 4 kopie w sekwencji; przesuwamy dokładnie szerokość jednej kopii = 25% całości,
+     aby pętla była bezszwowa i tor zawsze pokrywał viewport. */
   from {
-    transform: translate3d(-50%, 0, 0);
+    transform: translate3d(-25%, 0, 0);
   }
   to {
     transform: translate3d(0, 0, 0);

@@ -7,7 +7,7 @@ const LOGOS = [
   { src: "/images/logos/logo-2.svg", alt: "" },
   { src: "/images/logos/logo-3.svg", alt: "" },
   { src: "/images/logos/logo-4.svg", alt: "" },
-  { src: "/images/logos/logo-5.svg", alt: "" },
+  { src: "/images/logos/logo-5.svg", alt: "", prominent: true },
 ];
 
 export function LogosShowcase() {
@@ -27,7 +27,7 @@ export function LogosShowcase() {
       <div className="logos-marquee">
         <div className="logos-marquee__viewport">
           <div className="logos-marquee__track">
-            {[0, 1].map((copy) => (
+            {[0, 1, 2, 3].map((copy) => (
               <Fragment key={copy}>
                 {LOGOS.map((logo, i) => (
                   <div key={`${copy}-${i}`} className="logos-marquee__slot">
@@ -36,7 +36,7 @@ export function LogosShowcase() {
                       alt={logo.alt}
                       loading="lazy"
                       decoding="async"
-                      className="logos-marquee__img"
+                      className={`logos-marquee__img${logo.prominent ? " logos-marquee__img--prominent" : ""}`}
                       aria-hidden={logo.alt === "" ? true : undefined}
                     />
                   </div>
