@@ -32,6 +32,7 @@ export function DifferentiatorSection() {
   const { heading, pillars, results } = DIFFERENTIATOR;
 
   const pinRef = useRef<HTMLDivElement>(null);
+  const resultsRef = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
 
   // Pinned scroll-progress driving 8 reveals: 4 pillars × (subhead → body).
@@ -39,6 +40,17 @@ export function DifferentiatorSection() {
   const { scrollYProgress } = useScroll({
     target: pinRef,
     offset: ["start start", "end end"],
+  });
+
+  // Results heading — krótka, szybka animacja wejścia od 60px poniżej do
+  // pozycji naturalnej w pierwszych 25% scrolla sekcji. Spójna z nagłówkiem
+  // "To nie są obietnice..." w sekcji Testimonials.
+  const { scrollYProgress: resultsProgress } = useScroll({
+    target: resultsRef,
+    offset: ["start end", "end start"],
+  });
+  const resultsHeadingY = useTransform(resultsProgress, [0, 0.25], [60, 0], {
+    clamp: true,
   });
 
   // Pillar 1 — lewa kolumna
@@ -148,15 +160,19 @@ export function DifferentiatorSection() {
         </div>
       </div>
 
-      {/* Sekcja wyników — normalny flow */}
-      <div className="container-content pb-24 lg:pb-36">
-        <Reveal
-          as="h2"
-          className="font-display font-bold text-center text-[clamp(1.6rem,3.2vw,2.5rem)] leading-tight tracking-tight max-w-4xl mx-auto mt-24 lg:mt-20"
+      {/* Sekcja wyników — spacing i animacja nagłówka spójne z Testimonials
+          (pt-16 lg:pt-24 nad nagłówkiem, motion.h2 z y 60→0). */}
+      <div
+        ref={resultsRef}
+        className="container-content pt-16 lg:pt-24 pb-24 lg:pb-36"
+      >
+        <motion.h2
+          style={reduced ? undefined : { y: resultsHeadingY }}
+          className="font-display font-bold text-center text-[clamp(1.6rem,3.2vw,2.5rem)] leading-tight tracking-tight max-w-4xl mx-auto will-change-transform"
         >
           {results.headingPrefix}{" "}
           <span className="text-accent">{results.headingAccent}</span>
-        </Reveal>
+        </motion.h2>
 
         <div className="grid lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] gap-12 lg:gap-16 items-start mt-20">
           <Reveal>
