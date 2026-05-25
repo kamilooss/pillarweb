@@ -7,6 +7,7 @@ import {
   useScroll,
   useTransform,
   useReducedMotion,
+  useInView,
 } from "motion/react";
 import { Reveal } from "./Reveal";
 import { DIFFERENTIATOR } from "../lib/content";
@@ -33,6 +34,11 @@ export function DifferentiatorSection() {
 
   const pinRef = useRef<HTMLDivElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
+  const resultsGridRef = useRef<HTMLDivElement>(null);
+  const gridInView = useInView(resultsGridRef, {
+    once: true,
+    amount: 0.15,
+  });
   const reduced = useReducedMotion();
 
   // Pinned scroll-progress driving 8 reveals: 4 pillars × (subhead → body).
@@ -171,11 +177,26 @@ export function DifferentiatorSection() {
           className="font-display font-bold text-center text-[clamp(1.6rem,3.2vw,2.5rem)] leading-tight tracking-tight max-w-4xl mx-auto will-change-transform"
         >
           {results.headingPrefix}{" "}
-          <span className="text-accent">{results.headingAccent}</span>
+          {results.headingAccent}
+          <span className="text-accent">{results.headingSuffix}</span>
         </motion.h2>
 
-        <div className="grid lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] gap-12 lg:gap-16 items-start mt-20">
-          <Reveal>
+        <div
+          ref={resultsGridRef}
+          className="grid lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] gap-12 lg:gap-16 items-start mt-20 overflow-x-clip"
+        >
+          <motion.div
+            initial={reduced ? false : { opacity: 0, x: -180 }}
+            animate={
+              reduced
+                ? undefined
+                : gridInView
+                  ? { opacity: 1, x: 0 }
+                  : { opacity: 0, x: -180 }
+            }
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            className="will-change-[opacity,transform]"
+          >
             <div className="rounded-xl overflow-hidden border border-card-border">
               <Image
                 src={results.image}
@@ -186,9 +207,20 @@ export function DifferentiatorSection() {
                 unoptimized
               />
             </div>
-          </Reveal>
+          </motion.div>
 
-          <Reveal delay={0.1} className="space-y-6">
+          <motion.div
+            initial={reduced ? false : { opacity: 0, x: 180 }}
+            animate={
+              reduced
+                ? undefined
+                : gridInView
+                  ? { opacity: 1, x: 0 }
+                  : { opacity: 0, x: 180 }
+            }
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+            className="space-y-6 will-change-[opacity,transform]"
+          >
             {results.paragraphs.map((p, i) => (
               <p key={i} className="text-foreground leading-relaxed">
                 <span className="[&>strong]:text-accent">
@@ -196,16 +228,13 @@ export function DifferentiatorSection() {
                 </span>
               </p>
             ))}
-          </Reveal>
+            <p className="text-foreground leading-relaxed">
+              <span className="[&>strong]:text-accent">
+                <FormattedText text={results.closing} />
+              </span>
+            </p>
+          </motion.div>
         </div>
-
-        <Reveal delay={0.15}>
-          <p className="mt-16 lg:mt-24 max-w-4xl text-foreground leading-relaxed">
-            <span className="[&>strong]:text-accent">
-              <FormattedText text={results.closing} />
-            </span>
-          </p>
-        </Reveal>
       </div>
     </section>
   );

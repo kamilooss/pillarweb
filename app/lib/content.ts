@@ -226,13 +226,14 @@ export const DIFFERENTIATOR = {
   results: {
     headingPrefix: "Zobacz czego możesz się spodziewać",
     headingAccent: "jeśli o to zadbasz",
+    headingSuffix: " — 46 zapytań. 27 dni. Budżet reklamowy: 1 732 zł",
     image: `${ASSET_BASE}/wyniki-google-ads-firma-budowlana-pillarweb.webp`,
     paragraphs: [
-      "Strona została zaprojektowana z uwzględnieniem wszystkich elementów, które mają pozytywny wpływ na współczynnik konwersji. Jak widać, od 1 do 27 marca 2026 roku jeden z naszych klientów dzięki takim działaniom pozyskał aż 46 zapytań dotyczących usług remontowych dla mieszkań oraz lokali usługowych. 46 konwersji za jedynie 1732 zł, co daje koszt pozyskania jednego klienta na poziomie 37,74 zł.",
-      "Klient, który specjalizuje się w generalnych remontach, zainwestował 16 tysięcy złotych w stronę internetową i 2 tys zł. w reklamę, co pozwoliło mu pozyskać 45 potencjalnych klientów w zaledwie 27 dni **(okres 01-27.03 2026)**. Każdy z nich może przynieść nawet 100 tysięcy złotych przy realizacji generalnego remontu. Zwrot z inwestycji był więc ogromny. Warto dodać, że koszt stworzenia takiej strony internetowej to wydatek jednorazowy, a zyski z niej można czerpać przez cały okres prowadzenia działalności.",
+      "Strona została zaprojektowana z uwzględnieniem wszystkich elementów, które mają pozytywny wpływ na współczynnik konwersji. **Od 1 do 27 marca 2026** roku klient specjalizujący się w generalnych remontach mieszkań i lokali **pozyskał 46 zapytań przy budżecie reklamowym 1 732 zł — jeden kontakt kosztował go 37,74 zł.** Inwestycja w stronę: 16 000 zł jednorazowo. Wartość jednego zlecenia generalnego remontu: 80 000 – 100 000 zł.",
+      "Strona to koszt jednorazowy. Zapytania z niej możesz pozyskiwać przez cały czas, gdy prowadzisz firmę.",
     ],
     closing:
-      "**Dlatego w PillarWeb nie tworzymy stron „dla każdego”.** Tworzymy je dla firm budowlanych, które chcą zrobić to porządnie i myślą poważnie o tym, aby cały czas coraz bardziej rozwijać swój biznes.",
+      "**Dlatego w PillarWeb nie tworzymy stron „dla każdego”.** Tworzymy je dla firm budowlanych, które stale chcą się skalować.",
   },
 } as const;
 
