@@ -301,7 +301,7 @@ export const PROCESS = {
       "Możesz do nas napisać kiedy tylko chcesz. Na bieżąco wiesz, co robimy, na jakim jesteśmy etapie i co dzieje się dalej.",
     suffix: "Pracujemy według jasnego planu i regularnie raportujemy postępy.",
   },
-  image: `${ASSET_BASE}/proces-wspolpracy-pillarweb-768x1024.webp`,
+  image: "/images/proces-wspolpracy-pillarweb.webp",
   steps: [
     {
       number: "01",
@@ -456,9 +456,15 @@ const buildFeatures = (includeUntil: number): PricingFeature[] =>
   allFeatures.map((f, i) => ({ ...f, included: i < includeUntil }));
 
 export const PRICING = {
-  heading: "Cennik",
-  description:
-    "Cennik jest poglądowy. Wiem, jak irytującym jest szukanie ceny za stronę internetową, a jedyną opcją jest pozostawienie do siebie kontaktu, w celu otrzymania wyceny. Jesteśmy elastyczni. Ostateczna cena zależy od tego na co się dogadamy.",
+  heading: {
+    accent: "Wybierz plan",
+    rest: " dopasowany do etapu, na którym jest Twoja firma.",
+  },
+  subtitle: {
+    accent: "Trzy poziomy wdrożenia —",
+    rest:
+      " od profesjonalnej marki online po kompletną maszynę do generowania leadów z AI (Cennik jest poglądowy).",
+  },
   plans: [
     {
       eyebrow: "PLAN SREBRNY",

@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment } from "react";
+import { Reveal } from "./Reveal";
 
 const LOGOS = [
   { src: "/images/logos/mowi-asa.svg", alt: "Mowi ASA" },
@@ -18,9 +19,9 @@ export function LogosShowcase() {
     >
       <div className="container-content">
         <div className="logos-showcase__heading">
-          <h2 id="logos-showcase-title" className="logos-showcase__title">
-            Działamy z największymi
-          </h2>
+          <Reveal as="h2" className="logos-showcase__title">
+            <span id="logos-showcase-title">Działamy z największymi</span>
+          </Reveal>
         </div>
       </div>
 
