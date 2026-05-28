@@ -641,7 +641,7 @@ export const FAQ = {
     {
       question: "Jak długo trwa cały proces?",
       answer:
-        "Zazwyczaj realizacja trwa do 8 tygodni (Najczęściej wystarcza miesiąc).\n\nDokładny czas zależy od zakresu projektu, liczby elementów do wdrożenia i sprawności komunikacji po obu stronach. Na początku współpracy ustalamy jasny harmonogram, więc od razu wiesz, jak wygląda proces i kiedy strona będzie gotowa.\n\nJeżeli spóźnimy się z oddaniem strony choćby jeden dzień – otrzymujesz zwrot w wysokości 50% ceny strony!",
+        "Do 4 tygodni (zazwyczaj kończymy stronę wcześniej).\n\nDokładny czas zależy od zakresu projektu, liczby elementów do wdrożenia i sprawności komunikacji po obu stronach. Na początku współpracy ustalamy jasny harmonogram, więc od razu wiesz, jak wygląda proces i kiedy strona będzie gotowa.\n\nJeżeli spóźnimy się z oddaniem strony choćby jeden dzień – otrzymujesz zwrot w wysokości 50% ceny strony!",
     },
     {
       question: "Czy muszę sam przygotować wszystkie materiały?",
@@ -666,12 +666,12 @@ export const FAQ = {
     {
       question: "Czy tworzycie też treści i pomagacie z SEO?",
       answer:
-        "Tak.\n\nPrzygotowujemy teksty na stronę zoptymalizowane pod SEO, wdrażamy metadane, dbamy o strukturę komunikacji i wdrażamy stronę tak, aby była dobrze przygotowana pod SEO od samego startu.",
+        "Tak.\n\nPrzygotowujemy teksty na stronę zoptymalizowane pod SEO, wdrażamy metadane, dbamy o strukturę komunikacji i wdrażamy stronę tak, aby od samego początku zaczynała indeksować się w Google.",
     },
     {
       question: "Czy oferujecie również reklamy i działania marketingowe?",
       answer:
-        "Tak.\n\nPoza tworzeniem stron internetowych dla firm budowlanych pomagamy również w:\n• SEO,\n• Google Ads,\n• Meta Ads.\n\nDzięki temu możemy nie tylko przygotować stronę, ale także pomóc Ci lepiej wykorzystać ją w dalszym marketingu i pozyskiwaniu klientów.",
+        "Tak.\n\nPoza tworzeniem stron internetowych dla firm budowlanych pomagamy również w:\n• SEO,\n• Google Ads,\n• Meta Ads,\n• Automatyzacje AI.\n\nDzięki temu możemy nie tylko przygotować stronę, ale także pomóc Ci lepiej wykorzystać ją w dalszym marketingu i pozyskiwaniu klientów.",
     },
     {
       question: "Co jeśli nie będę zadowolony z projektu?",
