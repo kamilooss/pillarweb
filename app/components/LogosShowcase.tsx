@@ -4,11 +4,11 @@ import { Fragment } from "react";
 import { Reveal } from "./Reveal";
 
 const LOGOS = [
-  { src: "/images/logos/mowi-asa.svg", alt: "Mowi ASA" },
-  { src: "/images/logos/logo-2.svg", alt: "" },
-  { src: "/images/logos/logo-3.svg", alt: "" },
-  { src: "/images/logos/logo-4.svg", alt: "" },
-  { src: "/images/logos/logo-5.svg", alt: "", prominent: true },
+  { src: "/images/logos/mowi-asa.svg", alt: "Mowi ASA", width: 66, height: 16 },
+  { src: "/images/logos/logo-2.svg", alt: "", width: 85, height: 24 },
+  { src: "/images/logos/logo-3.svg", alt: "", width: 79, height: 26 },
+  { src: "/images/logos/logo-4.svg", alt: "", width: 60, height: 26 },
+  { src: "/images/logos/logo-5.svg", alt: "", width: 50, height: 52, prominent: true },
 ];
 
 export function LogosShowcase() {
@@ -35,7 +35,9 @@ export function LogosShowcase() {
                     <img
                       src={logo.src}
                       alt={logo.alt}
-                      loading="lazy"
+                      width={logo.width}
+                      height={logo.height}
+                      loading="eager"
                       decoding="async"
                       className={`logos-marquee__img${logo.prominent ? " logos-marquee__img--prominent" : ""}`}
                       aria-hidden={logo.alt === "" ? true : undefined}
