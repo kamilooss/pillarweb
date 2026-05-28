@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Reveal } from "./Reveal";
+import { ParallaxReveal } from "./ParallaxReveal";
 import { ABOUT } from "../lib/content";
 
 export function AboutSection() {
@@ -10,9 +11,9 @@ export function AboutSection() {
       <div className="container-content">
         <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-12 lg:gap-20 items-start">
           <div>
-            <Reveal as="h2" className="text-accent font-display font-bold text-[clamp(2rem,4vw,3rem)] tracking-tight mb-10">
+            <ParallaxReveal as="h2" className="text-accent font-display font-bold text-[clamp(2rem,4vw,3rem)] tracking-tight mb-10">
               {heading}
-            </Reveal>
+            </ParallaxReveal>
 
             <div className="space-y-5">
               {paragraphs.map((p, i) => (

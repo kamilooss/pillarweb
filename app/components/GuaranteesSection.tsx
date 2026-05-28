@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Reveal } from "./Reveal";
+import { ParallaxReveal } from "./ParallaxReveal";
 import { GUARANTEES } from "../lib/content";
 
 export function GuaranteesSection() {
@@ -8,15 +9,15 @@ export function GuaranteesSection() {
   return (
     <section className="pt-16 lg:pt-24 pb-24 lg:pb-36">
       <div className="container-content">
-        <Reveal as="h2" className="font-display font-bold text-center text-[clamp(1.5rem,3vw,2.75rem)] leading-tight tracking-tight whitespace-normal lg:whitespace-nowrap">
+        <ParallaxReveal as="h2" className="font-display font-bold text-center text-[clamp(1.5rem,3vw,2.75rem)] leading-tight tracking-tight whitespace-normal lg:whitespace-nowrap">
           {headingLine1}{" "}
           <span className="text-accent">{headingLine2}</span>
-        </Reveal>
+        </ParallaxReveal>
 
-        <Reveal delay={0.05} as="p" className="text-center text-lg lg:text-xl mt-6 max-w-3xl mx-auto leading-relaxed">
+        <ParallaxReveal as="p" className="text-center text-lg lg:text-xl mt-6 max-w-3xl mx-auto leading-relaxed">
           {subheadingPrefix}{" "}
           <span className="text-accent">{subheadingAccent}</span>
-        </Reveal>
+        </ParallaxReveal>
 
         <div className="grid md:grid-cols-3 gap-8 lg:gap-10 mt-16 lg:mt-24">
           {items.map((item, i) => (

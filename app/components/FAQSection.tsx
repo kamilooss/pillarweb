@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Reveal } from "./Reveal";
+import { ParallaxReveal } from "./ParallaxReveal";
 import { FAQ } from "../lib/content";
 
 function ChevronUp({ open }: { open: boolean }) {
@@ -106,9 +107,9 @@ export function FAQSection() {
   return (
     <section className="pt-16 lg:pt-24 pb-24 lg:pb-36">
       <div className="container-content">
-        <Reveal as="h2" className="font-display font-bold text-center text-[clamp(1.75rem,3.5vw,3rem)] tracking-tight">
+        <ParallaxReveal as="h2" className="text-accent font-display font-bold text-center text-[clamp(1.75rem,3.5vw,3rem)] tracking-tight">
           {FAQ.heading}
-        </Reveal>
+        </ParallaxReveal>
 
         <div className="mt-14 lg:mt-20 max-w-3xl mx-auto space-y-3">
           {FAQ.items.map((item, i) => (

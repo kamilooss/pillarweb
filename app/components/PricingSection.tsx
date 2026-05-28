@@ -1,4 +1,5 @@
 import { Reveal } from "./Reveal";
+import { ParallaxReveal } from "./ParallaxReveal";
 import { Button } from "./Button";
 import { PRICING } from "../lib/content";
 
@@ -29,15 +30,15 @@ export function PricingSection() {
   return (
     <section id="cennik" className="pt-16 lg:pt-24 pb-24 lg:pb-36">
       <div className="container-content">
-        <Reveal as="h2" className="font-display font-bold text-center text-[clamp(2rem,4vw,3rem)] leading-tight tracking-tight max-w-5xl mx-auto">
+        <ParallaxReveal as="h2" className="font-display font-bold text-center text-[clamp(2rem,4vw,3rem)] leading-tight tracking-tight max-w-5xl mx-auto">
           <span className="text-accent">{heading.accent}</span>
           {heading.rest}
-        </Reveal>
+        </ParallaxReveal>
 
-        <Reveal delay={0.05} as="p" className="text-foreground font-bold text-center text-lg lg:text-xl mt-6 max-w-3xl mx-auto leading-snug">
+        <ParallaxReveal as="p" className="text-foreground font-bold text-center text-lg lg:text-xl mt-6 max-w-3xl mx-auto leading-snug">
           <span className="text-accent">{subtitle.accent}</span>
           {subtitle.rest}
-        </Reveal>
+        </ParallaxReveal>
 
         {/* Karty */}
         <div className="grid lg:grid-cols-3 gap-6 lg:gap-7 mt-20 lg:mt-24 max-w-7xl mx-auto items-stretch">

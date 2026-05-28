@@ -1,4 +1,5 @@
 import { Reveal } from "./Reveal";
+import { ParallaxReveal } from "./ParallaxReveal";
 import { COMPARISON } from "../lib/content";
 
 function AccentCheck() {
@@ -74,21 +75,20 @@ export function ComparisonSection() {
   return (
     <section className="pt-16 lg:pt-24 pb-24 lg:pb-36">
       <div className="container-content">
-        <Reveal
+        <ParallaxReveal
           as="h2"
           className="font-display font-bold text-center text-[clamp(2rem,4vw,3rem)] leading-tight tracking-tight max-w-5xl mx-auto"
         >
           <span className="text-accent">{heading.accent}</span>
           {heading.rest}
-        </Reveal>
+        </ParallaxReveal>
 
-        <Reveal
-          delay={0.05}
+        <ParallaxReveal
           as="p"
           className="text-muted-strong text-center text-base sm:text-lg mt-6 max-w-3xl mx-auto leading-relaxed"
         >
           {subtitle}
-        </Reveal>
+        </ParallaxReveal>
 
         <Reveal delay={0.1} className="mt-16 lg:mt-20 max-w-5xl mx-auto">
           <div className="rounded-2xl border border-card-border bg-card overflow-hidden">

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRef, useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { Reveal } from "./Reveal";
+import { ParallaxReveal } from "./ParallaxReveal";
 import { PROCESS } from "../lib/content";
 
 export function ProcessSection() {
@@ -51,17 +52,17 @@ export function ProcessSection() {
   return (
     <section id="jak-pracujemy" className="pt-16 lg:pt-24 pb-24 lg:pb-36">
       <div className="container-content">
-        <Reveal as="h2" className="font-display font-bold text-center text-[clamp(1.6rem,3.2vw,2.5rem)] leading-tight tracking-tight max-w-4xl mx-auto">
+        <ParallaxReveal as="h2" className="font-display font-bold text-center text-[clamp(1.6rem,3.2vw,2.5rem)] leading-tight tracking-tight max-w-4xl mx-auto">
           {heading.prefix}{" "}
           <span className="text-accent">{heading.accent}</span>{" "}
           {heading.suffix}
-        </Reveal>
+        </ParallaxReveal>
 
-        <Reveal delay={0.05} as="p" className="text-foreground text-center mt-10 max-w-3xl mx-auto leading-relaxed">
+        <ParallaxReveal as="p" className="text-foreground text-center mt-10 max-w-3xl mx-auto leading-relaxed">
           <strong className="text-accent">WAŻNE!</strong> {important.prefix}{" "}
           <strong className="text-accent">{important.accent}</strong>{" "}
           {important.suffix}
-        </Reveal>
+        </ParallaxReveal>
 
         {/* Layout: lewa lista | prawa sticky image */}
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 mt-20 lg:mt-28">
