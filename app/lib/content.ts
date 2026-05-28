@@ -698,7 +698,7 @@ export const CONTACT = {
   headingLine2: "słabszy miesiąc.",
   description:
     "Zostaw kontakt i sprawdź, jak możemy stworzyć stronę, która buduje markę, zaufanie, wyróżnia Cię na tle konkurencji i pomaga zdobywać więcej zapytań/kontaktów od właściwych klientów. Bez zobowiązań.",
-  ownerPhoto: `${ASSET_BASE}/proces-wspolpracy-pillarweb-150x150.webp`,
+  ownerPhoto: "/images/kamil-tomczyk-pillarweb.jpeg",
   ownerName: "Kamil Tomczyk",
   ownerRole: "CEO Pillar Web",
   urgencyNote: "Przyjmujemy maksymalnie 4 nowe projekty miesięcznie.",
