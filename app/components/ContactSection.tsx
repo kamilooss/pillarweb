@@ -73,8 +73,14 @@ export function ContactSection() {
                 </div>
               </div>
 
-              <blockquote className="text-muted-strong leading-relaxed text-sm whitespace-pre-line">
-                „{CONTACT.testimonial.quote}”
+              <blockquote className="text-muted-strong leading-relaxed text-sm space-y-3">
+                {CONTACT.testimonial.quote.map((paragraph, i) => (
+                  <p key={i}>
+                    {i === 0 && "„"}
+                    {paragraph}
+                    {i === CONTACT.testimonial.quote.length - 1 && "”"}
+                  </p>
+                ))}
               </blockquote>
 
               <div className="mt-5 flex flex-col items-center gap-2">

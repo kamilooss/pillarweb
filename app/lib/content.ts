@@ -87,7 +87,7 @@ export const HERO = {
         "Copywriting, analityka, automatyzacje i pełne wdrożenie dopięte w jednym procesie.",
     },
   ],
-  cta: { label: "Umów się na rozmowę konsultacyjną", href: "#jak-pracujemy" },
+  cta: { label: "Umów się na rozmowę konsultacyjną", href: "#kontakt" },
 } as const;
 
 export const STATS = [
@@ -711,8 +711,11 @@ export const CONTACT = {
     "Firma instalacyjna",
   ],
   testimonial: {
-    quote:
-      "Umowa bez niespodzianek, kontakt zawsze natychmiastowy, jakość na najwyższym poziomie.\nNa każdym etapie wiedziałem, co się dzieje. Profesjonalnie, ale bez sztywnej atmosfery — uczciwa współpraca.\nStrona gotowa, firma przedstawiona tak jak powinna. Serdecznie polecam każdemu z branży budowlanej.",
+    quote: [
+      "Umowa bez niespodzianek, kontakt zawsze natychmiastowy, jakość na najwyższym poziomie.",
+      "Na każdym etapie wiedziałem, co się dzieje. Profesjonalnie, ale bez sztywnej atmosfery — uczciwa współpraca.",
+      "Strona gotowa, firma przedstawiona tak jak powinna. Serdecznie polecam każdemu z branży budowlanej.",
+    ],
     author: "Michał Płonka",
     role: "właściciel Pergole do ogrodu, Kraków",
     photo: "/images/testimonials/pergole-michal-plonka.png",
