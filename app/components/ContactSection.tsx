@@ -41,9 +41,19 @@ export function ContactSection() {
           {CONTACT.description}
         </Reveal>
 
+        <Reveal delay={0.08}>
+          <div
+            role="note"
+            className="mt-10 max-w-3xl mx-auto flex items-center justify-center gap-3 rounded-xl border border-accent/40 bg-accent/10 px-5 py-3 text-accent font-semibold text-center"
+          >
+            <span aria-hidden className="inline-block h-2 w-2 rounded-full bg-accent animate-pulse" />
+            {CONTACT.urgencyNote}
+          </div>
+        </Reveal>
+
         <Reveal delay={0.1}>
-          <div className="mt-16 lg:mt-20 max-w-6xl mx-auto rounded-2xl border border-card-border bg-card p-6 lg:p-12 grid lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)] gap-10 lg:gap-16">
-            {/* Lewa: branding + autor + bio */}
+          <div className="mt-10 lg:mt-12 max-w-6xl mx-auto rounded-2xl border border-card-border bg-card p-6 lg:p-12 grid lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)] gap-10 lg:gap-16">
+            {/* Lewa: branding + autor + opinia klienta */}
             <div className="flex flex-col items-center text-center">
               <div className="scale-[1.6] mt-6 mb-12">
                 <Logo />
@@ -64,9 +74,23 @@ export function ContactSection() {
                 </div>
               </div>
 
-              <p className="text-muted-strong leading-relaxed text-sm">
-                {CONTACT.ownerBio}
-              </p>
+              <blockquote className="text-muted-strong leading-relaxed text-sm whitespace-pre-line">
+                „{CONTACT.testimonial.quote}”
+              </blockquote>
+
+              <div className="mt-5 flex flex-col items-center gap-2">
+                <Image
+                  src={CONTACT.testimonial.photo}
+                  alt={CONTACT.testimonial.author}
+                  width={56}
+                  height={56}
+                  className="rounded-full w-14 h-14 object-cover"
+                />
+                <div className="text-sm">
+                  <span className="font-semibold">— {CONTACT.testimonial.author}</span>
+                  <span className="text-muted"> {CONTACT.testimonial.role}</span>
+                </div>
+              </div>
 
               <p className="mt-10 pt-10 border-t border-card-border text-accent font-medium leading-relaxed">
                 {CONTACT.formNote}
@@ -97,14 +121,19 @@ export function ContactSection() {
                   Dziękujemy! Odezwiemy się w ciągu 24 godzin.
                 </div>
               ) : (
-                <Button
-                  type="submit"
-                  size="lg"
-                  className="w-full"
-                  disabled={submitting}
-                >
-                  {submitting ? "Wysyłanie..." : "Prześlij"}
-                </Button>
+                <div className="space-y-3">
+                  <Button
+                    type="submit"
+                    size="lg"
+                    className="w-full"
+                    disabled={submitting}
+                  >
+                    {submitting ? "Wysyłanie..." : CONTACT.submitLabel}
+                  </Button>
+                  <p className="text-center text-accent text-sm">
+                    {CONTACT.submitNote}
+                  </p>
+                </div>
               )}
             </form>
           </div>

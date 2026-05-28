@@ -692,16 +692,24 @@ export const FAQ = {
 } as const;
 
 export const CONTACT = {
-  headingLine1: "Twoja firma robi dobrą robotę.",
-  headingLine2: "Czas, aby pokazać to światu.",
+  headingLine1: "Nie czekaj na kolejny",
+  headingLine2: "słabszy miesiąc.",
   description:
-    "Zostaw kontakt i sprawdź, jak możemy stworzyć stronę, która buduje markę, zaufanie, wyróżnia Cię na tle konkurencji i pomaga zdobywać więcej zapytań/kontaktów od właściwych klientów.",
+    "Zostaw kontakt i sprawdź, jak możemy stworzyć stronę, która buduje markę, zaufanie, wyróżnia Cię na tle konkurencji i pomaga zdobywać więcej zapytań/kontaktów od właściwych klientów. Bez zobowiązań.",
   ownerPhoto: `${ASSET_BASE}/proces-wspolpracy-pillarweb-150x150.webp`,
   ownerName: "Kamil Tomczyk",
   ownerRole: "właściciel firmy",
-  // TODO: oryginał ma Lorem Ipsum — wymień na docelowe bio właściciela firmy.
-  ownerBio:
-    "Lorem Ipsum to po prostu fragment tekstu używany przez branżę poligraficzną i jako przykład czcionki. Lorem Ipsum jest standardowym przykładem od XVI wieku, kiedy nieznany drukarz wziął kawałek tekstu i wymieszał go, aby stworzyć książkę z próbkami czcionek.",
+  urgencyNote: "Przyjmujemy maksymalnie 4 nowe projekty miesięcznie.",
+  testimonial: {
+    quote:
+      "Umowa bez niespodzianek, kontakt zawsze natychmiastowy, jakość na najwyższym poziomie.\nNa każdym etapie wiedziałem, co się dzieje. Profesjonalnie, ale bez sztywnej atmosfery — uczciwa współpraca.\nStrona gotowa, firma przedstawiona tak jak powinna. Serdecznie polecam każdemu z branży budowlanej.",
+    author: "Michał Płonka",
+    role: "właściciel Pergole do ogrodu, Kraków",
+    photo: "/images/testimonials/pergole-michal-plonka.png",
+  },
+  submitLabel: "Umów bezpłatną konsultację",
+  submitNote:
+    "Zadzwonimy w przeciągu od nawet 5 min do maksymalnie 24h · Zero zobowiązań",
   formNote:
     "Krótki formularz. Konkretna rozmowa. Jasny plan działania.",
 } as const;
