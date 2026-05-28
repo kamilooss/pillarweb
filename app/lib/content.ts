@@ -700,6 +700,16 @@ export const CONTACT = {
   ownerName: "Kamil Tomczyk",
   ownerRole: "właściciel firmy",
   urgencyNote: "Przyjmujemy maksymalnie 4 nowe projekty miesięcznie.",
+  specializations: [
+    "Firma budująca domy",
+    "Generalny wykonawca",
+    "Producent budowlany",
+    "Deweloper",
+    "Firma remontowa",
+    "Firma wykończeniowa",
+    "Firma od elewacji bądź dachów",
+    "Firma instalacyjna",
+  ],
   testimonial: {
     quote:
       "Umowa bez niespodzianek, kontakt zawsze natychmiastowy, jakość na najwyższym poziomie.\nNa każdym etapie wiedziałem, co się dzieje. Profesjonalnie, ale bez sztywnej atmosfery — uczciwa współpraca.\nStrona gotowa, firma przedstawiona tak jak powinna. Serdecznie polecam każdemu z branży budowlanej.",

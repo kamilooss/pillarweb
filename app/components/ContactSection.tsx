@@ -31,9 +31,8 @@ export function ContactSection() {
   return (
     <section id="kontakt" className="pt-16 lg:pt-24 pb-24 lg:pb-36">
       <div className="container-content">
-        <Reveal as="h2" className="font-display font-bold text-center text-[clamp(1.75rem,3.5vw,3rem)] leading-tight tracking-tight">
-          {CONTACT.headingLine1}
-          <br />
+        <Reveal as="h2" className="font-display font-bold text-center text-[clamp(1.75rem,3.5vw,3rem)] leading-tight tracking-tight text-balance">
+          {CONTACT.headingLine1}{" "}
           <span className="text-accent">{CONTACT.headingLine2}</span>
         </Reveal>
 
@@ -104,8 +103,30 @@ export function ContactSection() {
               <Field label="Numer telefonu" name="phone" type="tel" required placeholder="Podaj swój numer telefonu" />
 
               <div>
+                <label htmlFor="specialization" className="block text-foreground font-medium mb-2">
+                  W czym się specjalizujesz? <span className="text-accent">*</span>
+                </label>
+                <select
+                  id="specialization"
+                  name="specialization"
+                  required
+                  defaultValue=""
+                  className="w-full bg-card-elevated border border-card-border rounded-xl px-4 py-3 text-foreground focus:border-accent focus:outline-none transition-colors appearance-none bg-no-repeat bg-[length:1.25rem] bg-[right_1rem_center] pr-12"
+                  style={{
+                    backgroundImage:
+                      "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23a0a0a0'><path d='M5.25 7.5l4.75 5 4.75-5z'/></svg>\")",
+                  }}
+                >
+                  <option value="" disabled>Wybierz specjalizację</option>
+                  {CONTACT.specializations.map((s) => (
+                    <option key={s} value={s}>{s}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
                 <label htmlFor="message" className="block text-foreground font-medium mb-2">
-                  Wiadomość
+                  Wiadomość <span className="text-muted font-normal">(nie jest wymagane)</span>
                 </label>
                 <textarea
                   id="message"
