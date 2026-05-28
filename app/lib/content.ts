@@ -625,7 +625,7 @@ export const ABOUT = {
     "Dajemy więcej niżeli nasi konkurenci. Twoja strona będzie zawierała wszystko, co potrzebne i wiele więcej, aby zmaksymalizować szansę na to, że użytkownik wchodząc na Twoją stronę pozostawi do siebie kontakt. Każdy najmniejszy element jest starannie dopracowany, aby wspierać ten cel. To właśnie nas wyróżnia.",
     "Pillar Web istnieje z jednego powodu: żeby firmy budowlane, które robią dobrą robotę w terenie, były równie mocne online.",
   ],
-  image: "/images/kim-jestesmy-pillarweb.webp",
+  image: "/images/kim-jestesmy-pillarweb.svg",
   imageAlt:
     "Kamil Tomczyk i branża budowlana oraz marketing internetowy w ujęciu wizerunkowym Pillar Web",
 } as const;
