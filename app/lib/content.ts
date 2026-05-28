@@ -341,119 +341,7 @@ export const PROCESS = {
   ],
 } as const;
 
-type PricingFeature = { included: boolean; title: string; description: string };
-
-const allFeatures: PricingFeature[] = [
-  {
-    included: true,
-    title: "Jeden opiekun projektu od początku do końca",
-    description: "Zawsze wiesz, kto odpowiada za Twoją stronę i co się dzieje",
-  },
-  {
-    included: true,
-    title: "Strona zaprojektowana tak, żeby odwiedzający dzwonili i zostawiali kontakt",
-    description: "Każdy element ułożony pod maksymalną liczbę zapytań",
-  },
-  {
-    included: true,
-    title: "Strona zaprojektowana pod Twoją firmę i Twoich klientów",
-    description: "Sesja strategiczna — nic nie powstaje „na ślepo”",
-  },
-  {
-    included: true,
-    title: "Wygląd, który wyróżnia — nie kolejny szablon",
-    description: "Strona w pełni customowa, zbudowana od podstaw",
-  },
-  {
-    included: true,
-    title: "Teksty, które przekonują do kontaktu",
-    description: "Pełny copywriting pisany językiem Twoich klientów",
-  },
-  {
-    included: true,
-    title: "Profesjonalne zdjęcia i wideo bez sesji fotograficznej",
-    description: "Materiały AI gotowe do użycia",
-  },
-  {
-    included: true,
-    title: "Klienci z Twojego miasta znajdują Cię w Google",
-    description: "Konfiguracja SEO: metadane + treści na stronie",
-  },
-  {
-    included: true,
-    title: "Żadne zapytanie nie przepada",
-    description: "Formularze kontaktowe skonfigurowane i gotowe",
-  },
-  {
-    included: true,
-    title: "Wiesz, skąd przychodzą klienci",
-    description: "Google Analytics 4 + GTM + Pixel — pełna analityka",
-  },
-  {
-    included: true,
-    title: "Gotowa w 8-10 tygodni — albo zwrot pieniędzy",
-    description: "Gwarancja terminowości i satysfakcji",
-  },
-  {
-    included: true,
-    title: "Samodzielna aktualizacja kiedy chcesz",
-    description: "Szkolenie + instrukcja obsługi",
-  },
-  {
-    included: false,
-    title: "Spójna marka we wszystkich miejscach",
-    description: "Logo + wizytówki — jeśli konieczne",
-  },
-  {
-    included: false,
-    title: "Klienci z okolicy znajdują Cię w Google Maps",
-    description: "Wizytówka Google — pełna optymalizacja",
-  },
-  {
-    included: false,
-    title: "Każdy lead trafia do Twojej bazy kontaktów automatycznie",
-    description: "Żadnego ręcznego przepisywania — wszystko dzieje się samo",
-  },
-  {
-    included: false,
-    title: "Wszystkie kontakty i zlecenia w jednym miejscu",
-    description: "Integracja z Twoim CRM",
-  },
-  {
-    included: false,
-    title: "Adres e-mail na własnej domenie",
-    description: "@TwojaFirma.pl zamiast gmail.com",
-  },
-  {
-    included: false,
-    title: "Asystent online odpowiadający na pytania klientów o każdej porze — wie więcej niż niejeden pracownik",
-    description: "Chatbot uczony na wiedzy Twojej firmy",
-  },
-  {
-    included: false,
-    title: "Klient sam umawia termin wyceny — bez telefonów w tę i z powrotem",
-    description: "Integracja z systemem rezerwacji",
-  },
-  {
-    included: false,
-    title: "Treści, które przyciągają klientów z Google miesiącami po publikacji",
-    description: "5 artykułów SEO zoptymalizowanych pod Twoją branżę",
-  },
-  {
-    included: false,
-    title: "Twoja firma jako ekspert na największych portalach budowlanych",
-    description: "Artykuły sponsorowane na Murator Dom, Murator Plus, Budujemy Dom i innych",
-  },
-  {
-    included: false,
-    title: "Darmowy poradnik dla klientów, który zbiera ich dane kontaktowe",
-    description: "Osoby zainteresowane Twoimi usługami zostawiają e-mail w zamian za pomocny materiał",
-  },
-];
-
-// Generujemy plany z jednej listy. Złoty włącza pozycje 0-15. Platyna włącza wszystkie.
-const buildFeatures = (includeUntil: number): PricingFeature[] =>
-  allFeatures.map((f, i) => ({ ...f, included: i < includeUntil }));
+type PricingFeature = { title: string; description: string; accent?: boolean };
 
 export const PRICING = {
   heading: {
@@ -470,10 +358,45 @@ export const PRICING = {
       eyebrow: "PLAN SREBRNY",
       name: "Plan srebrny",
       price: "11 000 PLN",
-      tagline:
-        "Profesjonalna strona, która wygląda lepiej niż 90% konkurencji w Twojej okolicy i zamienia odwiedzających w zapytania.",
-      featuresHeading: "CO ZYSKUJESZ",
-      features: buildFeatures(11),
+      tagline: "Fundament — Twoja profesjonalna marka online",
+      audience:
+        "Dla firm budowlanych, które chcą wyróżnić się online, budować markę premium i przestać polegać wyłącznie na poleceniach.",
+      featuresHeading: "CO ZYSKUJESZ:",
+      features: [
+        {
+          title: "Strona, która zamienia odwiedzających w zapytania",
+          description: "Każdy element i sekcja ułożona pod konwersję.",
+        },
+        {
+          title: "Indywidualny projekt premium — nie kolejny szablon",
+          description:
+            "Strona w pełni customowa, zbudowana od podstaw. Wygląda lepiej niż 99% stron konkurencji w Twojej branży.",
+        },
+        {
+          title: "Copywriting w języku Twoich klientów",
+          description:
+            "Teksty pisane przez specjalistów — każde zdanie prowadzi odwiedzającego do kontaktu.",
+        },
+        {
+          title: "Widoczny w Google gdy klient szuka wykonawcy w Twojej okolicy",
+          description:
+            "Pełna optymalizacja SEO od pierwszego dnia — metadane, struktura, treści.",
+        },
+        {
+          title:
+            "Profesjonalne materiały AI bez sesji fotograficznej (jeśli brakuje Ci zdjęć)",
+          description: "Zdjęcia i wideo gotowe do użycia — bez kosztów fotografa.",
+        },
+        {
+          title: "Pełna analityka — wiesz skąd przychodzą klienci",
+          description: "Google Analytics 4, GTM i Pixel skonfigurowane i gotowe.",
+        },
+        {
+          title:
+            "Gotowa maksymalnie w 4 tygodnie — albo oddajemy 50% wynagrodzenia",
+          description: "Nawet za jeden dzień spóźnienia.",
+        },
+      ] as PricingFeature[],
       cta: { label: "Wybieram plan srebrny", href: "#kontakt" },
       highlighted: false,
     },
@@ -481,10 +404,37 @@ export const PRICING = {
       eyebrow: "PLAN ZŁOTY",
       name: "Plan złoty",
       price: "15 000 PLN",
-      tagline:
-        "Wszystko ze Srebrnego, plus kompletna obecność marki online i automatyzacja, która oszczędza czas i eliminuje chaos w sprzedaży.",
-      featuresHeading: "WSZYSTKO Z PLANU SREBRNEGO + DODATKOWO ZYSKUJESZ",
-      features: buildFeatures(16),
+      tagline: "System — marka + automatyzacje, które pracują za Ciebie",
+      audience:
+        "Dla firm gotowych na pełną automatyzację marki i stały, przewidywalny napływ zapytań.",
+      featuresHeading: "WSZYSTKO Z PLANU SREBRNEGO, PLUS:",
+      features: [
+        {
+          title: "Spójna marka we wszystkich miejscach",
+          description:
+            "Logo, wizytówki i adres @TwojaFirma.pl zamiast gmail.com — spójność i profesjonalizm.",
+        },
+        {
+          title: "Google Maps zoptymalizowane pod lokalnych klientów",
+          description:
+            "Wizytówka Google w pełni skonfigurowana — widoczny tam, gdzie klient szuka wykonawcy.",
+        },
+        {
+          title: "Każde zapytanie automatycznie w Twojej bazie",
+          description:
+            "Żadnego ręcznego przepisywania — leady automatycznie trafiają do Twojego CRM/ bazy.",
+        },
+        {
+          title: "Wszystkie kontakty i zlecenia w jednym miejscu",
+          description:
+            "Integracja z CRM — koniec chaosu w zarządzaniu zapytaniami.",
+        },
+        {
+          title: "Automatyczne powiadomienia o nowych leadach",
+          description:
+            "Reagujesz pierwszy — zanim klient zdąży napisać do konkurencji. Każda sekunda ma znaczenie.",
+        },
+      ] as PricingFeature[],
       cta: { label: "Wybieram plan złoty", href: "#kontakt" },
       highlighted: true,
       badge: "Najpopularniejszy",
@@ -493,10 +443,43 @@ export const PRICING = {
       eyebrow: "PLAN PLATYNA",
       name: "Plan platyna",
       price: "20 000 PLN",
-      tagline:
-        "Pełna maszyna do generowania leadów, działająca 24/7 — z chatbotem, automatycznym umawianiem wycen i treściami pracującymi w Google miesiącami.",
-      featuresHeading: "WSZYSTKO Z PLANU ZŁOTEGO + DODATKOWO ZYSKUJESZ",
-      features: buildFeatures(allFeatures.length),
+      tagline: "Maszyna — kompletny system AI generujący leady 24/7",
+      audience:
+        "Dla firm, które chcą kompletny system pozyskiwania klientów bazujący na najnowocześniejszych technologiach — od pierwszej wizyty na stronie po automatycznie umówioną wycenę. Maksymalne odciążenie.",
+      featuresHeading: "WSZYSTKO Z PLANU ZŁOTEGO, PLUS:",
+      features: [
+        {
+          title: "Chatbot AI uczony na wiedzy Twojej firmy",
+          description:
+            "Odpowiada na pytania klientów 24/7, odciążając Ciebie i Twoją ekipę — bez głupich i błędnych odpowiedzi. 100% merytoryki.",
+        },
+        {
+          title: "Klient sam umawia wycenę — zero telefonów w tę i z powrotem",
+          description:
+            "Automatyczny system rezerwacji zintegrowany z Twoim kalendarzem.",
+        },
+        {
+          title: "5 artykułów SEO pod Twoją branżę",
+          description:
+            "Treści przyciągające klientów z Google przez miesiące po publikacji.",
+        },
+        {
+          title:
+            "Twoja firma jako ekspert na Murator Dom, Murator Plus i Budujemy Dom",
+          description:
+            "Otrzymujesz artykuły sponsorowane na największych portalach budowlanych w Polsce.",
+        },
+        {
+          title: "Lead magnet: poradnik zbierający dane potencjalnych klientów",
+          description:
+            "Osoby zainteresowane Twoimi usługami zostawiają e-mail — budujesz własną bazę od pierwszego dnia.",
+        },
+        {
+          title: "Kampania Google Ads na miesiąc w cenie",
+          description: "",
+          accent: true,
+        },
+      ] as PricingFeature[],
       cta: { label: "Wybieram plan platyna", href: "#kontakt" },
       highlighted: false,
     },

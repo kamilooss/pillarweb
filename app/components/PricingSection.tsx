@@ -2,32 +2,24 @@ import { Reveal } from "./Reveal";
 import { Button } from "./Button";
 import { PRICING } from "../lib/content";
 
-function CheckIcon({ included }: { included: boolean }) {
-  if (included) {
-    return (
-      <svg
-        width="14"
-        height="14"
-        viewBox="0 0 14 14"
-        fill="none"
-        className="flex-shrink-0 mt-1.5 text-accent"
-        aria-hidden="true"
-      >
-        <path
-          d="M2 7.5L5.5 11L12 3"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    );
-  }
+function CheckIcon() {
   return (
-    <span
-      className="flex-shrink-0 mt-3 inline-block w-3 h-px bg-subtle"
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 14 14"
+      fill="none"
+      className="flex-shrink-0 mt-1.5 text-accent"
       aria-hidden="true"
-    />
+    >
+      <path
+        d="M2 7.5L5.5 11L12 3"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }
 
@@ -78,8 +70,13 @@ export function PricingSection() {
                   {plan.price}
                 </div>
 
-                <p className="text-muted-strong leading-relaxed mb-8 min-h-[5.5rem]">
+                <p className="font-bold text-foreground text-lg leading-snug mb-5">
                   {plan.tagline}
+                </p>
+
+                <p className="text-muted-strong leading-relaxed mb-8">
+                  <span className="font-bold text-foreground">Dla kogo?:</span>{" "}
+                  {plan.audience}
                 </p>
 
                 <div className="text-accent text-xs font-bold tracking-[0.18em] mb-6">
@@ -89,14 +86,20 @@ export function PricingSection() {
                 <ul className="space-y-5 flex-1">
                   {plan.features.map((feature, idx) => (
                     <li key={idx} className="flex gap-3">
-                      <CheckIcon included={feature.included} />
-                      <div className={feature.included ? "" : "opacity-40"}>
-                        <h4 className="font-bold text-[15px] leading-snug mb-1">
+                      <CheckIcon />
+                      <div>
+                        <h4
+                          className={`font-bold text-[15px] leading-snug mb-1 ${
+                            feature.accent ? "text-accent" : ""
+                          }`}
+                        >
                           {feature.title}
                         </h4>
-                        <p className="text-muted text-sm leading-relaxed">
-                          {feature.description}
-                        </p>
+                        {feature.description && (
+                          <p className="text-muted text-sm leading-relaxed">
+                            {feature.description}
+                          </p>
+                        )}
                       </div>
                     </li>
                   ))}
