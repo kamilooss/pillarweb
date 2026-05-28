@@ -569,10 +569,6 @@ export const COMPARISON = {
       title: "Pewność współpracy",
       rows: [
         {
-          feature: "Jawny cennik — widzisz ceny bez konieczności kontaktu",
-          others: false,
-        },
-        {
           feature: "Gwarancja satysfakcji — zwrot jeśli niezadowolony z projektu",
           others: false,
         },
@@ -583,7 +579,7 @@ export const COMPARISON = {
         },
         {
           feature: "30 dni bezpłatnego wsparcia technicznego po wdrożeniu",
-          others: false,
+          others: true,
         },
       ],
     },
@@ -600,14 +596,15 @@ export const COMPARISON = {
     {
       title: "Proces i komunikacja",
       rows: [
-        { feature: "Opisany proces krok po kroku — wiesz co i kiedy", others: false },
+        { feature: "Opisany proces krok po kroku — wiesz co i kiedy", others: true },
         { feature: "Realizacja maksymalnie w 3 tygodnie", others: false },
         {
           feature: "Bieżąca komunikacja przez Slack — wiesz co się dzieje",
           others: false,
         },
         {
-          feature: "Artykuły sponsorowane na Murator Dom i Budujemy Dom",
+          feature:
+            "Artykuły sponsorowane na platformach takich jak Murator Dom, Budujemy Dom itp.",
           plan: "Platyna",
           others: false,
         },
