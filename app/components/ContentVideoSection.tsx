@@ -129,7 +129,7 @@ export function ContentVideoSection() {
         className="relative mt-40 lg:mt-60 mb-24 lg:mb-32 lg:h-[200vh]"
       >
         <div className="lg:sticky lg:top-0 lg:h-screen lg:overflow-hidden">
-          <div className="container-content lg:pt-32 lg:pb-12">
+          <div className="container-content lg:pt-16 lg:pb-12">
             <div className="w-full">
               <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] gap-12 lg:gap-20 items-start">
                 {/* LEWA: nagłówek + 3 podpunkty */}
