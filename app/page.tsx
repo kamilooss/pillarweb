@@ -11,6 +11,7 @@ import { SpecializationsSection } from "./components/SpecializationsSection";
 import { GuaranteesSection } from "./components/GuaranteesSection";
 import { ProcessSection } from "./components/ProcessSection";
 import { PricingSection } from "./components/PricingSection";
+import { ComparisonSection } from "./components/ComparisonSection";
 import { AboutSection } from "./components/AboutSection";
 import { FAQSection } from "./components/FAQSection";
 import { ContactSection } from "./components/ContactSection";
@@ -33,6 +34,7 @@ export default function HomePage() {
         <GuaranteesSection />
         <ProcessSection />
         <PricingSection />
+        <ComparisonSection />
         <AboutSection />
         <FAQSection />
         <ContactSection />

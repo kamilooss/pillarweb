@@ -488,6 +488,134 @@ export const PRICING = {
     "Zakres działań zależy od Twojej sytuacji. Właśnie od tego jesteśmy my. Najpierw poznajemy Twój biznes. Potem dobieramy właściwe rozwiązanie i prowadzimy Cię przez cały proces.",
 } as const;
 
+export const COMPARISON = {
+  heading: {
+    accent: "Pillarweb",
+    rest: " vs typowa agencja webowa — porównaj punkt po punkcie.",
+  },
+  subtitle:
+    "Te same usługi nazywają się tak samo. Różnice są ogromne. Zobacz pełne zestawienie.",
+  columns: {
+    criterion: "Kryterium",
+    others: "Inne agencje webowe",
+    pillar: { line1: "Pillarweb", line2: "tylko dla firm budowlanych" },
+  },
+  categories: [
+    {
+      title: "Podstawy strony",
+      rows: [
+        { feature: "Responsywna wersja mobilna", others: true },
+        { feature: "Podstawowe SEO on-page", others: true },
+        { feature: "Formularz kontaktowy", others: true },
+      ],
+    },
+    {
+      title: "Projekt i treści",
+      rows: [
+        {
+          feature: "W pełni indywidualny projekt graficzny (nie szablon)",
+          others: false,
+        },
+        { feature: "Copywriting i treści napisane przez agencję", others: false },
+        {
+          feature: "Materiały AI — zdjęcia i wideo bez sesji fotograficznej",
+          others: false,
+        },
+      ],
+    },
+    {
+      title: "Widoczność i analityka",
+      rows: [
+        {
+          feature: "Pełna konfiguracja GA4 + GTM + Pixel od pierwszego dnia",
+          others: false,
+        },
+        { feature: "Optymalizacja wizytówki Google Maps", others: false },
+      ],
+    },
+    {
+      title: "Technologie i automatyzacje",
+      rows: [
+        {
+          feature: "Chatbot AI uczony na wiedzy Twojej firmy",
+          plan: "Platyna",
+          others: false,
+        },
+        {
+          feature:
+            "Asystent AI odbierający telefony i odpowiadający na pytania",
+          plan: "Platyna",
+          others: false,
+        },
+        {
+          feature:
+            "Kalendarz na stronie — automatyczna rezerwacja spotkania lub rozmowy",
+          plan: "Platyna",
+          others: false,
+        },
+        {
+          feature: "Automatyczny przepływ leadów do CRM",
+          plan: "Złoto+",
+          others: false,
+        },
+        {
+          feature: "Automatyczne powiadomienia o nowych zapytaniach",
+          plan: "Złoto+",
+          others: false,
+        },
+      ],
+    },
+    {
+      title: "Pewność współpracy",
+      rows: [
+        {
+          feature: "Jawny cennik — widzisz ceny bez konieczności kontaktu",
+          others: false,
+        },
+        {
+          feature: "Gwarancja satysfakcji — zwrot jeśli niezadowolony z projektu",
+          others: false,
+        },
+        {
+          feature:
+            "Gwarancja terminowości — 50% zwrotu za każdy dzień spóźnienia",
+          others: false,
+        },
+        {
+          feature: "30 dni bezpłatnego wsparcia technicznego po wdrożeniu",
+          others: false,
+        },
+      ],
+    },
+    {
+      title: "Wiedza branżowa",
+      rows: [
+        { feature: "Specjalizacja wyłącznie w firmach budowlanych", others: false },
+        {
+          feature: "Treści i copywriting pisane językiem Twoich klientów",
+          others: false,
+        },
+      ],
+    },
+    {
+      title: "Proces i komunikacja",
+      rows: [
+        { feature: "Opisany proces krok po kroku — wiesz co i kiedy", others: false },
+        { feature: "Realizacja maksymalnie w 3 tygodnie", others: false },
+        {
+          feature: "Bieżąca komunikacja przez Slack — wiesz co się dzieje",
+          others: false,
+        },
+        {
+          feature: "Artykuły sponsorowane na Murator Dom i Budujemy Dom",
+          plan: "Platyna",
+          others: false,
+        },
+      ],
+    },
+  ],
+} as const;
+
 export const ABOUT = {
   heading: "Kim jesteśmy",
   // TODO: Oryginał ma częściowo Lorem Ipsum — to placeholder. Tutaj jest treść z meta-tekstu sekcji.
