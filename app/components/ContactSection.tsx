@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState, FormEvent } from "react";
 import { Logo } from "./Logo";
 import { Reveal } from "./Reveal";
+import { ParallaxReveal } from "./ParallaxReveal";
 import { Button } from "./Button";
 import { CONTACT } from "../lib/content";
 
@@ -31,14 +32,14 @@ export function ContactSection() {
   return (
     <section id="kontakt" className="pt-16 lg:pt-24 pb-24 lg:pb-36">
       <div className="container-content">
-        <Reveal as="h2" className="font-display font-bold text-center text-[clamp(1.75rem,3.5vw,3rem)] leading-tight tracking-tight text-balance">
+        <ParallaxReveal as="h2" className="font-display font-bold text-center text-[clamp(1.75rem,3.5vw,3rem)] leading-tight tracking-tight text-balance">
           {CONTACT.headingLine1}{" "}
           <span className="text-accent">{CONTACT.headingLine2}</span>
-        </Reveal>
+        </ParallaxReveal>
 
-        <Reveal delay={0.05} as="p" className="text-foreground text-center mt-8 max-w-3xl mx-auto leading-relaxed text-lg">
+        <ParallaxReveal as="p" className="text-foreground text-center mt-8 max-w-3xl mx-auto leading-relaxed text-lg">
           {CONTACT.description}
-        </Reveal>
+        </ParallaxReveal>
 
         <Reveal delay={0.08}>
           <div
