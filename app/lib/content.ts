@@ -352,7 +352,8 @@ export const PRICING = {
   subtitle: {
     accent: "Trzy poziomy wdrożenia —",
     rest:
-      " od profesjonalnej marki online po kompletną maszynę do generowania leadów z AI (Cennik jest poglądowy).",
+      " od profesjonalnej marki online po kompletną maszynę do generowania leadów z AI.",
+    note: "(Cennik jest poglądowy)",
   },
   plans: [
     {

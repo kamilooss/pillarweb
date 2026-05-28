@@ -37,7 +37,8 @@ export function PricingSection() {
 
         <ParallaxReveal as="p" className="text-foreground font-bold text-center text-lg lg:text-xl mt-6 max-w-3xl mx-auto leading-snug">
           <span className="text-accent">{subtitle.accent}</span>
-          {subtitle.rest}
+          {subtitle.rest}{" "}
+          <span className="text-accent">{subtitle.note}</span>
         </ParallaxReveal>
 
         {/* Karty */}
