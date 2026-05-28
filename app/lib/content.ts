@@ -248,6 +248,7 @@ export const SPECIALIZATIONS = {
     { label: "Firmy remontowe", image: `${ASSET_BASE}/firmy-remontowe-pillarweb.webp` },
     { label: "Deweloperzy", image: `${ASSET_BASE}/deweloperzy-pillarweb.webp` },
     { label: "Firmy instalacyjne", image: `${ASSET_BASE}/firmy-instalacyjne-pillarweb.webp` },
+    { label: "Producenci budowlani", image: "/images/producenci-budowlani-pillarweb.svg" },
   ],
 } as const;
 
