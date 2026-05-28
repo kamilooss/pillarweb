@@ -617,12 +617,13 @@ export const ABOUT = {
   heading: "Kim jesteśmy",
   // TODO: Oryginał ma częściowo Lorem Ipsum — to placeholder. Tutaj jest treść z meta-tekstu sekcji.
   paragraphs: [
-    "Za Pillar Web stoję ja (Kamil Tomczyk) i zespół sprawdzonych specjalistów, których dobrałem dzięki długoletniej pracy w marketingu. Od 19. roku życia działam w tej branży — prowadziłem własną agencję, pracowałem dla innych podmiotów, dzięki czemu poznałem ludzi, z którymi dziś tworzę dopracowane strony internetowe dla firm budowlanych.",
-    "Przeprowadziłem głęboką selekcję z całej masy osób, którzy przewinęli się podczas mojej wieloletniej kariery. Wybrałem najlepszych z najlepszych.",
-    "Dlaczego właśnie ta branża? Nie jestem teoretykiem. Znam ją jak własną kieszeń. Byłem dyrektorem marketingu w firmie budowlanej, budującej domy tradycyjne jak i stawiającej modułówki. Wiem jak wygląda pozyskiwanie klientów, budowanie zaufania i rozwijanie firmy w branży budowlanej.",
+    "Za Pillar Web stoję ja — Kamil Tomczyk i zespół sprawdzonych specjalistów dobranych przez lata pracy w marketingu — każdy najlepszy w swojej dziedzinie. Od 19. roku życia działam w marketingu. Prowadziłem własną agencję, pracowałem w wiodących firmach marketingowych oraz byłem dyrektorem marketingu w firmie budowlanej stawiającej domy tradycyjne i modułowe.",
+    "Na co dzień odpowiadałem za pozyskiwanie klientów, budowanie zaufania i rozwijanie firmy właśnie w tej branży.",
+    "Nie jestem więc teoretykiem. Znam tą branżę bardzo dobrze.",
     "Wiem, co działa, jakie komunikaty trafiają do klientów i jak powinna wyglądać strona, która realnie wspiera sprzedaż.",
     "Zadaniem Pillar Web jest przejęcie całej odpowiedzialności i uporządkowanie wieloetapowego procesu, tworząc stronę internetową, która od razu jest gotowa do startu z marketingiem i reklamami, bez obaw, że jakiegokolwiek elementu zabraknie.",
-    "Dajemy więcej niżeli nasi konkurenci. Twoja strona będzie zawierała wszystko, co potrzebne. To właśnie nas wyróżnia.",
+    "Dajemy więcej niżeli nasi konkurenci. Twoja strona będzie zawierała wszystko, co potrzebne i wiele więcej, aby zmaksymalizować szansę na to, że użytkownik wchodząc na Twoją stronę pozostawi do siebie kontakt. Każdy najmniejszy element jest starannie dopracowany, aby wspierać ten cel. To właśnie nas wyróżnia.",
+    "Pillar Web istnieje z jednego powodu: żeby firmy budowlane, które robią dobrą robotę w terenie, były równie mocne online.",
   ],
   image: "/images/kim-jestesmy-pillarweb.webp",
   imageAlt:
