@@ -40,7 +40,7 @@ export function PricingSection() {
         </Reveal>
 
         {/* Karty */}
-        <div className="grid lg:grid-cols-3 gap-6 lg:gap-7 mt-20 lg:mt-24 max-w-7xl mx-auto items-start">
+        <div className="grid lg:grid-cols-3 gap-6 lg:gap-7 mt-20 lg:mt-24 max-w-7xl mx-auto items-stretch">
           {plans.map((plan, i) => (
             <Reveal key={plan.name} delay={i * 0.08}>
               <article
