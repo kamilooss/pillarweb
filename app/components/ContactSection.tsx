@@ -83,18 +83,9 @@ export function ContactSection() {
                 ))}
               </blockquote>
 
-              <div className="mt-5 flex flex-col items-center gap-2">
-                <Image
-                  src={CONTACT.testimonial.photo}
-                  alt={CONTACT.testimonial.author}
-                  width={56}
-                  height={56}
-                  className="rounded-full w-14 h-14 object-cover"
-                />
-                <div className="text-sm">
-                  <span className="font-semibold">— {CONTACT.testimonial.author}</span>
-                  <span className="text-muted"> {CONTACT.testimonial.role}</span>
-                </div>
+              <div className="mt-5 text-sm">
+                <span className="font-semibold">— {CONTACT.testimonial.author}</span>
+                <span className="text-muted"> {CONTACT.testimonial.role}</span>
               </div>
 
               <p className="mt-10 pt-10 border-t border-card-border text-accent font-medium leading-relaxed">
