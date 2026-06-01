@@ -113,6 +113,12 @@ export function Testimonials() {
 
         {/* Testimonial — bez animacji, od razu pod liczbami */}
         <div className="mt-16 lg:mt-20 max-w-3xl mx-auto flex flex-col items-center text-center">
+          <span
+            aria-hidden="true"
+            className="font-display text-accent text-7xl lg:text-8xl leading-[0.6] select-none mb-6"
+          >
+            &ldquo;
+          </span>
           <div className="space-y-6">
             {testimonial.quote.map((paragraph, idx) => (
               <p

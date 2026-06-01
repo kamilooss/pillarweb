@@ -48,7 +48,7 @@ export function FloatingCTA() {
         ease: [0.16, 1, 0.3, 1],
       }}
       style={{ pointerEvents: visible ? "auto" : "none" }}
-      className="hidden lg:block fixed bottom-8 left-1/2 -translate-x-1/2 z-40"
+      className="hidden lg:block fixed bottom-8 right-8 z-40"
     >
       <Link
         href={SITE.contactAnchor}

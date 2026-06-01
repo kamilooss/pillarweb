@@ -60,10 +60,10 @@ export const HERO = {
   titleLine2Prefix: "DLA",
   titleLine2Accent: "FIRM BUDOWLANYCH",
   subtitle:
-    "indywidualne projekty z copywritingiem, Analityką, SEO, wykorzystując najnowocześniejsze technologie AI.",
+    "Indywidualne projekty z copywritingiem, analityką, SEO, wykorzystując najnowocześniejsze technologie AI.",
   subtitleParts: [
-    { text: "indywidualne projekty", accent: true },
-    { text: "z copywritingiem, Analityką, SEO, wykorzystując", accent: false },
+    { text: "Indywidualne projekty", accent: true },
+    { text: "z copywritingiem, analityką, SEO, wykorzystując", accent: false },
     { text: "najnowocześniejsze technologie AI.", accent: true },
   ],
   videoSrc: `${ASSET_BASE}/pillarweb-film-instruktazowy-hero.mp4`,

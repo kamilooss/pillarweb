@@ -65,8 +65,15 @@ export function ServicesAccordion() {
                     onClick={() => setActive(i)}
                     aria-expanded={isActive}
                     aria-controls={panelId}
-                    className="group w-full text-left py-8 lg:py-10 flex items-start gap-5 lg:gap-6 cursor-pointer"
+                    className="group w-full text-left py-8 lg:py-10 flex items-start gap-4 lg:gap-6 cursor-pointer"
                   >
+                    <span
+                      className={`arch-index flex-shrink-0 mt-1.5 lg:mt-2 text-sm tabular-nums transition-colors duration-300 ${
+                        isActive ? "text-accent" : "text-subtle"
+                      }`}
+                    >
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
                     <span
                       className={`flex-1 font-display font-bold leading-[1.2] tracking-tight text-[clamp(1.2rem,2.25vw,1.85rem)] transition-colors duration-300 ${
                         isActive

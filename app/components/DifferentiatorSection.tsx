@@ -111,7 +111,10 @@ export function DifferentiatorSection() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-14">
             {pillars.map((p, i) => (
               <Reveal key={p.title} delay={i * 0.08} className="flex flex-col">
-                <h3 className="text-accent font-bold text-lg lg:text-xl mb-3">
+                <span className="arch-index text-sm text-accent/60 mb-2">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <h3 className="font-bold text-lg lg:text-xl mb-3 text-foreground">
                   {p.title}
                 </h3>
                 <p className="text-muted-strong leading-relaxed">
@@ -148,9 +151,14 @@ export function DifferentiatorSection() {
                   >
                     <motion.h3
                       style={reduced ? undefined : pillarStyles[i].title}
-                      className="text-accent font-bold text-lg lg:text-xl mb-3 will-change-[opacity,transform]"
+                      className="mb-3 will-change-[opacity,transform]"
                     >
-                      {p.title}
+                      <span className="block arch-index text-sm text-accent/60 mb-2">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span className="block font-bold text-lg lg:text-xl text-foreground">
+                        {p.title}
+                      </span>
                     </motion.h3>
                     <motion.p
                       style={reduced ? undefined : pillarStyles[i].body}

@@ -20,9 +20,9 @@ function FormattedText({ text }: { text: string }) {
     <>
       {parts.map((p, i) =>
         p.startsWith("**") && p.endsWith("**") ? (
-          <span key={i} className="text-accent">
+          <strong key={i} className="font-semibold text-foreground">
             {p.slice(2, -2)}
-          </span>
+          </strong>
         ) : (
           <span key={i}>{p}</span>
         )
@@ -136,7 +136,7 @@ export function ContentVideoSection() {
                 <div>
                   <motion.h3
                     {...(reduced ? {} : entranceAnim)}
-                    className="text-accent font-display font-bold text-[clamp(1.75rem,3.5vw,2.75rem)] leading-tight tracking-tight max-w-2xl"
+                    className="font-display font-bold text-[clamp(1.75rem,3.5vw,2.75rem)] leading-tight tracking-tight max-w-2xl"
                   >
                     {problems.title}
                   </motion.h3>
@@ -155,8 +155,9 @@ export function ContentVideoSection() {
                         }
                         className="will-change-[opacity,transform]"
                       >
-                        <h4 className="text-accent font-bold text-lg lg:text-xl mb-3">
-                          {i + 1}. {item.title}
+                        <h4 className="font-bold text-lg lg:text-xl mb-3 text-foreground">
+                          <span className="text-accent">{i + 1}.</span>{" "}
+                          {item.title}
                         </h4>
                         <p className="text-muted-strong leading-relaxed">
                           <FormattedText text={item.body} />
