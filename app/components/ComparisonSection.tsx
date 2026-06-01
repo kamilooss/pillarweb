@@ -43,7 +43,7 @@ function MutedCheck() {
 function MissingX() {
   return (
     <span
-      className="inline-flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-red-500/[0.10] text-red-400/85"
+      className="inline-flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/[0.03] text-white/30"
       aria-label="Nie"
     >
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
@@ -91,7 +91,7 @@ export function ComparisonSection() {
         </ParallaxReveal>
 
         <Reveal delay={0.1} className="mt-16 lg:mt-20 max-w-5xl mx-auto">
-          <div className="rounded-2xl border border-card-border bg-card overflow-hidden">
+          <div className="surface-panel rounded-2xl overflow-hidden">
             {/* Header row */}
             <div className={`grid ${cols} items-stretch border-b border-card-border-strong`}>
               <div className="px-4 sm:px-8 py-5 text-xs sm:text-sm font-bold uppercase tracking-[0.18em] text-muted">
@@ -119,7 +119,7 @@ export function ComparisonSection() {
               <div key={cat.title}>
                 {/* Category eyebrow */}
                 <div className={`grid ${cols} bg-white/[0.02] border-b border-card-border`}>
-                  <div className="px-4 sm:px-8 py-3 text-[11px] sm:text-xs font-bold uppercase tracking-[0.18em] text-accent">
+                  <div className="px-4 sm:px-8 py-3 text-[11px] sm:text-xs font-bold uppercase tracking-[0.18em] text-muted-strong">
                     {cat.title}
                   </div>
                   <div className="border-l border-card-border" />
