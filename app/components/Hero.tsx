@@ -1,67 +1,26 @@
-"use client";
+import { Fragment } from "react";
+import { MagneticButton } from "./MagneticButton";
+import { HERO, SITE } from "../lib/content";
 
-import { Fragment, useEffect, useRef } from "react";
-import { motion } from "motion/react";
-import gsap from "gsap";
-import { Button } from "./Button";
-import { HERO } from "../lib/content";
-
-const line1Words = HERO.titleLine1.split(" ");
-const line2AccentWords = HERO.titleLine2Accent.split(" ");
-const subtitleTokens = HERO.subtitleParts.flatMap((part) =>
-  part.text.split(" ").map((text) => ({ text, accent: part.accent }))
-);
+// Słowa nagłówka pogrupowane w dwie linie; akcent (lime) na "FIRM BUDOWLANYCH".
+const HEADLINE_LINES: { text: string; accent?: boolean }[][] = [
+  HERO.titleLine1.split(" ").map((text) => ({ text })),
+  [
+    { text: HERO.titleLine2Prefix },
+    ...HERO.titleLine2Accent.split(" ").map((text) => ({ text, accent: true })),
+  ],
+];
 
 export function Hero() {
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  const subtitleRef = useRef<HTMLHeadingElement>(null);
-
-  useEffect(() => {
-    const h1 = headingRef.current;
-    const h2 = subtitleRef.current;
-    if (!h1 || !h2) return;
-
-    const h1Words = h1.querySelectorAll<HTMLElement>(".hero-word");
-    const h2Words = h2.querySelectorAll<HTMLElement>(".hero-word");
-
-    gsap.set([...h1Words, ...h2Words], { yPercent: 110 });
-    h1.style.visibility = "visible";
-    h2.style.visibility = "visible";
-
-    const tl = gsap.timeline();
-    tl.to(
-      h1Words,
-      {
-        yPercent: 0,
-        duration: 1,
-        stagger: 0.08,
-        ease: "expo.out",
-      },
-      0.15
-    );
-    tl.to(
-      h2Words,
-      {
-        yPercent: 0,
-        duration: 0.8,
-        stagger: 0.04,
-        ease: "expo.out",
-      },
-      "-=0.55"
-    );
-
-    return () => {
-      tl.kill();
-    };
-  }, []);
+  let wordIndex = -1;
 
   return (
     <section
       id="main"
-      className="relative min-h-screen w-full overflow-hidden bg-background"
+      className="relative min-h-[100dvh] w-full overflow-hidden bg-background"
       aria-label="Sekcja powitalna"
     >
-      {/* Video background */}
+      {/* Tło wideo — kadrowany materiał, nie zwykłe tło */}
       <div className="absolute inset-0 top-20">
         <video
           autoPlay
@@ -74,79 +33,116 @@ export function Hero() {
         >
           <source src={HERO.videoSrc} type="video/mp4" />
         </video>
+        {/* Grade pod tekst po lewej + dół, plus delikatna winieta */}
         <div
-          className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-black/30"
+          className="absolute inset-0 bg-gradient-to-r from-black via-black/55 to-black/20"
           aria-hidden="true"
         />
         <div
-          className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/50"
+          className="absolute inset-0 bg-gradient-to-t from-black via-black/35 to-black/55"
+          aria-hidden="true"
+        />
+        <div
+          className="absolute inset-0 [box-shadow:inset_0_0_180px_60px_rgba(0,0,0,0.7)]"
           aria-hidden="true"
         />
       </div>
 
-      {/* Content — wyśrodkowane w obszarze wideo (video zaczyna się od top-20) */}
-      <div className="relative container-content min-h-screen flex items-center justify-center pt-20">
-        <div className="flex flex-col items-center text-center max-w-6xl">
-          <h1
-            ref={headingRef}
-            style={{ visibility: "hidden" }}
-            className="font-display font-extrabold tracking-tight leading-[0.95] text-[clamp(2.25rem,5.8vw,5.25rem)] uppercase"
+      {/* Szkielet hairline — "arkusz planu" kadrujący treść (tylko desktop) */}
+      <div className="absolute inset-0 top-20 hidden md:block" aria-hidden="true">
+        <div className="container-content relative h-full">
+          <div className="arch-rules" />
+          {/* Znaczniki narożne marki — róg górny-lewy i dolny-prawy */}
+          <span className="absolute left-5 top-8 h-6 w-px bg-accent/70 lg:left-8" />
+          <span className="absolute left-5 top-8 h-px w-6 bg-accent/70 lg:left-8" />
+          <span className="absolute right-5 bottom-8 h-6 w-px bg-accent/70 lg:right-8" />
+          <span className="absolute right-5 bottom-8 h-px w-6 -translate-x-[calc(100%-1px)] bg-accent/70 lg:right-8" />
+        </div>
+      </div>
+
+      {/* Treść — zakotwiczona w dolnej części, oś po lewej (redakcyjnie).
+         Reveal robiony animacjami CSS (zawsze odpalą, niezależnie od JS). */}
+      <div className="relative container-content min-h-[100dvh] flex flex-col justify-end pt-28 pb-20 lg:pb-28">
+        <div className="max-w-5xl text-left">
+          <span
+            className="arch-tick mb-7 lg:mb-9 animate-fade-up"
+            style={{ animationDelay: "0.05s" }}
           >
-            <span className="block overflow-hidden pb-[0.08em]">
-              {line1Words.map((w, i) => (
-                <Fragment key={`l1-${i}`}>
-                  {i > 0 && " "}
-                  <span className="hero-word inline-block">{w}</span>
-                </Fragment>
-              ))}
-            </span>
-            <span className="block overflow-hidden pb-[0.08em] md:whitespace-nowrap">
-              <span className="hero-word inline-block">
-                {HERO.titleLine2Prefix}
+            {HERO.brandLine}
+          </span>
+
+          <h1 className="font-display font-extrabold tracking-tight leading-[0.95] text-[clamp(2.25rem,5.5vw,4.75rem)] uppercase">
+            {HEADLINE_LINES.map((line, li) => (
+              <span
+                key={li}
+                className={`block pb-[0.12em] ${
+                  li === 1 ? "md:whitespace-nowrap" : ""
+                }`}
+              >
+                {line.map((word, wi) => {
+                  wordIndex += 1;
+                  return (
+                    <Fragment key={wi}>
+                      {wi > 0 && " "}
+                      <span
+                        className={`inline-block animate-fade-up ${
+                          word.accent ? "text-accent" : ""
+                        }`}
+                        style={{ animationDelay: `${0.15 + wordIndex * 0.06}s` }}
+                      >
+                        {word.text}
+                      </span>
+                    </Fragment>
+                  );
+                })}
               </span>
-              {line2AccentWords.map((w, i) => (
-                <Fragment key={`l2-${i}`}>
-                  {" "}
-                  <span className="hero-word inline-block text-accent">
-                    {w}
-                  </span>
-                </Fragment>
-              ))}
-            </span>
+            ))}
           </h1>
 
-          <h2
-            ref={subtitleRef}
-            style={{ visibility: "hidden" }}
-            aria-label={HERO.subtitle}
-            className="mt-6 lg:mt-8 max-w-4xl font-display font-bold tracking-wide leading-snug uppercase text-muted-strong text-[clamp(0.95rem,1.7vw,1.5rem)]"
+          <p
+            className="mt-7 lg:mt-9 max-w-[54ch] text-muted-strong leading-relaxed text-[clamp(1rem,1.45vw,1.3rem)] animate-fade-up"
+            style={{ animationDelay: "0.55s" }}
           >
-            {subtitleTokens.map((token, i) => (
-              <Fragment key={`s-${i}`}>
+            {HERO.subtitleParts.map((part, i) => (
+              <Fragment key={i}>
                 {i > 0 && " "}
-                <span className="inline-block overflow-hidden align-bottom pb-[0.15em]">
-                  <span
-                    className={`hero-word inline-block${
-                      token.accent ? " text-accent" : ""
-                    }`}
-                  >
-                    {token.text}
-                  </span>
+                <span className={part.accent ? "text-accent" : undefined}>
+                  {part.text}
                 </span>
               </Fragment>
             ))}
-          </h2>
+          </p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 36 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.3, delay: 1.4, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-12"
+          <div
+            className="mt-11 lg:mt-14 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 animate-fade-up"
+            style={{ animationDelay: "0.72s" }}
           >
-            <Button href={HERO.cta.href} size="lg" className="min-w-[260px]">
+            <MagneticButton
+              href={HERO.cta.href}
+              className="px-8 py-4 text-base sm:text-[15px] sm:whitespace-nowrap"
+            >
               {HERO.cta.label}
-            </Button>
-          </motion.div>
+            </MagneticButton>
+
+            <a
+              href={`tel:${SITE.phoneTel}`}
+              className="group inline-flex items-center gap-3 text-muted-strong hover:text-accent transition-colors"
+            >
+              <span className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-card-border-strong group-hover:border-accent transition-colors">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  className="text-accent"
+                >
+                  <path d="M2 3a1 1 0 011-1h2.5a1 1 0 011 .8l.6 3a1 1 0 01-.3 1L5.5 8.2a12 12 0 005.3 5.3l1.4-1.3a1 1 0 011-.3l3 .6a1 1 0 01.8 1V16a1 1 0 01-1 1A14 14 0 012 4z" />
+                </svg>
+              </span>
+              <span className="font-semibold tracking-tight">{SITE.phone}</span>
+            </a>
+          </div>
         </div>
       </div>
     </section>
