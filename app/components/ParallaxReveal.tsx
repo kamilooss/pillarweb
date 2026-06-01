@@ -15,7 +15,7 @@ type Props = {
  * "To nie są obietnice..." w sekcji Testimonials.
  */
 export function ParallaxReveal({ children, className, as = "h2" }: Props) {
-  const ref = useRef<HTMLElement | null>(null);
+  const ref = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: ref,
