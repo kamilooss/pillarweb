@@ -44,15 +44,15 @@ export function ContactSection() {
         <Reveal delay={0.08}>
           <div
             role="note"
-            className="mt-10 max-w-3xl mx-auto flex items-center justify-center gap-3 rounded-xl border border-accent/40 bg-accent/10 px-5 py-3 text-accent font-semibold text-center"
+            className="mt-10 max-w-3xl mx-auto flex items-center justify-center gap-3 rounded-xl border border-accent/30 bg-accent/[0.07] px-5 py-3 text-accent font-semibold text-center"
           >
-            <span aria-hidden className="inline-block h-2 w-2 rounded-full bg-accent animate-pulse" />
+            <span aria-hidden className="inline-block h-px w-5 bg-accent" />
             {CONTACT.urgencyNote}
           </div>
         </Reveal>
 
         <Reveal delay={0.1}>
-          <div className="mt-10 lg:mt-12 max-w-6xl mx-auto rounded-2xl border border-card-border bg-card p-6 lg:p-12 grid lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)] gap-10 lg:gap-16">
+          <div className="surface-panel mt-10 lg:mt-12 max-w-6xl mx-auto rounded-2xl p-6 lg:p-12 grid lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)] gap-10 lg:gap-16">
             {/* Lewa: branding + autor + opinia klienta */}
             <div className="flex flex-col items-center text-center">
               <div className="scale-[1.6] mt-6 mb-12">
@@ -84,9 +84,10 @@ export function ContactSection() {
                 ))}
               </blockquote>
 
-              <div className="mt-5 text-sm">
-                <span className="font-semibold">— {CONTACT.testimonial.author}</span>
-                <span className="text-muted"> {CONTACT.testimonial.role}</span>
+              <div className="mt-5 flex items-center justify-center gap-2 text-sm">
+                <span aria-hidden className="inline-block h-px w-4 bg-accent" />
+                <span className="font-semibold">{CONTACT.testimonial.author}</span>
+                <span className="text-muted">{CONTACT.testimonial.role}</span>
               </div>
 
               <p className="mt-10 pt-10 border-t border-card-border text-accent font-medium leading-relaxed">

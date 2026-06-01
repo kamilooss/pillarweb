@@ -96,7 +96,7 @@ export function ContentVideoSection() {
 
       {/* Video bez overlay'owego nagłówka */}
       <div className="container-content">
-        <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl">
+        <div className="surface-panel relative aspect-[16/9] w-full overflow-hidden rounded-2xl">
           <video
             autoPlay
             loop
@@ -170,7 +170,7 @@ export function ContentVideoSection() {
                 <div className="flex flex-col gap-10">
                   <motion.div
                     {...(reduced ? {} : entranceAnim)}
-                    className="aspect-[16/10] rounded-xl overflow-hidden"
+                    className="surface-panel aspect-[16/10] rounded-xl overflow-hidden"
                   >
                     <Image
                       src={problems.image}

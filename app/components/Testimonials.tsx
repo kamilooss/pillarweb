@@ -49,7 +49,7 @@ function StatItem({ stat, index }: { stat: Stat; index: number }) {
       className={`flex flex-col items-center justify-center text-center px-6 lg:px-10 py-8 md:py-4
         ${
           !isLast
-            ? "border-b-2 md:border-b-0 md:border-r-2 border-accent"
+            ? "border-b md:border-b-0 md:border-r border-card-border-strong"
             : ""
         }`}
     >
@@ -97,11 +97,11 @@ export function Testimonials() {
       <div className="container-content">
         <motion.h2
           style={reduced ? undefined : { y: headingY }}
-          className="text-accent font-display font-bold text-center text-[clamp(1.75rem,3.5vw,2.75rem)] leading-tight tracking-tight max-w-4xl mx-auto will-change-transform"
+          className="font-display font-bold text-center text-[clamp(1.75rem,3.5vw,2.75rem)] leading-tight tracking-tight max-w-4xl mx-auto will-change-transform"
         >
           To nie są obietnice.
           <br />
-          To wyniki firm, które nam zaufały
+          To wyniki firm, które <span className="text-accent">nam zaufały</span>
         </motion.h2>
 
         {/* Liczby — count-up, pozycja zablokowana (bez parallaxu) */}

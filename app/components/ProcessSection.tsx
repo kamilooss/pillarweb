@@ -124,7 +124,7 @@ export function ProcessSection() {
           {/* Sticky image */}
           <div className="hidden lg:block">
             <div className="sticky top-32">
-              <div className="rounded-2xl overflow-hidden aspect-[3/4] max-h-[80vh] bg-card">
+              <div className="surface-panel rounded-2xl overflow-hidden aspect-[3/4] max-h-[80vh]">
                 <Image
                   src={image}
                   alt="Konsultacja z klientem dotycząca stworzenia strony internetowej dla firmy budowlanej"
@@ -139,7 +139,7 @@ export function ProcessSection() {
 
           {/* Mobile image */}
           <div className="lg:hidden">
-            <div className="rounded-2xl overflow-hidden aspect-[4/5] bg-card">
+            <div className="surface-panel rounded-2xl overflow-hidden aspect-[4/5]">
               <Image
                 src={image}
                 alt=""

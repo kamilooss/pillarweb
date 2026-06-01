@@ -52,11 +52,11 @@ function FaqItem({
   });
 
   return (
-    <div className="border border-card-border rounded-xl bg-card-elevated overflow-hidden">
+    <div className="surface-panel rounded-xl overflow-hidden">
       <button
         onClick={onToggle}
         aria-expanded={open}
-        className="w-full flex items-center justify-between gap-4 px-6 lg:px-8 py-5 lg:py-6 text-left hover:bg-card transition-colors cursor-pointer"
+        className="w-full flex items-center justify-between gap-4 px-6 lg:px-8 py-5 lg:py-6 text-left hover:bg-white/[0.02] transition-colors cursor-pointer"
       >
         <span className="font-bold text-[17px] lg:text-lg leading-snug">
           {question}
@@ -107,7 +107,7 @@ export function FAQSection() {
   return (
     <section className="pt-16 lg:pt-24 pb-24 lg:pb-36">
       <div className="container-content">
-        <ParallaxReveal as="h2" className="text-accent font-display font-bold text-center text-[clamp(1.75rem,3.5vw,3rem)] tracking-tight">
+        <ParallaxReveal as="h2" className="font-display font-bold text-center text-[clamp(1.75rem,3.5vw,3rem)] tracking-tight">
           {FAQ.heading}
         </ParallaxReveal>
 

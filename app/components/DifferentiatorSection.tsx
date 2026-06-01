@@ -197,7 +197,7 @@ export function DifferentiatorSection() {
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
             className="will-change-[opacity,transform]"
           >
-            <div className="rounded-xl overflow-hidden border border-card-border">
+            <div className="surface-panel rounded-xl overflow-hidden">
               <Image
                 src={results.image}
                 alt="Wyniki kampanii Google Ads dla firmy budowlanej prowadzonej przez Pillarweb"
