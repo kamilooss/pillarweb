@@ -59,6 +59,7 @@ export default function RootLayout({
         </a>
         {children}
         <FloatingCTA />
+        <div className="grain" aria-hidden="true" />
       </body>
     </html>
   );
