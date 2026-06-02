@@ -1,15 +1,16 @@
 "use client";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState, FormEvent } from "react";
 import { Logo } from "./Logo";
 import { Reveal } from "./Reveal";
 import { Button } from "./Button";
-import { CONTACT } from "../lib/content";
+import { CONTACT, THANKYOU } from "../lib/content";
 
 export function ContactSection() {
+  const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,9 +23,11 @@ export function ContactSection() {
     // własny endpoint) albo bezpośrednio do Slack/Discord webhook.
     console.log("Form submitted:", data);
 
-    await new Promise((r) => setTimeout(r, 800));
-    setSubmitting(false);
-    setSubmitted(true);
+    await new Promise((r) => setTimeout(r, 600));
+
+    // Po wysłaniu — przejście na stronę z podziękowaniem (Thank You Page).
+    // Nie zerujemy `submitting`: przycisk zostaje zablokowany do nawigacji.
+    router.push(THANKYOU.route);
   };
 
   return (
@@ -97,7 +100,7 @@ export function ContactSection() {
             </div>
 
             {/* Prawa: formularz */}
-            <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+            <form onSubmit={handleSubmit} className="space-y-5">
               <Field label="Imię i nazwisko" name="name" type="text" required placeholder="Podaj imię i nazwisko" />
               <Field label="Adres e-mail" name="email" type="email" required placeholder="Podaj swój e-mail" />
               <Field label="Numer telefonu" name="phone" type="tel" required placeholder="Podaj swój numer telefonu" />
@@ -141,23 +144,12 @@ export function ContactSection() {
                 />
               </div>
 
-              {submitted ? (
-                <div className="flex items-center gap-3 rounded-md border border-foreground/20 bg-accent/20 px-5 py-4 font-semibold text-foreground">
-                  <span className="inline-flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-accent">
-                    <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                      <path d="M2 7.5L5.5 11L12 3" stroke="var(--color-accent-foreground)" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </span>
-                  Dziękujemy! Odezwiemy się w ciągu 24 godzin.
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  <Button type="submit" size="lg" className="w-full" disabled={submitting}>
-                    {submitting ? "Wysyłanie..." : CONTACT.submitLabel}
-                  </Button>
-                  <p className="text-center text-sm text-muted-strong">{CONTACT.submitNote}</p>
-                </div>
-              )}
+              <div className="space-y-3">
+                <Button type="submit" size="lg" className="w-full" disabled={submitting}>
+                  {submitting ? "Wysyłanie..." : CONTACT.submitLabel}
+                </Button>
+                <p className="text-center text-sm text-muted-strong">{CONTACT.submitNote}</p>
+              </div>
             </form>
           </div>
         </Reveal>

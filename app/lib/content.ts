@@ -729,6 +729,52 @@ export const CONTACT = {
     "Krótki formularz. Konkretna rozmowa. Jasny plan działania.",
 } as const;
 
+export const THANKYOU = {
+  // Slug, na który przekierowuje formularz kontaktowy po wysłaniu.
+  route: "/dziekujemy",
+  headingPrefix: "Dziękujemy za",
+  headingAccent: "pozostawienie kontaktu.",
+  subtext:
+    "Twoje zgłoszenie właśnie do nas dotarło. Teraz nasza kolej — odezwiemy się do Ciebie z konkretnym planem rozmowy.",
+  responseLead: "Odezwiemy się w ciągu",
+  responseAccent: "od 5 minut do maksymalnie 24 godzin",
+  responseTail: "(w dni robocze).",
+  phone: {
+    heading: "Wolisz porozmawiać od razu?",
+    sub: "Zadzwoń bezpośrednio — odbierzemy i od razu przejdziemy do konkretów.",
+    label: "Zadzwoń teraz",
+  },
+  roadmap: {
+    headingPrefix: "Co dzieje się",
+    headingAccent: "dalej",
+    doneLabel: "Zrobione",
+    steps: [
+      {
+        title: "Pozostawienie kontaktu",
+        body: "Twoje zgłoszenie właśnie do nas trafiło. Ten krok masz już za sobą.",
+        done: true,
+      },
+      {
+        title: "Potwierdzenie SMS i e-mail",
+        body: "W ciągu kilku chwil otrzymasz wiadomość SMS oraz e-mail z potwierdzeniem, że wszystko do nas dotarło.",
+      },
+      {
+        title: "Telefon powitalny i umówienie spotkania",
+        body: "Dzwonimy, żeby bliżej poznać Twoją firmę i to, dokąd chcesz ją zaprowadzić. Wspólnie nazywamy cele i mówimy wprost, czy nasza pomoc faktycznie ma dla Ciebie sens. Jeśli tak — ustalamy konkretny termin spotkania i to, na czym powinniśmy się skupić.",
+      },
+      {
+        title: "Decyzja o współpracy",
+        body: "Po rozmowie obie strony podejmują świadomą decyzję. Ty oceniasz, czy to dla Ciebie. My potwierdzamy, że możemy poprowadzić Twój projekt z pełnym zaangażowaniem. Bez presji i bez zobowiązań.",
+      },
+      {
+        title: "Rozpoczęcie współpracy",
+        body: "Ruszamy. Przejmujemy temat strony od A do Z i prowadzimy Cię przez cały proces krok po kroku.",
+      },
+    ],
+  },
+  backLabel: "Wróć na stronę główną",
+} as const;
+
 export const FOOTER = {
   links: [{ label: "Polityka Prywatności", href: "/polityka-prywatnosci" }],
   copyright: "© 2026 pillarweb.pl",

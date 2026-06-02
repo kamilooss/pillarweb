@@ -13,6 +13,7 @@ type Tag =
   | "li"
   | "figure"
   | "blockquote"
+  | "h1"
   | "h2"
   | "h3"
   | "h4"
