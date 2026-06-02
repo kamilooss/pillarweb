@@ -1,31 +1,33 @@
 import Image from "next/image";
 import { Reveal } from "./Reveal";
-import { ParallaxReveal } from "./ParallaxReveal";
 import { ABOUT } from "../lib/content";
 
 export function AboutSection() {
   const { heading, paragraphs, image, imageAlt } = ABOUT;
 
   return (
-    <section className="pt-16 lg:pt-24 pb-24 lg:pb-36">
+    <section className="border-t border-card-border py-20 lg:py-28">
       <div className="container-content">
-        <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-12 lg:gap-20 items-start">
+        <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-20">
           <div>
             <span className="arch-tick mb-7 inline-flex">Pillar Web</span>
-            <ParallaxReveal as="h2" className="font-display font-bold text-[clamp(2rem,4vw,3rem)] tracking-tight mb-8 mt-5">
+            <Reveal
+              as="h2"
+              className="mb-8 mt-5 font-display text-[clamp(2rem,4vw,3rem)] font-extrabold tracking-tight"
+            >
               {heading}
-            </ParallaxReveal>
+            </Reveal>
 
             <div className="space-y-5">
               {paragraphs.map((p, i) => (
                 <Reveal
                   key={i}
-                  delay={i * 0.04}
+                  delay={Math.min(i * 40, 200)}
                   as="p"
                   className={
                     i === 0
-                      ? "text-foreground text-lg lg:text-xl leading-relaxed"
-                      : "text-muted-strong leading-relaxed"
+                      ? "text-lg leading-relaxed text-foreground lg:text-xl"
+                      : "leading-relaxed text-muted-strong"
                   }
                 >
                   {p}
@@ -34,14 +36,14 @@ export function AboutSection() {
             </div>
           </div>
 
-          <Reveal delay={0.1}>
-            <div className="surface-panel rounded-2xl overflow-hidden aspect-[3/4] lg:sticky lg:top-32">
+          <Reveal delay={80}>
+            <div className="aspect-[3/4] overflow-hidden border border-card-border bg-surface-sunken lg:sticky lg:top-32">
               <Image
                 src={image}
                 alt={imageAlt}
                 width={767}
                 height={1024}
-                className="w-full h-full object-cover"
+                className="h-full w-full object-cover"
                 unoptimized
               />
             </div>

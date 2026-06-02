@@ -1,41 +1,53 @@
 @import "tailwindcss";
 
 /* =============================================
-   DESIGN TOKENS
-   Wszystkie wartości można dostosować tutaj —
-   reszta projektu używa tych zmiennych.
+   DESIGN TOKENS — "PLAN"
+   Jasny, inżynierski język: papier rysunku
+   technicznego + tusz + lime jako HI-VIS.
+   Marka zablokowana: lime #c7f542 + Manrope + logo.
+   Wszystko inne keyuje się z tych zmiennych.
    ============================================= */
 @theme {
-  /* Kolory */
-  --color-background: #000000;
-  --color-foreground: #ffffff;
-  --color-muted: rgba(255, 255, 255, 0.65);
-  --color-muted-strong: rgba(255, 255, 255, 0.85);
-  --color-subtle: rgba(255, 255, 255, 0.45);
+  /* --- Powierzchnie (papier) --- */
+  --color-background: #f1efe6;        /* strona — ciepły papier */
+  --color-surface: #faf8f1;           /* uniesiony arkusz */
+  --color-surface-sunken: #e7e3d6;    /* pas naprzemienny / wcięcie */
+  --color-ink-block: #14150d;         /* jeden, świadomy ciemny pas */
+
+  /* --- Tusz (tekst) --- */
+  --color-foreground: #15160e;        /* tusz główny (logo dziedziczy) */
+  --color-muted: #55534a;             /* tekst wtórny (~7:1) */
+  --color-muted-strong: #33322b;      /* mocniejszy wtórny */
+  --color-subtle: #8a8676;            /* trzeciorzędny / podpisy */
+
+  /* --- Akcent marki — ZABLOKOWANY --- */
   --color-accent: #c7f542;
-  --color-accent-hover: #b8e635;
-  --color-accent-foreground: #0a0a0a;
-  --color-card: #0d0d0d;
-  --color-card-elevated: #131313;
-  --color-card-border: rgba(255, 255, 255, 0.08);
-  --color-card-border-strong: rgba(255, 255, 255, 0.14);
+  --color-accent-hover: #b6e22f;
+  --color-accent-foreground: #14160a; /* tekst NA lime (ciemny) */
+
+  /* Kanały RGB do alpha-mieszania */
+  --accent-rgb: 199 245 66;
+  --ink-rgb: 21 22 14;
+
+  /* --- Karty / krawędzie (tusz na papierze) --- */
+  --color-card: #f6f3ea;
+  --color-card-elevated: #ffffff;
+  --color-card-border: rgba(21, 22, 14, 0.12);
+  --color-card-border-strong: rgba(21, 22, 14, 0.24);
   --color-card-border-accent: #c7f542;
 
-  /* Kanał akcentu w RGB — do alpha-mieszania (rgb(var(--accent-rgb) / .12)) */
-  --accent-rgb: 199 245 66;
+  /* Hairline — włosowa krawędź rysunku/planu */
+  --hairline: rgba(21, 22, 14, 0.12);
+  --hairline-strong: rgba(21, 22, 14, 0.26);
 
-  /* Hairline — włosowa krawędź w języku architektonicznym (rysunek/plan) */
-  --hairline: rgba(255, 255, 255, 0.08);
-  --hairline-strong: rgba(255, 255, 255, 0.16);
-
-  /* Typografia */
+  /* --- Typografia --- */
   --font-display: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
 
-  /* Layout */
+  /* --- Layout --- */
   --container-content: 1280px;
 
-  /* Animacja — jeden, ważki język easingu dla całej strony */
+  /* --- Animacja — jeden język easingu --- */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
   --ease-lux: cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -57,7 +69,6 @@
     text-rendering: optimizeLegibility;
   }
 
-  /* Lenis — wymagane dla poprawnego pomiaru wysokości i braku jankowania */
   html.lenis {
     height: auto;
   }
@@ -79,29 +90,28 @@
     overflow-x: hidden;
   }
 
-  /* Selekcja tekstu */
+  /* Selekcja tekstu — hi-vis */
   ::selection {
     background: var(--color-accent);
     color: var(--color-accent-foreground);
   }
 
-  /* Custom scrollbar - nieznaczne, w ciemnym motywie */
+  /* Scrollbar — wąski, na jasnym */
   ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
   }
   ::-webkit-scrollbar-track {
-    background: #000;
+    background: var(--color-surface-sunken);
   }
   ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(21, 22, 14, 0.22);
     border-radius: 4px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(21, 22, 14, 0.36);
   }
 
-  /* Reduced motion respect */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -113,16 +123,16 @@
     }
   }
 
-  /* Focus states — dostępność */
+  /* Focus — wyraźny tusz, dostępność ponad estetyką */
   *:focus-visible {
-    outline: 2px solid var(--color-accent);
+    outline: 2px solid var(--color-foreground);
     outline-offset: 3px;
     border-radius: 2px;
   }
 }
 
 /* =============================================
-   UTILITIES & COMPONENT HELPERS
+   UTILITIES & HELPERS
    ============================================= */
 @layer utilities {
   .container-content {
@@ -137,7 +147,6 @@
     }
   }
 
-  /* Skip link dla a11y */
   .skip-link {
     position: absolute;
     top: -100px;
@@ -147,59 +156,84 @@
     padding: 0.5rem 1rem;
     border-radius: 4px;
     z-index: 100;
-    font-weight: 600;
+    font-weight: 700;
   }
   .skip-link:focus {
     top: 1rem;
   }
 
-  /* =============================================
-     MATERIAŁ — wyrafinowana, "droga" powierzchnia.
-     Górne światło + włosowa krawędź + wewnętrzny
-     highlight zamiast płaskiej szarej karty.
-     ============================================= */
+  /* ---------------------------------------------
+     HI-VIS — emfaza marki na jasnym tle.
+     Lime jako TŁO (kod kamizelki/oznaczeń), nigdy
+     jako cienki tekst na papierze (brak kontrastu).
+     --------------------------------------------- */
+  .mark {
+    background: var(--color-accent);
+    color: var(--color-accent-foreground);
+    padding: 0.02em 0.2em;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+
+  /* Lime jako "redline" — gruby marker pod tuszem */
+  .underline-accent {
+    background-image: linear-gradient(var(--color-accent), var(--color-accent));
+    background-repeat: no-repeat;
+    background-position: 0 90%;
+    background-size: 100% 0.3em;
+  }
+
+  /* ---------------------------------------------
+     ARKUSZ — uniesiony "papier" zamiast ciemnej karty.
+     Cienki tusz-hairline + miękki, tonowany cień.
+     --------------------------------------------- */
   .surface-panel {
     position: relative;
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.045) 0%, rgba(255, 255, 255, 0) 30%),
-      linear-gradient(180deg, #131313 0%, #0a0a0a 100%);
+    background: linear-gradient(180deg, var(--color-card-elevated) 0%, var(--color-surface) 100%);
     border: 1px solid var(--hairline);
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.06),
-      0 30px 70px -40px rgba(0, 0, 0, 0.9);
+      inset 0 1px 0 rgba(255, 255, 255, 0.7),
+      0 24px 50px -34px rgba(21, 22, 14, 0.3);
   }
 
   .surface-panel--accent {
-    border-color: rgba(var(--accent-rgb) / 0.32);
+    border-color: rgba(var(--accent-rgb) / 0.75);
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.08),
-      0 40px 90px -44px rgba(var(--accent-rgb) / 0.18),
-      0 30px 70px -40px rgba(0, 0, 0, 0.9);
+      inset 0 1px 0 rgba(255, 255, 255, 0.8),
+      0 30px 64px -36px rgba(var(--accent-rgb) / 0.45),
+      0 24px 50px -34px rgba(21, 22, 14, 0.28);
   }
 
-  /* Górna krawędź akcentu — cienka linia marki na panelu */
+  /* Górna krawędź akcentu — linia marki na arkuszu */
   .edge-accent-top::after {
     content: "";
     position: absolute;
     top: -1px;
     left: 0;
     right: 0;
-    height: 2px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      var(--color-accent) 18%,
-      var(--color-accent) 82%,
-      transparent
-    );
+    height: 3px;
+    background: var(--color-accent);
     pointer-events: none;
   }
 
-  /* =============================================
-     ARCHITEKTONICZNY GRID — szkielet kompozycji
-     nawiązujący do nazwy "Pillar" / rysunku planu.
-     Organizuje treść (wpięty w kontener), nie zdobi.
-     ============================================= */
+  /* ---------------------------------------------
+     STRUKTURALNY GRID — szkielet "Pillar".
+     Włosowe linie kolumn organizują treść
+     (jak rysunek konstrukcyjny), nie zdobią.
+     --------------------------------------------- */
+  .plan-rules {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(90deg, var(--hairline) 0 1px, transparent 1px),
+      linear-gradient(90deg, var(--hairline) 0 1px, transparent 1px);
+    background-position: left, right;
+    background-repeat: no-repeat;
+    background-size: 1px 100%, 1px 100%;
+  }
+
+  /* alias zgodności */
   .arch-rules {
     position: absolute;
     inset: 0;
@@ -212,7 +246,20 @@
     background-size: 1px 100%, 1px 100%;
   }
 
-  /* Włosowa linia z pojedynczym znacznikiem marki na końcu */
+  /* Hatch — inżynierska kreska wypełnienia (lime) */
+  .hatch-accent {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      var(--color-accent) 0,
+      var(--color-accent) 2px,
+      transparent 2px,
+      transparent 8px
+    );
+  }
+
+  /* Techniczna etykieta — wersaliki, szeroki tracking.
+     UŻYWAĆ OSZCZĘDNIE (budżet eyebrow). */
+  .tick-label,
   .arch-tick {
     position: relative;
     display: inline-flex;
@@ -224,20 +271,28 @@
     letter-spacing: 0.22em;
     text-transform: uppercase;
   }
+  .tick-label::before,
   .arch-tick::before {
     content: "";
     width: 2.5rem;
-    height: 1px;
+    height: 2px;
     background: var(--color-accent);
   }
 
-  /* Wielki, redakcyjny numer indeksu (architektoniczny) */
+  /* Wielki, "ghostowy" numer indeksu (rysunek techniczny).
+     Tusz o niskiej kryciu — NIE lime (lime niewidoczny na papierze). */
   .arch-index {
     font-family: var(--font-display);
     font-weight: 800;
     font-variant-numeric: tabular-nums;
     line-height: 0.8;
-    color: var(--color-accent);
+    color: rgba(var(--ink-rgb) / 0.16);
+  }
+
+  /* Liczby techniczne — tabular dla "spec" feel */
+  .tnum {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
   }
 }
 
@@ -282,18 +337,15 @@
 }
 
 /* =============================================
-   INDUSTRIES MARQUEE
-   Pozioma taśma branż — sklejona z dolną
-   krawędzią Hero (bez marginesu).
+   INDUSTRIES MARQUEE — jedyny marquee na stronie.
+   Lime hi-vis pas (kod bezpieczeństwa budowy).
    ============================================= */
 .industries-marquee {
   position: relative;
   width: 100%;
   margin-top: 0;
   background: var(--color-accent);
-  color: #ffffff;
-  border-top: 1px solid var(--color-accent);
-  border-bottom: 1px solid var(--color-accent);
+  color: var(--color-accent-foreground);
   overflow: hidden;
   isolation: isolate;
 }
@@ -302,12 +354,9 @@
   position: relative;
   width: 100%;
   overflow: hidden;
-  /* Węższy pasek — mniejszy padding pionowy */
-  padding-block: clamp(0.55rem, 0.9vw, 0.9rem);
-  /* Cienkie linie nad i pod tekstem — w kolorze marki,
-     lekko przyciemnione dla widoczności na lime */
-  border-top: 1px solid rgba(10, 10, 10, 0.18);
-  border-bottom: 1px solid rgba(10, 10, 10, 0.18);
+  padding-block: clamp(0.6rem, 0.95vw, 0.95rem);
+  border-top: 1px solid rgba(20, 22, 10, 0.22);
+  border-bottom: 1px solid rgba(20, 22, 10, 0.22);
 }
 
 .industries-marquee__track {
@@ -330,21 +379,20 @@
   flex-shrink: 0;
   font-family: var(--font-display);
   font-weight: 800;
-  /* Mniejszy tekst — dopasowany do węższego paska */
   font-size: clamp(0.75rem, 1.2vw, 1.05rem);
-  letter-spacing: 0.01em;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
-  color: #000000;
+  color: var(--color-accent-foreground);
   line-height: 1;
 }
 
 .industries-marquee__sep {
   flex-shrink: 0;
   display: inline-block;
-  width: 0.35rem;
-  height: 0.35rem;
-  border-radius: 9999px;
-  background: rgba(0, 0, 0, 0.7);
+  width: 0.4rem;
+  height: 0.4rem;
+  background: var(--color-accent-foreground);
+  transform: rotate(45deg);
 }
 
 @keyframes industries-marquee-scroll {
@@ -352,7 +400,6 @@
     transform: translate3d(0, 0, 0);
   }
   to {
-    /* -50% bo zawartość jest podwojona — pętla bez sklejki */
     transform: translate3d(-50%, 0, 0);
   }
 }
@@ -365,159 +412,34 @@
 }
 
 /* =============================================
-   LOGOS SHOWCASE
-   Sekcja z rotującymi logotypami pod marquee.
-   Mechanika wzorowana na Wpromote — heading
-   z linią po prawej, 4 sloty x cross-fade 8s.
-   ============================================= */
-.logos-showcase {
-  position: relative;
-  width: 100%;
-  background: var(--color-background);
-  padding-top: clamp(4.5rem, 8vw, 8rem);
-  padding-bottom: clamp(5.75rem, 10vw, 10rem);
-  color: var(--color-foreground);
-}
-
-.logos-showcase__heading {
-  display: flex;
-  align-items: center;
-  column-gap: 1.25rem;
-  margin-bottom: clamp(1.75rem, 3vw, 3rem);
-}
-
-@media (min-width: 768px) {
-  .logos-showcase__heading {
-    column-gap: 1.75rem;
-  }
-}
-
-.logos-showcase__heading::after {
-  content: "";
-  flex: 1;
-  display: inline-block;
-  height: 1px;
-  background-color: var(--color-accent);
-}
-
-.logos-showcase__title {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: clamp(1rem, 1.5vw, 1.25rem);
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  color: var(--color-foreground);
-  margin: 0;
-  line-height: 1.4;
-  white-space: nowrap;
-}
-
-.logos-marquee {
-  position: relative;
-  width: 100%;
-}
-
-.logos-marquee__viewport {
-  width: 100%;
-  overflow: hidden;
-}
-
-.logos-marquee__track {
-  display: flex;
-  align-items: center;
-  width: max-content;
-  /* Brak gap — slot ma swój wewnętrzny "oddech" przez max-width na obrazku */
-  gap: 0;
-  /* Animacja w prawo (przeciwnie do paska branż powyżej) */
-  animation: logos-marquee-scroll 45s linear infinite;
-  will-change: transform;
-}
-
-.logos-marquee__slot {
-  flex-shrink: 0;
-  /* Równy odstęp między logami: left+right padding łączą się w stały gap.
-     Wymóg dla bezszwowej pętli — każdy slot ma identyczny padding po obu stronach. */
-  padding: 0 36px;
-  min-height: 96px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.logos-marquee__img {
-  width: auto;
-  height: 38px;
-  object-fit: contain;
-  /* Loga są monochromatyczne (czarne) — odwracamy do bieli na ciemnym tle */
-  filter: brightness(0) invert(1);
-}
-
-.logos-marquee__img--prominent {
-  height: 64px;
-}
-
-@keyframes logos-marquee-scroll {
-  /* 4 kopie w sekwencji; przesuwamy dokładnie szerokość jednej kopii = 25% całości,
-     aby pętla była bezszwowa i tor zawsze pokrywał viewport. */
-  from {
-    transform: translate3d(-25%, 0, 0);
-  }
-  to {
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .logos-marquee__track {
-    animation: none;
-    transform: none;
-  }
-}
-
-/* =============================================
-   FILMOWE ZIARNO — stały, subtelny overlay.
-   pointer-events:none + position:fixed = brak
-   kosztu repaintu przy scrollu (Sekcja 6.E).
-   ============================================= */
-.grain {
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  pointer-events: none;
-  opacity: 0.045;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 160px 160px;
-}
-
-/* =============================================
-   PRIMARY CTA — "drogi", nie pulsujący bez końca.
-   Spoczynek: subtelny cień marki + górny highlight.
-   Hover: delikatne uniesienie i mocniejsza poświata.
+   PRIMARY CTA — lime, "drogi", nie pulsujący.
+   Spoczynek: tonowany cień. Hover: subtelne uniesienie.
    ============================================= */
 .cta-pulse {
   position: relative;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.28),
-    0 10px 30px -12px rgba(var(--accent-rgb) / 0.5);
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 12px 28px -14px rgba(var(--accent-rgb) / 0.85),
+    0 6px 16px -10px rgba(21, 22, 14, 0.4);
   transition: transform 0.32s var(--ease-lux), box-shadow 0.32s var(--ease-lux);
   will-change: transform;
 }
 .cta-pulse:hover {
   transform: translateY(-2px);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.38),
-    0 18px 46px -12px rgba(var(--accent-rgb) / 0.72);
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 20px 42px -14px rgba(var(--accent-rgb) / 0.95),
+    0 10px 22px -10px rgba(21, 22, 14, 0.45);
 }
 
 /* =============================================
    FLOATING CTA — "Porozmawiajmy"
-   Spokojne "oddychanie" zamiast głośnego pulsu —
-   sygnał dostępności, nie alarm.
+   Spokojne "oddychanie" — sygnał dostępności.
    ============================================= */
 .floating-cta {
   position: relative;
   box-shadow:
-    0 16px 38px rgba(0, 0, 0, 0.45),
+    0 16px 38px -10px rgba(21, 22, 14, 0.35),
     0 0 0 0 rgba(var(--accent-rgb) / 0);
   transition: transform 0.4s var(--ease-lux), box-shadow 0.4s var(--ease-lux);
   animation: cta-breathe 4.6s var(--ease-lux) infinite;
@@ -527,8 +449,8 @@
   transform: scale(1.06);
   animation-play-state: paused;
   box-shadow:
-    0 20px 46px rgba(0, 0, 0, 0.55),
-    0 0 0 10px rgba(var(--accent-rgb) / 0.16);
+    0 20px 46px -10px rgba(21, 22, 14, 0.4),
+    0 0 0 10px rgba(var(--accent-rgb) / 0.22);
 }
 .floating-cta:active {
   transform: scale(0.97);
@@ -537,10 +459,10 @@
 @keyframes cta-breathe {
   0%,
   100% {
-    box-shadow: 0 16px 38px rgba(0, 0, 0, 0.45), 0 0 0 0 rgba(var(--accent-rgb) / 0);
+    box-shadow: 0 16px 38px -10px rgba(21, 22, 14, 0.35), 0 0 0 0 rgba(var(--accent-rgb) / 0);
   }
   50% {
-    box-shadow: 0 16px 38px rgba(0, 0, 0, 0.45), 0 0 0 9px rgba(var(--accent-rgb) / 0.09);
+    box-shadow: 0 16px 38px -10px rgba(21, 22, 14, 0.35), 0 0 0 9px rgba(var(--accent-rgb) / 0.18);
   }
 }
 

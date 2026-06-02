@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { Reveal } from "./Reveal";
-import { ParallaxReveal } from "./ParallaxReveal";
 import { GUARANTEES } from "../lib/content";
 
 export function GuaranteesSection() {
@@ -8,42 +7,43 @@ export function GuaranteesSection() {
     GUARANTEES;
 
   return (
-    <section className="pt-16 lg:pt-24 pb-24 lg:pb-36">
+    <section className="border-t border-card-border py-20 lg:py-28">
       <div className="container-content">
-        <ParallaxReveal
+        <Reveal
           as="h2"
-          className="font-display font-bold text-center text-[clamp(1.5rem,3vw,2.75rem)] leading-tight tracking-tight whitespace-normal lg:whitespace-nowrap"
+          className="max-w-3xl font-display text-[clamp(1.7rem,3.4vw,2.75rem)] font-extrabold leading-[1.1] tracking-tight"
         >
           {headingLine1}{" "}
-          <span className="text-accent">{headingLine2}</span>
-        </ParallaxReveal>
+          <span className="underline-accent">{headingLine2}</span>
+        </Reveal>
 
-        <ParallaxReveal
+        <Reveal
           as="p"
-          className="text-center text-lg lg:text-xl mt-6 max-w-3xl mx-auto leading-relaxed text-balance"
+          delay={60}
+          className="mt-6 max-w-3xl text-lg leading-relaxed text-muted-strong lg:text-xl"
         >
           {subheadingPrefix}{" "}
-          <span className="text-accent">{subheadingAccent}</span>
-        </ParallaxReveal>
+          <span className="font-semibold text-foreground">{subheadingAccent}</span>
+        </Reveal>
 
         {/* Numerowany pas z włosowymi pionowymi liniami — bez pudełek-kart */}
-        <div className="grid md:grid-cols-3 gap-12 md:gap-0 mt-16 lg:mt-24 md:divide-x md:divide-card-border">
+        <div className="mt-14 grid gap-12 border-t border-card-border pt-12 md:grid-cols-3 md:gap-0 md:divide-x md:divide-card-border lg:mt-16">
           {items.map((item, i) => (
             <Reveal
               key={item.title}
-              delay={i * 0.1}
-              className="flex flex-col md:px-8 lg:px-10 first:md:pl-0 last:md:pr-0"
+              delay={i * 90}
+              className="flex flex-col first:md:pl-0 last:md:pr-0 md:px-8 lg:px-10"
             >
               <div className="flex items-baseline gap-4 lg:min-h-[4rem]">
                 <span className="arch-index text-5xl lg:text-6xl">
                   {item.number.replace(".", "")}
                 </span>
-                <h3 className="font-display font-bold text-xl lg:text-2xl leading-tight">
+                <h3 className="font-display text-xl font-bold leading-tight lg:text-2xl">
                   {item.title}
                 </h3>
               </div>
 
-              <div className="relative aspect-[4/3] rounded-xl overflow-hidden surface-panel mt-7">
+              <div className="relative mt-7 aspect-[4/3] overflow-hidden border border-card-border bg-surface-sunken">
                 <Image
                   src={item.image}
                   alt=""
@@ -54,10 +54,10 @@ export function GuaranteesSection() {
                 />
               </div>
 
-              <p className="text-muted-strong leading-relaxed mt-6">
+              <p className="mt-6 leading-relaxed text-muted-strong">
                 {item.bodyParts.map((part, j) =>
                   "accent" in part && part.accent ? (
-                    <span key={j} className="text-accent">
+                    <span key={j} className="font-semibold text-foreground underline-accent">
                       {part.text}
                     </span>
                   ) : (

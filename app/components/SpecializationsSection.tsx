@@ -1,13 +1,6 @@
 "use client";
 
-import { useRef } from "react";
 import Image from "next/image";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useReducedMotion,
-} from "motion/react";
 import { Reveal } from "./Reveal";
 import { SPECIALIZATIONS } from "../lib/content";
 
@@ -28,38 +21,23 @@ const WIDE = new Set([3, 4]);
 export function SpecializationsSection() {
   const { headingPrefix, headingAccent, items } = SPECIALIZATIONS;
 
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const reduced = useReducedMotion();
-
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-  const headingY = useTransform(scrollYProgress, [0, 0.25], [60, 0], {
-    clamp: true,
-  });
-
   return (
-    <section className="pt-16 lg:pt-24 pb-24 lg:pb-36">
-      <div ref={sectionRef} className="container-content">
-        <motion.h2
-          style={reduced ? undefined : { y: headingY }}
-          className="font-display font-bold text-center text-[clamp(1.5rem,3vw,2.5rem)] leading-tight tracking-tight max-w-5xl mx-auto text-balance will-change-transform"
+    <section className="border-t border-card-border py-20 lg:py-28">
+      <div className="container-content">
+        <Reveal
+          as="h2"
+          className="max-w-3xl font-display text-[clamp(1.7rem,3.4vw,2.75rem)] font-extrabold leading-[1.1] tracking-tight"
         >
           {headingPrefix}{" "}
-          <span className="text-accent">{headingAccent}</span>
-        </motion.h2>
+          <span className="underline-accent">{headingAccent}</span>
+        </Reveal>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-x-5 gap-y-10 lg:gap-y-12 mt-16 lg:mt-20">
+        <div className="mt-14 grid grid-cols-1 gap-x-5 gap-y-10 sm:grid-cols-2 lg:mt-16 lg:grid-cols-12 lg:gap-y-12">
           {items.map((item, i) => (
-            <Reveal
-              key={item.label}
-              delay={(i % 3) * 0.06}
-              className={TILE_SPAN[i]}
-            >
+            <Reveal key={item.label} delay={(i % 3) * 60} className={TILE_SPAN[i]}>
               <div className="group">
                 <div
-                  className={`relative overflow-hidden rounded-xl surface-panel aspect-[4/3] ${
+                  className={`relative overflow-hidden border border-card-border bg-surface-sunken aspect-[4/3] ${
                     WIDE.has(i) ? "lg:aspect-[16/9]" : ""
                   }`}
                 >
@@ -71,22 +49,18 @@ export function SpecializationsSection() {
                     className="object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] group-hover:scale-[1.05]"
                     unoptimized
                   />
-                  <div
-                    className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"
-                    aria-hidden="true"
-                  />
-                  {/* Linia marki — wjeżdża od lewej na hover (znacznik architektoniczny) */}
+                  {/* Linia marki — wjeżdża od lewej na hover (znacznik strukturalny) */}
                   <span
                     aria-hidden="true"
-                    className="absolute bottom-0 left-0 h-[2px] w-full origin-left scale-x-0 bg-accent transition-transform duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] group-hover:scale-x-100"
+                    className="absolute bottom-0 left-0 h-[3px] w-full origin-left scale-x-0 bg-accent transition-transform duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] group-hover:scale-x-100"
                   />
                 </div>
 
                 <div className="mt-4 flex items-baseline justify-between gap-4">
-                  <h3 className="font-semibold text-base lg:text-lg leading-snug text-foreground group-hover:text-accent transition-colors">
+                  <h3 className="text-base font-semibold leading-snug text-foreground lg:text-lg">
                     {item.label}
                   </h3>
-                  <span className="arch-index text-sm text-accent/55">
+                  <span className="arch-index text-sm">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                 </div>

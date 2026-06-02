@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useRef, useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { Reveal } from "./Reveal";
-import { ParallaxReveal } from "./ParallaxReveal";
 import { PROCESS } from "../lib/content";
 
 export function ProcessSection() {
@@ -14,78 +13,80 @@ export function ProcessSection() {
 
   useEffect(() => {
     /**
-     * Aktywny krok wybierany jest deterministycznie: ten, którego środek jest
-     * najbliżej środka viewportu. Symetryczne dla scrolla w górę i w dół —
-     * nie pomijamy kroków przy zmianie kierunku.
+     * Aktywny krok = ten, który przecina środek viewportu.
+     * IntersectionObserver z rootMargin -50%/-50% tworzy "linię" na środku
+     * ekranu — bez nasłuchu na scroll (zgodnie z zasadami wydajności).
      */
-    let rafId: number | null = null;
-    const update = () => {
-      rafId = null;
-      const viewportCenter = window.innerHeight / 2;
-      let bestIdx = 0;
-      let bestDistance = Infinity;
-      stepRefs.current.forEach((el, idx) => {
-        if (!el) return;
-        const rect = el.getBoundingClientRect();
-        const elCenter = (rect.top + rect.bottom) / 2;
-        const distance = Math.abs(elCenter - viewportCenter);
-        if (distance < bestDistance) {
-          bestDistance = distance;
-          bestIdx = idx;
-        }
-      });
-      setActiveIdx(bestIdx);
-    };
-    const onScroll = () => {
-      if (rafId === null) rafId = requestAnimationFrame(update);
-    };
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      if (rafId !== null) cancelAnimationFrame(rafId);
-    };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const idx = Number((entry.target as HTMLElement).dataset.idx);
+            if (!Number.isNaN(idx)) setActiveIdx(idx);
+          }
+        });
+      },
+      { rootMargin: "-50% 0px -50% 0px", threshold: 0 }
+    );
+    stepRefs.current.forEach((el) => el && observer.observe(el));
+    return () => observer.disconnect();
   }, []);
 
   return (
-    <section id="jak-pracujemy" className="pt-16 lg:pt-24 pb-24 lg:pb-36">
+    <section id="jak-pracujemy" className="border-t border-card-border py-20 lg:py-28">
       <div className="container-content">
-        <ParallaxReveal as="h2" className="font-display font-bold text-center text-[clamp(1.6rem,3.2vw,2.5rem)] leading-tight tracking-tight max-w-4xl mx-auto">
+        <Reveal
+          as="h2"
+          className="max-w-3xl font-display text-[clamp(1.7rem,3.4vw,2.75rem)] font-extrabold leading-[1.1] tracking-tight"
+        >
           {heading.prefix}{" "}
-          <span className="text-accent">{heading.accent}</span>{" "}
+          <span className="underline-accent">{heading.accent}</span>{" "}
           {heading.suffix}
-        </ParallaxReveal>
+        </Reveal>
 
-        <ParallaxReveal as="p" className="text-foreground text-center mt-10 max-w-3xl mx-auto leading-relaxed">
-          <strong className="text-accent">WAŻNE!</strong> {important.prefix}{" "}
-          <strong className="text-accent">{important.accent}</strong>{" "}
+        <Reveal
+          as="p"
+          delay={60}
+          className="mt-6 max-w-3xl leading-relaxed text-muted-strong"
+        >
+          <span className="mr-1 bg-accent px-1.5 py-0.5 font-display text-xs font-extrabold uppercase tracking-wider text-accent-foreground">
+            Ważne
+          </span>{" "}
+          {important.prefix}{" "}
+          <span className="font-semibold text-foreground">{important.accent}</span>{" "}
           {important.suffix}
-        </ParallaxReveal>
+        </Reveal>
 
         {/* Layout: lewa lista | prawa sticky image */}
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 mt-20 lg:mt-28">
-          <div className="space-y-2">
+        <div className="mt-16 grid gap-8 lg:mt-20 lg:grid-cols-2 lg:gap-16">
+          <div>
             {steps.map((step, i) => {
               const isActive = i === activeIdx;
               return (
                 <div
                   key={step.number}
+                  data-idx={i}
                   ref={(el) => {
                     stepRefs.current[i] = el;
                   }}
-                  className="border-t border-card-border first:border-t-0 py-12"
+                  className="relative border-t border-card-border py-10 first:border-t-0"
                 >
+                  {/* Pasek aktywnego kroku */}
+                  <motion.span
+                    aria-hidden="true"
+                    className="absolute left-0 top-0 h-full w-[3px] origin-top bg-accent"
+                    animate={{ scaleY: isActive ? 1 : 0, opacity: isActive ? 1 : 0 }}
+                    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                  />
                   <motion.div
-                    animate={{ opacity: isActive ? 1 : 0.35 }}
+                    animate={{ opacity: isActive ? 1 : 0.4 }}
                     transition={{ duration: 0.5 }}
-                    className="flex items-baseline justify-between gap-4"
+                    className="flex items-baseline justify-between gap-4 pl-5"
                   >
-                    <h3 className="font-display font-bold text-2xl lg:text-3xl">
+                    <h3 className="font-display text-xl font-bold leading-tight tracking-tight lg:text-2xl">
                       {step.title}
                     </h3>
-                    <span className="text-xl lg:text-2xl font-light text-accent">
+                    <span className="arch-index flex-shrink-0 text-2xl lg:text-3xl">
                       {step.number}
                     </span>
                   </motion.div>
@@ -95,27 +96,15 @@ export function ProcessSection() {
                     animate={{
                       height: isActive ? "auto" : 0,
                       opacity: isActive ? 1 : 0,
-                      marginTop: isActive ? 16 : 0,
+                      marginTop: isActive ? 14 : 0,
                     }}
                     transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                    className="overflow-hidden"
+                    className="overflow-hidden pl-5"
                   >
-                    <p className="text-muted-strong leading-relaxed max-w-lg">
+                    <p className="max-w-lg leading-relaxed text-muted-strong">
                       {step.body}
                     </p>
                   </motion.div>
-
-                  {/* Progress bar */}
-                  <div className="mt-6 h-px bg-card-border-strong overflow-hidden">
-                    <motion.div
-                      className="h-full bg-accent origin-left"
-                      animate={{ scaleX: isActive ? 1 : 0 }}
-                      transition={{
-                        duration: isActive ? 0.8 : 0.3,
-                        ease: "easeOut",
-                      }}
-                    />
-                  </div>
                 </div>
               );
             })}
@@ -124,13 +113,13 @@ export function ProcessSection() {
           {/* Sticky image */}
           <div className="hidden lg:block">
             <div className="sticky top-32">
-              <div className="surface-panel rounded-2xl overflow-hidden aspect-[3/4] max-h-[80vh]">
+              <div className="aspect-[3/4] max-h-[80vh] overflow-hidden border border-card-border bg-surface-sunken">
                 <Image
                   src={image}
                   alt="Konsultacja z klientem dotycząca stworzenia strony internetowej dla firmy budowlanej"
                   width={768}
                   height={1024}
-                  className="w-full h-full object-cover"
+                  className="h-full w-full object-cover"
                   unoptimized
                 />
               </div>
@@ -139,13 +128,13 @@ export function ProcessSection() {
 
           {/* Mobile image */}
           <div className="lg:hidden">
-            <div className="surface-panel rounded-2xl overflow-hidden aspect-[4/5]">
+            <div className="aspect-[4/5] overflow-hidden border border-card-border bg-surface-sunken">
               <Image
                 src={image}
                 alt=""
                 width={768}
                 height={1024}
-                className="w-full h-full object-cover"
+                className="h-full w-full object-cover"
                 unoptimized
               />
             </div>

@@ -1,22 +1,21 @@
 import { Reveal } from "./Reveal";
-import { ParallaxReveal } from "./ParallaxReveal";
 import { Button } from "./Button";
 import { PRICING } from "../lib/content";
 
-function CheckIcon() {
+function CheckIcon({ className = "" }: { className?: string }) {
   return (
     <svg
       width="14"
       height="14"
       viewBox="0 0 14 14"
       fill="none"
-      className="flex-shrink-0 mt-1 text-accent"
+      className={`mt-1 flex-shrink-0 ${className}`}
       aria-hidden="true"
     >
       <path
         d="M2 7.5L5.5 11L12 3"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth="2.25"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -28,72 +27,72 @@ export function PricingSection() {
   const { heading, subtitle, plans, footnote } = PRICING;
 
   return (
-    <section id="cennik" className="pt-16 lg:pt-24 pb-24 lg:pb-36">
+    <section id="cennik" className="border-t border-card-border bg-surface-sunken py-20 lg:py-28">
       <div className="container-content">
-        <ParallaxReveal
+        <Reveal
           as="h2"
-          className="font-display font-bold text-center text-[clamp(2rem,4vw,3rem)] leading-tight tracking-tight max-w-5xl mx-auto text-balance"
+          className="max-w-3xl font-display text-[clamp(1.9rem,3.8vw,3rem)] font-extrabold leading-[1.1] tracking-tight"
         >
-          <span className="text-accent">{heading.accent}</span>
+          <span className="underline-accent">{heading.accent}</span>
           {heading.rest}
-        </ParallaxReveal>
+        </Reveal>
 
-        <ParallaxReveal
+        <Reveal
           as="p"
-          className="text-foreground font-bold text-center text-lg lg:text-xl mt-6 max-w-3xl mx-auto leading-snug text-balance"
+          delay={60}
+          className="mt-5 max-w-3xl text-lg font-medium leading-snug text-muted-strong lg:text-xl"
         >
-          <span className="text-accent">{subtitle.accent}</span>
+          <span className="font-bold text-foreground">{subtitle.accent}</span>
           {subtitle.rest}{" "}
-          <span className="text-accent">{subtitle.note}</span>
-        </ParallaxReveal>
+          <span className="ml-1 whitespace-nowrap bg-accent px-1.5 py-0.5 text-sm font-bold text-accent-foreground">
+            {subtitle.note}
+          </span>
+        </Reveal>
 
         {/* Panele warstwowe — każdy plan ma własną przestrzeń */}
-        <div className="mt-16 lg:mt-24 max-w-6xl mx-auto flex flex-col gap-6 lg:gap-8">
+        <div className="mt-14 flex flex-col gap-6 lg:mt-16 lg:gap-8">
           {plans.map((plan, i) => (
-            <Reveal key={plan.name} delay={i * 0.06}>
+            <Reveal key={plan.name} delay={i * 60}>
               <article
-                className={`relative overflow-hidden rounded-2xl p-7 lg:p-12 ${
+                className={`relative overflow-hidden p-7 lg:p-12 ${
                   plan.highlighted
                     ? "surface-panel surface-panel--accent edge-accent-top"
                     : "surface-panel"
                 }`}
               >
-                <div className="grid lg:grid-cols-12 gap-10 lg:gap-14">
+                <div className="grid gap-10 lg:grid-cols-12 lg:gap-14">
                   {/* Tożsamość planu */}
-                  <div className="lg:col-span-5 flex flex-col">
+                  <div className="flex flex-col lg:col-span-5">
                     <div className="flex items-start justify-between gap-4">
-                      <div className="text-[11px] font-bold uppercase tracking-[0.22em] text-subtle">
+                      <div className="font-display text-[11px] font-bold uppercase tracking-[0.22em] text-subtle">
                         {plan.eyebrow}
                       </div>
-                      <span className="arch-index text-3xl lg:text-4xl text-accent/30 leading-none">
+                      <span className="arch-index text-3xl leading-none lg:text-4xl">
                         {String(i + 1).padStart(2, "0")}
                       </span>
                     </div>
 
-                    <div className="mt-5 flex items-baseline gap-3 flex-wrap">
-                      <span className="font-display font-bold text-4xl lg:text-5xl tracking-tight">
+                    <div className="mt-5 flex flex-wrap items-baseline gap-3">
+                      <span className="font-display text-4xl font-extrabold tracking-tight tnum lg:text-5xl">
                         {plan.price}
                       </span>
                       {plan.highlighted && plan.badge && (
-                        <span className="inline-flex items-center gap-2 text-accent text-xs font-bold uppercase tracking-[0.14em]">
-                          <span className="h-px w-4 bg-accent" />
+                        <span className="bg-accent px-2 py-1 text-xs font-bold uppercase tracking-[0.12em] text-accent-foreground">
                           {plan.badge}
                         </span>
                       )}
                     </div>
 
-                    <p className="mt-5 font-bold text-foreground text-lg leading-snug">
+                    <p className="mt-5 text-lg font-bold leading-snug text-foreground">
                       {plan.tagline}
                     </p>
 
-                    <p className="mt-4 text-muted leading-relaxed">
-                      <span className="font-semibold text-muted-strong">
-                        Dla kogo?:
-                      </span>{" "}
+                    <p className="mt-4 leading-relaxed text-muted">
+                      <span className="font-semibold text-muted-strong">Dla kogo?:</span>{" "}
                       {plan.audience}
                     </p>
 
-                    <div className="mt-8 lg:mt-auto pt-2">
+                    <div className="mt-8 pt-2 lg:mt-auto">
                       <Button
                         href={plan.cta.href}
                         variant={plan.highlighted ? "primary" : "outline"}
@@ -107,23 +106,23 @@ export function PricingSection() {
 
                   {/* Korzyści */}
                   <div className="lg:col-span-7 lg:border-l lg:border-card-border lg:pl-14">
-                    <div className="text-accent text-[11px] font-bold tracking-[0.2em] uppercase mb-6">
+                    <div className="mb-6 font-display text-[11px] font-bold uppercase tracking-[0.2em] text-muted-strong">
                       {plan.featuresHeading}
                     </div>
-                    <ul className="grid sm:grid-cols-2 gap-x-8 gap-y-5">
+                    <ul className="grid gap-x-8 gap-y-5 sm:grid-cols-2">
                       {plan.features.map((feature, idx) => (
                         <li key={idx} className="flex gap-3">
-                          <CheckIcon />
+                          <CheckIcon className="text-foreground" />
                           <div>
                             <h4
-                              className={`font-semibold text-[15px] leading-snug ${
-                                feature.accent ? "text-accent" : "text-foreground"
+                              className={`text-[15px] font-semibold leading-snug text-foreground ${
+                                feature.accent ? "underline-accent" : ""
                               }`}
                             >
                               {feature.title}
                             </h4>
                             {feature.description && (
-                              <p className="text-muted text-sm leading-relaxed mt-1">
+                              <p className="mt-1 text-sm leading-relaxed text-muted">
                                 {feature.description}
                               </p>
                             )}
@@ -139,9 +138,9 @@ export function PricingSection() {
         </div>
 
         <Reveal
-          delay={0.1}
+          delay={80}
           as="p"
-          className="mt-16 lg:mt-20 text-muted-strong text-center max-w-4xl mx-auto leading-relaxed text-lg"
+          className="mx-auto mt-14 max-w-4xl text-lg leading-relaxed text-muted-strong"
         >
           {footnote}
         </Reveal>

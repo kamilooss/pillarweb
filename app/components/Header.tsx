@@ -7,6 +7,12 @@ import { Logo } from "./Logo";
 import { Button } from "./Button";
 import { NAV_LINKS, SITE } from "../lib/content";
 
+const PhoneIcon = ({ className }: { className?: string }) => (
+  <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" className={className}>
+    <path d="M2 3a1 1 0 011-1h2.5a1 1 0 011 .8l.6 3a1 1 0 01-.3 1L5.5 8.2a12 12 0 005.3 5.3l1.4-1.3a1 1 0 011-.3l3 .6a1 1 0 01.8 1V16a1 1 0 01-1 1A14 14 0 012 4z" />
+  </svg>
+);
+
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -19,7 +25,6 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // blokada scrolla gdy mobile menu otwarte
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
     return () => {
@@ -31,15 +36,15 @@ export function Header() {
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "backdrop-blur-md bg-background/85 border-b border-card-border"
-          : "bg-transparent"
+          ? "border-b border-card-border bg-background/85 backdrop-blur-md"
+          : "border-b border-transparent bg-transparent"
       }`}
     >
       <div className="container-content flex h-20 items-center justify-between gap-6">
         <Logo />
 
         {/* Desktop nav */}
-        <nav className="hidden lg:flex items-center gap-1" aria-label="Główna nawigacja">
+        <nav className="hidden items-center gap-1 lg:flex" aria-label="Główna nawigacja">
           {NAV_LINKS.map((link) => {
             if ("children" in link && link.children) {
               return (
@@ -50,7 +55,7 @@ export function Header() {
                   onMouseLeave={() => setOpenDropdown(null)}
                 >
                   <button
-                    className="flex items-center gap-1 px-4 py-2 text-[15px] text-foreground hover:text-accent transition-colors"
+                    className="flex items-center gap-1 px-4 py-2 text-[15px] text-muted-strong transition-colors hover:text-foreground"
                     aria-expanded={openDropdown === link.label}
                   >
                     {link.label}
@@ -82,17 +87,18 @@ export function Header() {
                         transition={{ duration: 0.18, ease: "easeOut" }}
                         className="absolute left-1/2 top-full -translate-x-1/2 pt-3"
                       >
-                        <div className="w-[640px] rounded-xl border border-card-border bg-card-elevated p-2 shadow-2xl">
+                        <div className="w-[640px] border border-card-border bg-card-elevated p-2 shadow-[0_30px_60px_-30px_rgba(21,22,14,0.4)]">
                           {link.children.map((child) => (
                             <Link
                               key={child.href}
                               href={child.href}
-                              className="block rounded-lg px-4 py-3 hover:bg-card transition-colors group"
+                              className="group block px-4 py-3 transition-colors hover:bg-card"
                             >
-                              <div className="font-semibold text-foreground group-hover:text-accent transition-colors">
+                              <div className="flex items-center gap-2 font-semibold text-foreground">
+                                <span className="h-2 w-2 bg-accent opacity-0 transition-opacity group-hover:opacity-100" aria-hidden="true" />
                                 {child.label}
                               </div>
-                              <div className="mt-1 text-sm text-muted leading-relaxed">
+                              <div className="mt-1 text-sm leading-relaxed text-muted">
                                 {child.description}
                               </div>
                             </Link>
@@ -108,7 +114,7 @@ export function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="px-4 py-2 text-[15px] text-foreground hover:text-accent transition-colors"
+                className="px-4 py-2 text-[15px] text-muted-strong transition-colors hover:text-foreground"
               >
                 {link.label}
               </Link>
@@ -117,30 +123,25 @@ export function Header() {
         </nav>
 
         {/* Right side: phone + CTA */}
-        <div className="hidden lg:flex items-center gap-5">
+        <div className="hidden items-center gap-5 lg:flex">
           <a
             href={`tel:${SITE.phoneTel}`}
-            className="flex items-center gap-2 text-foreground hover:text-accent transition-colors"
+            className="group flex items-center gap-2.5 text-foreground transition-colors"
           >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              aria-hidden="true"
-              className="text-accent"
-            >
-              <path d="M2 3a1 1 0 011-1h2.5a1 1 0 011 .8l.6 3a1 1 0 01-.3 1L5.5 8.2a12 12 0 005.3 5.3l1.4-1.3a1 1 0 011-.3l3 .6a1 1 0 01.8 1V16a1 1 0 01-1 1A14 14 0 012 4z" />
-            </svg>
-            <span className="font-medium">{SITE.phone}</span>
+            <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-foreground/25 transition-colors group-hover:border-foreground group-hover:bg-accent">
+              <PhoneIcon />
+            </span>
+            <span className="font-medium tnum">{SITE.phone}</span>
           </a>
-          <Button href={SITE.contactAnchor} className="ml-2">{SITE.cta}</Button>
+          <Button href={SITE.contactAnchor} className="ml-2">
+            {SITE.cta}
+          </Button>
         </div>
 
         {/* Mobile burger */}
         <button
           onClick={() => setMobileOpen((v) => !v)}
-          className="lg:hidden flex flex-col gap-1.5 p-2"
+          className="flex flex-col gap-1.5 p-2 lg:hidden"
           aria-label={mobileOpen ? "Zamknij menu" : "Otwórz menu"}
           aria-expanded={mobileOpen}
         >
@@ -170,9 +171,9 @@ export function Header() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="lg:hidden fixed inset-0 top-20 z-40 bg-background overflow-y-auto"
+            className="fixed inset-0 top-20 z-40 overflow-y-auto bg-background lg:hidden"
           >
-            <div className="container-content py-8 flex flex-col gap-1">
+            <div className="container-content flex flex-col gap-1 py-8">
               {NAV_LINKS.map((link) => (
                 <div key={link.label} className="border-b border-card-border">
                   <Link
@@ -183,13 +184,13 @@ export function Header() {
                     {link.label}
                   </Link>
                   {"children" in link && link.children && (
-                    <div className="pb-4 pl-4 flex flex-col gap-2">
+                    <div className="flex flex-col gap-2 pb-4 pl-4">
                       {link.children.map((child) => (
                         <Link
                           key={child.href}
                           href={child.href}
                           onClick={() => setMobileOpen(false)}
-                          className="block py-2 text-muted hover:text-accent"
+                          className="block py-2 text-muted transition-colors hover:text-foreground"
                         >
                           {child.label}
                         </Link>
@@ -203,10 +204,10 @@ export function Header() {
                   href={`tel:${SITE.phoneTel}`}
                   className="flex items-center gap-3 text-lg font-semibold"
                 >
-                  <svg width="22" height="22" viewBox="0 0 20 20" fill="currentColor" className="text-accent" aria-hidden="true">
-                    <path d="M2 3a1 1 0 011-1h2.5a1 1 0 011 .8l.6 3a1 1 0 01-.3 1L5.5 8.2a12 12 0 005.3 5.3l1.4-1.3a1 1 0 011-.3l3 .6a1 1 0 01.8 1V16a1 1 0 01-1 1A14 14 0 012 4z" />
-                  </svg>
-                  {SITE.phone}
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-foreground/25">
+                    <PhoneIcon className="h-[22px] w-[22px]" />
+                  </span>
+                  <span className="tnum">{SITE.phone}</span>
                 </a>
                 <Button
                   href={SITE.contactAnchor}

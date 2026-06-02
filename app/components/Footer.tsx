@@ -20,13 +20,13 @@ export function Footer() {
             <div className="arch-tick mb-5">Kontakt</div>
             <a
               href={`tel:${SITE.phoneTel}`}
-              className="block font-display font-bold text-2xl tracking-tight hover:text-accent transition-colors"
+              className="block font-display font-bold text-2xl tracking-tight hover:text-foreground transition-colors"
             >
               {SITE.phone}
             </a>
             <Link
               href={SITE.contactAnchor}
-              className="mt-4 inline-block text-muted hover:text-accent transition-colors text-sm"
+              className="mt-4 inline-block text-muted hover:text-foreground transition-colors text-sm"
             >
               {SITE.cta}
             </Link>
@@ -39,7 +39,7 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-muted hover:text-accent transition-colors text-sm"
+                    className="text-muted hover:text-foreground transition-colors text-sm"
                   >
                     {link.label}
                   </Link>

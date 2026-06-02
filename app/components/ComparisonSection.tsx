@@ -1,11 +1,10 @@
 import { Reveal } from "./Reveal";
-import { ParallaxReveal } from "./ParallaxReveal";
 import { COMPARISON } from "../lib/content";
 
 function AccentCheck() {
   return (
     <span
-      className="inline-flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-accent shadow-[0_0_24px_-8px_var(--color-accent)]"
+      className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-accent sm:h-8 sm:w-8"
       aria-label="Tak"
     >
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
@@ -24,7 +23,7 @@ function AccentCheck() {
 function MutedCheck() {
   return (
     <span
-      className="inline-flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/[0.06] text-white/55"
+      className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-foreground/[0.07] text-foreground/45 sm:h-8 sm:w-8"
       aria-label="Tak"
     >
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
@@ -43,7 +42,7 @@ function MutedCheck() {
 function MissingX() {
   return (
     <span
-      className="inline-flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/[0.03] text-white/30"
+      className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-foreground/[0.04] text-foreground/30 sm:h-8 sm:w-8"
       aria-label="Nie"
     >
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
@@ -60,7 +59,7 @@ function MissingX() {
 
 function PlanBadge({ label }: { label: string }) {
   return (
-    <span className="ml-2 inline-flex items-center rounded-full border border-accent/40 bg-accent/[0.08] text-accent text-[10px] font-bold uppercase tracking-[0.12em] px-2 py-0.5 align-middle whitespace-nowrap">
+    <span className="ml-2 inline-flex items-center bg-accent px-2 py-0.5 align-middle text-[10px] font-bold uppercase tracking-[0.1em] text-accent-foreground whitespace-nowrap">
       {label}
     </span>
   );
@@ -73,42 +72,40 @@ export function ComparisonSection() {
     "grid-cols-[minmax(0,1fr)_56px_72px] sm:grid-cols-[minmax(0,1fr)_minmax(140px,180px)_minmax(160px,220px)]";
 
   return (
-    <section className="pt-16 lg:pt-24 pb-24 lg:pb-36">
+    <section className="border-t border-card-border py-20 lg:py-28">
       <div className="container-content">
-        <ParallaxReveal
+        <Reveal
           as="h2"
-          className="font-display font-bold text-center text-[clamp(2rem,4vw,3rem)] leading-tight tracking-tight max-w-5xl mx-auto"
+          className="max-w-3xl font-display text-[clamp(1.9rem,3.8vw,3rem)] font-extrabold leading-[1.1] tracking-tight"
         >
-          <span className="text-accent">{heading.accent}</span>
+          <span className="underline-accent">{heading.accent}</span>
           {heading.rest}
-        </ParallaxReveal>
+        </Reveal>
 
-        <ParallaxReveal
+        <Reveal
           as="p"
-          className="text-muted-strong text-center text-base sm:text-lg mt-6 max-w-3xl mx-auto leading-relaxed"
+          delay={60}
+          className="mt-5 max-w-3xl text-base leading-relaxed text-muted-strong sm:text-lg"
         >
           {subtitle}
-        </ParallaxReveal>
+        </Reveal>
 
-        <Reveal delay={0.1} className="mt-16 lg:mt-20 max-w-5xl mx-auto">
-          <div className="surface-panel rounded-2xl overflow-hidden">
+        <Reveal delay={80} className="mt-14 lg:mt-16">
+          <div className="surface-panel overflow-hidden">
             {/* Header row */}
             <div className={`grid ${cols} items-stretch border-b border-card-border-strong`}>
-              <div className="px-4 sm:px-8 py-5 text-xs sm:text-sm font-bold uppercase tracking-[0.18em] text-muted">
+              <div className="px-4 py-5 text-xs font-bold uppercase tracking-[0.18em] text-muted sm:px-8 sm:text-sm">
                 {columns.criterion}
               </div>
-              <div className="px-2 sm:px-4 py-5 text-center text-[11px] sm:text-sm font-bold text-muted-strong border-l border-card-border self-center leading-tight">
+              <div className="self-center border-l border-card-border px-2 py-5 text-center text-[11px] font-bold leading-tight text-muted-strong sm:px-4 sm:text-sm">
                 {columns.others}
               </div>
-              <div className="relative px-2 sm:px-4 py-5 text-center border-l border-card-border-strong bg-accent/[0.05] self-stretch flex flex-col justify-center">
-                <span
-                  aria-hidden="true"
-                  className="absolute top-0 left-0 right-0 h-[3px] bg-accent"
-                />
-                <div className="font-display font-bold text-sm sm:text-lg text-accent leading-tight">
+              <div className="relative flex flex-col justify-center self-stretch border-l border-card-border-strong bg-accent/[0.07] px-2 py-5 text-center sm:px-4">
+                <span aria-hidden="true" className="absolute left-0 right-0 top-0 h-[3px] bg-accent" />
+                <div className="font-display text-sm font-bold leading-tight text-foreground sm:text-lg">
                   {columns.pillar.line1}
                 </div>
-                <div className="hidden sm:block text-xs text-accent/70 mt-1">
+                <div className="mt-1 hidden text-xs text-muted sm:block">
                   {columns.pillar.line2}
                 </div>
               </div>
@@ -117,13 +114,13 @@ export function ComparisonSection() {
             {/* Categories */}
             {categories.map((cat) => (
               <div key={cat.title}>
-                {/* Category eyebrow */}
-                <div className={`grid ${cols} bg-white/[0.02] border-b border-card-border`}>
-                  <div className="px-4 sm:px-8 py-3 text-[11px] sm:text-xs font-bold uppercase tracking-[0.18em] text-muted-strong">
+                {/* Category label */}
+                <div className={`grid ${cols} border-b border-card-border bg-foreground/[0.03]`}>
+                  <div className="px-4 py-3 text-[11px] font-bold uppercase tracking-[0.18em] text-muted-strong sm:px-8 sm:text-xs">
                     {cat.title}
                   </div>
                   <div className="border-l border-card-border" />
-                  <div className="border-l border-card-border-strong bg-accent/[0.05]" />
+                  <div className="border-l border-card-border-strong bg-accent/[0.07]" />
                 </div>
 
                 {/* Rows */}
@@ -134,16 +131,16 @@ export function ComparisonSection() {
                       key={ri}
                       className={`grid ${cols} items-stretch border-b border-card-border last:border-b-0`}
                     >
-                      <div className="px-4 sm:px-8 py-4 sm:py-5 text-foreground text-sm sm:text-[15px] leading-snug flex items-center">
+                      <div className="flex items-center px-4 py-4 text-sm leading-snug text-foreground sm:px-8 sm:py-5 sm:text-[15px]">
                         <span>
                           {row.feature}
                           {plan ? <PlanBadge label={plan} /> : null}
                         </span>
                       </div>
-                      <div className="px-2 sm:px-4 py-4 sm:py-5 border-l border-card-border flex items-center justify-center">
+                      <div className="flex items-center justify-center border-l border-card-border px-2 py-4 sm:px-4 sm:py-5">
                         {row.others ? <MutedCheck /> : <MissingX />}
                       </div>
-                      <div className="px-2 sm:px-4 py-4 sm:py-5 border-l border-card-border-strong bg-accent/[0.05] flex items-center justify-center">
+                      <div className="flex items-center justify-center border-l border-card-border-strong bg-accent/[0.07] px-2 py-4 sm:px-4 sm:py-5">
                         <AccentCheck />
                       </div>
                     </div>

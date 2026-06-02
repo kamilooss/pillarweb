@@ -3,17 +3,16 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Reveal } from "./Reveal";
-import { ParallaxReveal } from "./ParallaxReveal";
 import { FAQ } from "../lib/content";
 
-function ChevronUp({ open }: { open: boolean }) {
+function Chevron({ open }: { open: boolean }) {
   return (
     <svg
       width="22"
       height="22"
       viewBox="0 0 22 22"
       fill="none"
-      className={`flex-shrink-0 text-accent transition-transform duration-300 ${
+      className={`flex-shrink-0 text-foreground transition-transform duration-300 ${
         open ? "rotate-180" : ""
       }`}
       aria-hidden="true"
@@ -40,8 +39,6 @@ function FaqItem({
   open: boolean;
   onToggle: () => void;
 }) {
-  // odpowiedź ma podwójne new-liney jako separator paragrafów,
-  // i • dla list. Tutaj parsujemy.
   const lines = answer.split("\n").filter((l) => l.trim().length > 0);
   const blocks: { type: "p" | "li"; text: string }[] = lines.map((line) => {
     const trimmed = line.trim();
@@ -52,16 +49,14 @@ function FaqItem({
   });
 
   return (
-    <div className="surface-panel rounded-xl overflow-hidden">
+    <div className="surface-panel overflow-hidden">
       <button
         onClick={onToggle}
         aria-expanded={open}
-        className="w-full flex items-center justify-between gap-4 px-6 lg:px-8 py-5 lg:py-6 text-left hover:bg-white/[0.02] transition-colors cursor-pointer"
+        className="flex w-full cursor-pointer items-center justify-between gap-4 px-6 py-5 text-left transition-colors hover:bg-foreground/[0.02] lg:px-8 lg:py-6"
       >
-        <span className="font-bold text-[17px] lg:text-lg leading-snug">
-          {question}
-        </span>
-        <ChevronUp open={open} />
+        <span className="text-[17px] font-bold leading-snug lg:text-lg">{question}</span>
+        <Chevron open={open} />
       </button>
 
       <AnimatePresence initial={false}>
@@ -73,11 +68,11 @@ function FaqItem({
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             className="overflow-hidden"
           >
-            <div className="px-6 lg:px-8 pb-6 lg:pb-8 pt-1 space-y-3 text-muted-strong leading-relaxed">
+            <div className="space-y-3 px-6 pb-6 pt-1 leading-relaxed text-muted-strong lg:px-8 lg:pb-8">
               {blocks.map((block, i) =>
                 block.type === "li" ? (
-                  <div key={i} className="flex gap-2">
-                    <span className="text-accent">•</span>
+                  <div key={i} className="flex gap-3">
+                    <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 bg-accent" aria-hidden="true" />
                     <span>{block.text}</span>
                   </div>
                 ) : (
@@ -105,15 +100,18 @@ export function FAQSection() {
   };
 
   return (
-    <section className="pt-16 lg:pt-24 pb-24 lg:pb-36">
+    <section className="border-t border-card-border bg-surface-sunken py-20 lg:py-28">
       <div className="container-content">
-        <ParallaxReveal as="h2" className="font-display font-bold text-center text-[clamp(1.75rem,3.5vw,3rem)] tracking-tight">
+        <Reveal
+          as="h2"
+          className="max-w-3xl font-display text-[clamp(1.9rem,3.8vw,3rem)] font-extrabold tracking-tight"
+        >
           {FAQ.heading}
-        </ParallaxReveal>
+        </Reveal>
 
-        <div className="mt-14 lg:mt-20 max-w-3xl mx-auto space-y-3">
+        <div className="mt-12 max-w-3xl space-y-3 lg:mt-16">
           {FAQ.items.map((item, i) => (
-            <Reveal key={i} delay={Math.min(i * 0.03, 0.2)}>
+            <Reveal key={i} delay={Math.min(i * 30, 200)}>
               <FaqItem
                 question={item.question}
                 answer={item.answer}

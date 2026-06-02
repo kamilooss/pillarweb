@@ -8,9 +8,9 @@ const variants: Record<Variant, string> = {
   primary:
     "cta-pulse bg-accent text-accent-foreground hover:bg-accent-hover active:scale-[0.98]",
   outline:
-    "border border-card-border-strong text-foreground hover:border-accent hover:text-accent active:scale-[0.98] bg-transparent",
+    "border border-foreground/30 text-foreground bg-transparent hover:bg-accent hover:text-accent-foreground hover:border-accent active:scale-[0.98]",
   ghost:
-    "text-foreground hover:text-accent",
+    "text-foreground/80 hover:text-foreground",
 };
 
 const sizes: Record<Size, string> = {

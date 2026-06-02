@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
+import { Reveal } from "./Reveal";
 
 type ServiceItem = {
   title: string;
@@ -45,58 +46,60 @@ export function ServicesAccordion() {
 
   return (
     <section
-      className="relative bg-background pt-16 lg:pt-24 pb-[clamp(5.75rem,10vw,10rem)]"
+      className="relative border-t border-card-border bg-background py-20 lg:py-28"
       aria-label="Co dostajesz w ramach współpracy"
     >
       <div className="container-content">
-        <div className="grid lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] gap-12 lg:gap-24 items-start">
+        <Reveal
+          as="h2"
+          className="mb-12 max-w-3xl font-display text-[clamp(1.9rem,3.7vw,3rem)] font-extrabold leading-[1.08] tracking-tight lg:mb-16"
+        >
+          Co dostajesz w ramach <span className="underline-accent">współpracy</span>
+        </Reveal>
+
+        <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:gap-24">
           {/* LEFT — accordion */}
-          <ul className="lg:order-1 order-2">
+          <ul className="order-2 lg:order-1">
             {SERVICES.map((item, i) => {
               const isActive = i === active;
               const panelId = `service-panel-${i}`;
               return (
-                <li
-                  key={item.title}
-                  className="border-b border-card-border last:border-b-0"
-                >
+                <li key={item.title} className="border-b border-card-border last:border-b-0">
                   <button
                     type="button"
                     onClick={() => setActive(i)}
                     aria-expanded={isActive}
                     aria-controls={panelId}
-                    className="group w-full text-left py-8 lg:py-10 flex items-start gap-4 lg:gap-6 cursor-pointer"
+                    className="group flex w-full cursor-pointer items-start gap-4 py-8 text-left lg:gap-6 lg:py-10"
                   >
                     <span
-                      className={`arch-index flex-shrink-0 mt-1.5 lg:mt-2 text-sm tabular-nums transition-colors duration-300 ${
-                        isActive ? "text-accent" : "text-subtle"
+                      className={`mt-1 flex-shrink-0 px-1.5 py-0.5 font-display text-sm font-bold tnum transition-colors duration-300 lg:mt-1.5 ${
+                        isActive ? "bg-accent text-accent-foreground" : "text-subtle"
                       }`}
                     >
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <span
-                      className={`flex-1 font-display font-bold leading-[1.2] tracking-tight text-[clamp(1.2rem,2.25vw,1.85rem)] transition-colors duration-300 ${
-                        isActive
-                          ? "text-accent"
-                          : "text-foreground/75 group-hover:text-foreground"
+                      className={`flex-1 font-display text-[clamp(1.2rem,2.25vw,1.85rem)] font-bold leading-[1.2] tracking-tight transition-colors duration-300 ${
+                        isActive ? "text-foreground" : "text-foreground/55 group-hover:text-foreground"
                       }`}
                     >
                       {item.title}
                     </span>
                     <span
                       aria-hidden="true"
-                      className={`mt-2 lg:mt-3 flex-shrink-0 relative w-6 h-6 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                      className={`relative mt-2 h-6 w-6 flex-shrink-0 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] lg:mt-3 ${
                         isActive ? "rotate-45" : "rotate-0"
                       }`}
                     >
                       <span
-                        className={`absolute inset-x-0 top-1/2 -translate-y-1/2 h-[2px] rounded-full transition-colors duration-300 ${
-                          isActive ? "bg-accent" : "bg-foreground/55 group-hover:bg-foreground"
+                        className={`absolute inset-x-0 top-1/2 h-[2px] -translate-y-1/2 transition-colors duration-300 ${
+                          isActive ? "bg-foreground" : "bg-foreground/40 group-hover:bg-foreground"
                         }`}
                       />
                       <span
-                        className={`absolute inset-y-0 left-1/2 -translate-x-1/2 w-[2px] rounded-full transition-colors duration-300 ${
-                          isActive ? "bg-accent" : "bg-foreground/55 group-hover:bg-foreground"
+                        className={`absolute inset-y-0 left-1/2 w-[2px] -translate-x-1/2 transition-colors duration-300 ${
+                          isActive ? "bg-foreground" : "bg-foreground/40 group-hover:bg-foreground"
                         }`}
                       />
                     </span>
@@ -113,20 +116,20 @@ export function ServicesAccordion() {
                         transition={{ duration: 0.5, ease: EASE }}
                         className="overflow-hidden"
                       >
-                        <div className="pb-9 lg:pb-12 pr-6 lg:pr-10">
-                          <p className="text-muted-strong text-[15px] lg:text-[17px] leading-[1.7] max-w-prose">
+                        <div className="border-l-2 border-accent pb-9 pl-6 pr-6 lg:pb-12 lg:pr-10">
+                          <p className="max-w-prose text-[15px] leading-[1.7] text-muted-strong lg:text-[17px]">
                             {item.description}
                           </p>
 
                           {/* Mobile-only graphic inside the open panel */}
                           <div className="mt-6 lg:hidden">
-                            <div className="relative w-full max-w-[420px] aspect-square">
+                            <div className="relative aspect-square w-full max-w-[420px] overflow-hidden border border-card-border bg-ink-block">
                               <Image
                                 src={item.image}
                                 alt={item.title}
                                 fill
                                 sizes="(min-width: 1024px) 0px, 90vw"
-                                className="object-contain"
+                                className="object-contain p-6"
                                 unoptimized
                               />
                             </div>
@@ -141,9 +144,9 @@ export function ServicesAccordion() {
           </ul>
 
           {/* RIGHT — synced graphic (desktop only) */}
-          <div className="hidden lg:block lg:order-2 order-1">
+          <div className="order-1 hidden lg:order-2 lg:block">
             <div className="lg:sticky lg:top-28">
-              <div className="relative w-full aspect-square max-w-[560px] mx-auto">
+              <div className="relative mx-auto aspect-square w-full max-w-[560px] overflow-hidden border border-card-border bg-ink-block">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={activeItem.image}
@@ -151,17 +154,19 @@ export function ServicesAccordion() {
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 1.02, y: -6 }}
                     transition={{ duration: 0.55, ease: EASE }}
-                    className="absolute inset-0"
+                    className="absolute inset-0 p-10"
                   >
-                    <Image
-                      src={activeItem.image}
-                      alt={activeItem.title}
-                      fill
-                      sizes="(min-width: 1024px) 50vw, 100vw"
-                      className="object-contain"
-                      unoptimized
-                      priority
-                    />
+                    <div className="relative h-full w-full">
+                      <Image
+                        src={activeItem.image}
+                        alt={activeItem.title}
+                        fill
+                        sizes="(min-width: 1024px) 50vw, 100vw"
+                        className="object-contain"
+                        unoptimized
+                        priority
+                      />
+                    </div>
                   </motion.div>
                 </AnimatePresence>
               </div>

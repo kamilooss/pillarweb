@@ -1,8 +1,9 @@
 import { Fragment } from "react";
+import Image from "next/image";
 import { MagneticButton } from "./MagneticButton";
-import { HERO, SITE } from "../lib/content";
+import { HERO, SITE, ASSET_BASE } from "../lib/content";
 
-// Słowa nagłówka pogrupowane w dwie linie; akcent (lime) na "FIRM BUDOWLANYCH".
+// Słowa nagłówka pogrupowane w linie; akcent (hi-vis lime) na "FIRM BUDOWLANYCH".
 const HEADLINE_LINES: { text: string; accent?: boolean }[][] = [
   HERO.titleLine1.split(" ").map((text) => ({ text })),
   [
@@ -11,137 +12,125 @@ const HEADLINE_LINES: { text: string; accent?: boolean }[][] = [
   ],
 ];
 
+// Realne zdjęcie realizacji — jasny, dzienny kadr zamiast ciemnego wideo.
+const HERO_IMAGE = `${ASSET_BASE}/generalni-wykonawcy-pillarweb.webp`;
+
 export function Hero() {
   let wordIndex = -1;
 
   return (
     <section
       id="main"
-      className="relative min-h-[100dvh] w-full overflow-hidden bg-background"
+      className="relative w-full overflow-hidden bg-background"
       aria-label="Sekcja powitalna"
     >
-      {/* Tło wideo — kadrowany materiał, nie zwykłe tło */}
-      <div className="absolute inset-0 top-20">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="metadata"
-          className="h-full w-full object-cover"
-          aria-hidden="true"
-        >
-          <source src={HERO.videoSrc} type="video/mp4" />
-        </video>
-        {/* Grade pod tekst po lewej + dół, plus delikatna winieta */}
-        <div
-          className="absolute inset-0 bg-gradient-to-r from-black via-black/55 to-black/20"
-          aria-hidden="true"
-        />
-        <div
-          className="absolute inset-0 bg-gradient-to-t from-black via-black/35 to-black/55"
-          aria-hidden="true"
-        />
-        <div
-          className="absolute inset-0 [box-shadow:inset_0_0_180px_60px_rgba(0,0,0,0.7)]"
-          aria-hidden="true"
-        />
-      </div>
+      <div className="container-content relative">
+        {/* Szkielet strukturalny — krawędzie kolumn "Pillar" (desktop) */}
+        <div className="arch-rules hidden md:block" aria-hidden="true" />
 
-      {/* Szkielet hairline — "arkusz planu" kadrujący treść (tylko desktop) */}
-      <div className="absolute inset-0 top-20 hidden md:block" aria-hidden="true">
-        <div className="container-content relative h-full">
-          <div className="arch-rules" />
-          {/* Znaczniki narożne marki — róg górny-lewy i dolny-prawy */}
-          <span className="absolute left-5 top-8 h-6 w-px bg-accent/70 lg:left-8" />
-          <span className="absolute left-5 top-8 h-px w-6 bg-accent/70 lg:left-8" />
-          <span className="absolute right-5 bottom-8 h-6 w-px bg-accent/70 lg:right-8" />
-          <span className="absolute right-5 bottom-8 h-px w-6 -translate-x-[calc(100%-1px)] bg-accent/70 lg:right-8" />
-        </div>
-      </div>
+        <div className="grid min-h-[100dvh] grid-cols-1 items-center gap-10 pt-28 pb-16 lg:grid-cols-12 lg:gap-8 lg:pt-32 lg:pb-20">
+          {/* Treść */}
+          <div className="lg:col-span-7 lg:pr-10">
+            <span
+              className="tick-label mb-7 animate-fade-up lg:mb-9"
+              style={{ animationDelay: "0.05s" }}
+            >
+              {HERO.brandLine}
+            </span>
 
-      {/* Treść — zakotwiczona w dolnej części, oś po lewej (redakcyjnie).
-         Reveal robiony animacjami CSS (zawsze odpalą, niezależnie od JS). */}
-      <div className="relative container-content min-h-[100dvh] flex flex-col justify-end pt-28 pb-20 lg:pb-28">
-        <div className="max-w-5xl text-left">
-          <span
-            className="arch-tick mb-7 lg:mb-9 animate-fade-up"
-            style={{ animationDelay: "0.05s" }}
-          >
-            {HERO.brandLine}
-          </span>
-
-          <h1 className="font-display font-extrabold tracking-tight leading-[0.95] text-[clamp(2.25rem,5.5vw,4.75rem)] uppercase">
-            {HEADLINE_LINES.map((line, li) => (
-              <span
-                key={li}
-                className={`block pb-[0.12em] ${
-                  li === 1 ? "md:whitespace-nowrap" : ""
-                }`}
-              >
-                {line.map((word, wi) => {
-                  wordIndex += 1;
-                  return (
-                    <Fragment key={wi}>
-                      {wi > 0 && " "}
-                      <span
-                        className={`inline-block animate-fade-up ${
-                          word.accent ? "text-accent" : ""
-                        }`}
-                        style={{ animationDelay: `${0.15 + wordIndex * 0.06}s` }}
-                      >
-                        {word.text}
-                      </span>
-                    </Fragment>
-                  );
-                })}
-              </span>
-            ))}
-          </h1>
-
-          <p
-            className="mt-7 lg:mt-9 max-w-[54ch] text-muted-strong leading-relaxed text-[clamp(1rem,1.45vw,1.3rem)] animate-fade-up"
-            style={{ animationDelay: "0.55s" }}
-          >
-            {HERO.subtitleParts.map((part, i) => (
-              <Fragment key={i}>
-                {i > 0 && " "}
-                <span className={part.accent ? "text-accent" : undefined}>
-                  {part.text}
+            <h1 className="font-display font-extrabold uppercase leading-[1.06] tracking-tight text-[clamp(2.35rem,5.6vw,5rem)]">
+              {HEADLINE_LINES.map((line, li) => (
+                <span key={li} className="block pb-[0.08em]">
+                  {line.map((word, wi) => {
+                    wordIndex += 1;
+                    const accent = word.accent;
+                    return (
+                      <Fragment key={wi}>
+                        {wi > 0 && " "}
+                        <span
+                          className="inline-block animate-fade-up"
+                          style={{ animationDelay: `${0.15 + wordIndex * 0.06}s` }}
+                        >
+                          {accent ? <span className="mark">{word.text}</span> : word.text}
+                        </span>
+                      </Fragment>
+                    );
+                  })}
                 </span>
-              </Fragment>
-            ))}
-          </p>
+              ))}
+            </h1>
 
-          <div
-            className="mt-11 lg:mt-14 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 animate-fade-up"
-            style={{ animationDelay: "0.72s" }}
-          >
-            <MagneticButton
-              href={HERO.cta.href}
-              className="px-8 py-4 text-base sm:text-[15px] sm:whitespace-nowrap"
+            <p
+              className="mt-7 max-w-[48ch] text-[clamp(1rem,1.4vw,1.25rem)] leading-relaxed text-muted-strong animate-fade-up lg:mt-9"
+              style={{ animationDelay: "0.55s" }}
             >
-              {HERO.cta.label}
-            </MagneticButton>
+              {HERO.subtitleParts.map((part, i) => (
+                <Fragment key={i}>
+                  {i > 0 && " "}
+                  <span className={part.accent ? "font-semibold text-foreground underline-accent" : undefined}>
+                    {part.text}
+                  </span>
+                </Fragment>
+              ))}
+            </p>
 
-            <a
-              href={`tel:${SITE.phoneTel}`}
-              className="group inline-flex items-center gap-3 text-muted-strong hover:text-accent transition-colors"
+            <div
+              className="mt-10 flex flex-col gap-4 animate-fade-up sm:flex-row sm:items-center sm:gap-6 lg:mt-12"
+              style={{ animationDelay: "0.72s" }}
             >
-              <span className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-card-border-strong group-hover:border-accent transition-colors">
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                  className="text-accent"
-                >
-                  <path d="M2 3a1 1 0 011-1h2.5a1 1 0 011 .8l.6 3a1 1 0 01-.3 1L5.5 8.2a12 12 0 005.3 5.3l1.4-1.3a1 1 0 011-.3l3 .6a1 1 0 01.8 1V16a1 1 0 01-1 1A14 14 0 012 4z" />
-                </svg>
-              </span>
-              <span className="font-semibold tracking-tight">{SITE.phone}</span>
-            </a>
+              <MagneticButton
+                href={HERO.cta.href}
+                className="px-8 py-4 text-base sm:whitespace-nowrap sm:text-[15px]"
+              >
+                {HERO.cta.label}
+              </MagneticButton>
+
+              <a
+                href={`tel:${SITE.phoneTel}`}
+                className="group inline-flex items-center gap-3 text-muted-strong transition-colors hover:text-foreground"
+              >
+                <span className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-foreground/25 transition-colors group-hover:border-foreground group-hover:bg-accent">
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path d="M2 3a1 1 0 011-1h2.5a1 1 0 011 .8l.6 3a1 1 0 01-.3 1L5.5 8.2a12 12 0 005.3 5.3l1.4-1.3a1 1 0 011-.3l3 .6a1 1 0 01.8 1V16a1 1 0 01-1 1A14 14 0 012 4z" />
+                  </svg>
+                </span>
+                <span className="font-semibold tracking-tight tnum">{SITE.phone}</span>
+              </a>
+            </div>
+          </div>
+
+          {/* Kadrowane zdjęcie realizacji — strukturalna ramka */}
+          <div className="lg:col-span-5">
+            <div
+              className="relative animate-fade-up"
+              style={{ animationDelay: "0.4s" }}
+            >
+              {/* Narożny znacznik marki (lewy-górny) */}
+              <span className="absolute -left-px -top-px z-10 h-7 w-px bg-accent" aria-hidden="true" />
+              <span className="absolute -left-px -top-px z-10 h-px w-7 bg-accent" aria-hidden="true" />
+
+              <div className="relative aspect-[4/5] w-full overflow-hidden border border-card-border-strong bg-surface-sunken">
+                <Image
+                  src={HERO_IMAGE}
+                  alt="Realizacja firmy budowlanej — nowoczesny budynek w świetle dziennym"
+                  fill
+                  priority
+                  unoptimized
+                  sizes="(max-width: 1024px) 100vw, 42vw"
+                  className="object-cover"
+                />
+              </div>
+
+              {/* Narożny znacznik marki (prawy-dolny) */}
+              <span className="absolute -bottom-px -right-px z-10 h-7 w-px bg-accent" aria-hidden="true" />
+              <span className="absolute -bottom-px -right-px z-10 h-px w-7 bg-accent" aria-hidden="true" />
+            </div>
           </div>
         </div>
       </div>
