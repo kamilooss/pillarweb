@@ -492,7 +492,7 @@ export const PRICING = {
 
 export const COMPARISON = {
   heading: {
-    accent: "Pillarweb",
+    accent: "Pillar Web",
     rest: " vs typowa agencja webowa — porównaj punkt po punkcie.",
   },
   subtitle:
@@ -500,7 +500,7 @@ export const COMPARISON = {
   columns: {
     criterion: "Kryterium",
     others: "Inne agencje webowe",
-    pillar: { line1: "Pillarweb", line2: "tylko dla firm budowlanych" },
+    pillar: { line1: "Pillar Web", line2: "tylko dla firm budowlanych" },
   },
   categories: [
     {

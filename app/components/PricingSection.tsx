@@ -114,12 +114,12 @@ export function PricingSection() {
                         <li key={idx} className="flex gap-3">
                           <CheckIcon className="text-foreground" />
                           <div>
-                            <h4
-                              className={`text-[15px] font-semibold leading-snug text-foreground ${
-                                feature.accent ? "underline-accent" : ""
-                              }`}
-                            >
-                              {feature.title}
+                            <h4 className="text-[15px] font-semibold leading-snug text-foreground">
+                              {feature.accent ? (
+                                <span className="underline-accent">{feature.title}</span>
+                              ) : (
+                                feature.title
+                              )}
                             </h4>
                             {feature.description && (
                               <p className="mt-1 text-sm leading-relaxed text-muted">

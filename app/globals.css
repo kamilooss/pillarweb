@@ -175,12 +175,16 @@
     -webkit-box-decoration-break: clone;
   }
 
-  /* Lime jako "redline" — gruby marker pod tuszem */
+  /* Lime jako "redline" — gruby marker pod tuszem.
+     box-decoration-break: clone → marker rysuje się pod każdą linią,
+     gdy zakreślony tekst (inline) zawija się na kilka wierszy. */
   .underline-accent {
     background-image: linear-gradient(var(--color-accent), var(--color-accent));
     background-repeat: no-repeat;
     background-position: 0 90%;
     background-size: 100% 0.3em;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
   }
 
   /* ---------------------------------------------
