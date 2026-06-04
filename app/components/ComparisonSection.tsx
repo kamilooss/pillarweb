@@ -72,7 +72,7 @@ export function ComparisonSection() {
     "grid-cols-[minmax(0,1fr)_56px_72px] sm:grid-cols-[minmax(0,1fr)_minmax(140px,180px)_minmax(160px,220px)]";
 
   return (
-    <section className="border-t border-card-border py-20 lg:py-28">
+    <section id="dlaczego-my" className="border-t border-card-border py-20 lg:py-28">
       <div className="container-content">
         <Reveal
           as="h2"

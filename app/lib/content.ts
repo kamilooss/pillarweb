@@ -30,36 +30,24 @@ export const SITE = {
   contactAnchor: "#kontakt",
 } as const;
 
-export const NAV_LINKS = [
-  {
-    label: "Usługi",
-    href: "/uslugi",
-    children: [
-      {
-        label: "SEO",
-        href: "/seo",
-        description:
-          "Zwiększamy widoczność Twojej firmy w Google, żeby klienci sami trafiali na Twoją stronę.",
-      },
-      {
-        label: "Reklamy Facebook",
-        href: "/reklamy-facebook",
-        description:
-          "Tworzymy kampanie, które docierają do właściwych osób i budują stały dopływ wartościowych zapytań.",
-      },
-      {
-        label: "Reklamy Google",
-        href: "/reklamy-google",
-        description:
-          "Prowadzimy kampanie Google Ads nastawione na szybkie pozyskiwanie klientów.",
-      },
-    ],
-  },
-  { label: "Realizacje", href: "/realizacje" },
-  { label: "Darmowe zasoby", href: "/darmowe-zasoby" },
-  { label: "Cennik", href: "/cennik" },
-  { label: "Kontakt", href: "/kontakt" },
-] as const;
+// Nawigacja = kotwice do sekcji na stronie głównej. Płynny scroll z offsetem
+// pod stały nagłówek obsługuje Lenis (opcja `anchors` w SmoothScroll).
+// "Usługi" tymczasowo ukryte (jeszcze nie gotowe). Pole `children` zostaje w
+// typie, żeby łatwo było przywrócić rozwijane menu.
+type NavLink = {
+  label: string;
+  href: string;
+  children?: { label: string; href: string; description: string }[];
+};
+
+export const NAV_LINKS: NavLink[] = [
+  { label: "Realizacje", href: "#realizacje" },
+  { label: "Cennik", href: "#cennik" },
+  { label: "Gwarancje", href: "#gwarancje" },
+  { label: "Proces współpracy", href: "#jak-pracujemy" },
+  { label: "Dlaczego my", href: "#dlaczego-my" },
+  { label: "Kontakt", href: "#kontakt" },
+];
 
 export const HERO = {
   brandLine: "Dominate Web System",

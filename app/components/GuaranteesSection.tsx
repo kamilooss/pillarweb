@@ -7,7 +7,7 @@ export function GuaranteesSection() {
     GUARANTEES;
 
   return (
-    <section className="border-t border-card-border py-20 lg:py-28">
+    <section id="gwarancje" className="border-t border-card-border py-20 lg:py-28">
       <div className="container-content">
         <Reveal
           as="h2"

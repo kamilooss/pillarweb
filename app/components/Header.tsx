@@ -111,13 +111,13 @@ export function Header() {
               );
             }
             return (
-              <Link
+              <a
                 key={link.href}
                 href={link.href}
                 className="px-4 py-2 text-[15px] text-muted-strong transition-colors hover:text-foreground"
               >
                 {link.label}
-              </Link>
+              </a>
             );
           })}
         </nav>
@@ -176,13 +176,13 @@ export function Header() {
             <div className="container-content flex flex-col gap-1 py-8">
               {NAV_LINKS.map((link) => (
                 <div key={link.label} className="border-b border-card-border">
-                  <Link
+                  <a
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
                     className="block py-4 text-xl font-semibold"
                   >
                     {link.label}
-                  </Link>
+                  </a>
                   {"children" in link && link.children && (
                     <div className="flex flex-col gap-2 pb-4 pl-4">
                       {link.children.map((child) => (
