@@ -41,7 +41,7 @@ function StatItem({ stat }: { stat: Stat }) {
       ref={ref}
       className="border-card-border-strong px-2 py-8 sm:border-l sm:px-8 sm:py-2 sm:first:border-l-0"
     >
-      <div className="font-display text-[clamp(2.5rem,5vw,4.25rem)] font-extrabold leading-none tracking-tight tnum text-foreground">
+      <div className="font-display text-[clamp(2.9rem,5vw,4.25rem)] font-extrabold leading-none tracking-tight tnum text-foreground">
         {stat.prefix}
         {display.toLocaleString("pl-PL")}
         {stat.suffix}

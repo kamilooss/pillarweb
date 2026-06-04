@@ -60,7 +60,7 @@ export function DifferentiatorSection() {
         <div className="container-content py-20 lg:py-28">
           <Reveal
             as="h2"
-            className="max-w-3xl font-display text-[clamp(1.7rem,3.2vw,2.6rem)] font-extrabold leading-[1.12] tracking-tight"
+            className="max-w-3xl font-display text-[clamp(1.9rem,3.2vw,2.6rem)] font-extrabold leading-[1.12] tracking-tight"
           >
             {results.headingPrefix}{" "}
             <span className="underline-accent">{results.headingAccent}</span>

@@ -37,7 +37,7 @@ export function ProcessSection() {
       <div className="container-content">
         <Reveal
           as="h2"
-          className="max-w-3xl font-display text-[clamp(1.7rem,3.4vw,2.75rem)] font-extrabold leading-[1.1] tracking-tight"
+          className="max-w-3xl font-display text-[clamp(1.9rem,3.4vw,2.75rem)] font-extrabold leading-[1.1] tracking-tight"
         >
           {heading.prefix}{" "}
           <span className="underline-accent">{heading.accent}</span>{" "}

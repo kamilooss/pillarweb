@@ -23,7 +23,7 @@ export function VslSection() {
       <div className="container-content">
         <Reveal
           as="h2"
-          className="mx-auto max-w-4xl text-center font-display text-[clamp(1.9rem,3.7vw,3rem)] font-extrabold leading-[1.12] tracking-tight"
+          className="mx-auto max-w-4xl text-left sm:text-center font-display text-[clamp(1.9rem,3.7vw,3rem)] font-extrabold leading-[1.12] tracking-tight"
         >
           {headingPrefix}{" "}
           <span className="underline-accent">{headingAccent}</span>

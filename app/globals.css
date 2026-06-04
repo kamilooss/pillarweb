@@ -416,6 +416,56 @@
 }
 
 /* =============================================
+   Logo klientów — slider TYLKO na telefonie,
+   przewijany w PRAWO (przeciwnie do paska branż).
+   Tablet/desktop używają siatki/rzędu (bez zmian).
+   ============================================= */
+.logos-marquee {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 12%,
+    #000 88%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 12%,
+    #000 88%,
+    transparent
+  );
+}
+
+.logos-marquee__track {
+  display: flex;
+  align-items: center;
+  gap: 2.75rem;
+  width: max-content;
+  animation: logos-marquee-scroll 26s linear infinite;
+  will-change: transform;
+}
+
+@keyframes logos-marquee-scroll {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logos-marquee__track {
+    animation: none;
+    transform: none;
+  }
+}
+
+/* =============================================
    PRIMARY CTA — lime, "drogi", nie pulsujący.
    Spoczynek: tonowany cień. Hover: subtelne uniesienie.
    ============================================= */

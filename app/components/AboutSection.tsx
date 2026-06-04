@@ -13,7 +13,7 @@ export function AboutSection() {
             <span className="arch-tick mb-7 inline-flex">Pillar Web</span>
             <Reveal
               as="h2"
-              className="mb-8 mt-5 font-display text-[clamp(2rem,4vw,3rem)] font-extrabold tracking-tight"
+              className="mb-8 mt-5 font-display text-[clamp(1.9rem,4vw,3rem)] font-extrabold tracking-tight"
             >
               {heading}
             </Reveal>

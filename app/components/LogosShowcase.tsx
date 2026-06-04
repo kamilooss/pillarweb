@@ -20,7 +20,26 @@ export function LogosShowcase() {
           Działamy z największymi
         </Reveal>
 
-        <Reveal className="mx-auto mt-10 grid max-w-5xl grid-cols-2 items-center gap-x-6 gap-y-10 sm:grid-cols-3 lg:flex lg:justify-between lg:gap-10">
+        {/* Telefon: slider logo przewijany w PRAWO. Tablet/desktop bez zmian. */}
+        <div className="logos-marquee mt-10 sm:hidden" aria-hidden="true">
+          <div className="logos-marquee__track">
+            {[...LOGOS, ...LOGOS].map((logo, i) => (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                key={i}
+                src={logo.src}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                className={`w-auto shrink-0 opacity-55 [filter:brightness(0)] ${
+                  logo.prominent ? "h-11" : "h-7"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+
+        <Reveal className="mx-auto mt-10 hidden max-w-5xl items-center gap-x-6 gap-y-10 sm:grid sm:grid-cols-3 lg:flex lg:justify-between lg:gap-10">
           {LOGOS.map((logo, i) => (
             <div key={i} className="flex items-center justify-center">
               {/* eslint-disable-next-line @next/next/no-img-element */}

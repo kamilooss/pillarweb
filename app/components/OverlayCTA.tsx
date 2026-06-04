@@ -18,7 +18,7 @@ export function OverlayCTA() {
         <div className="max-w-5xl">
           <h2
             id="overlay-cta-heading"
-            className="text-left font-display text-[clamp(1.6rem,3vw,2.5rem)] font-bold leading-[1.22] tracking-tight text-surface"
+            className="text-left font-display text-[clamp(1.9rem,3vw,2.5rem)] font-bold leading-[1.22] tracking-tight text-surface"
           >
             Każdy miesiąc ze słabą stroną to nie tylko utracone zapytania.{" "}
             <span className="text-accent">
