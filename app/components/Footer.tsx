@@ -11,7 +11,7 @@ export function Footer() {
         className="absolute left-0 top-0 h-px w-24 bg-accent"
       />
       <div className="container-content py-14 lg:py-16">
-        <div className="grid gap-10 md:grid-cols-[1.5fr_1fr_1fr] md:gap-12">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-[1.5fr_1fr_1fr] md:gap-12">
           <div>
             <Logo />
           </div>

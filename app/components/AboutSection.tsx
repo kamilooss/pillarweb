@@ -8,7 +8,7 @@ export function AboutSection() {
   return (
     <section className="border-t border-card-border py-20 lg:py-28">
       <div className="container-content">
-        <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-20">
+        <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-20">
           <div>
             <span className="arch-tick mb-7 inline-flex">Pillar Web</span>
             <Reveal

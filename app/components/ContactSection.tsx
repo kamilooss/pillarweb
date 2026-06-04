@@ -56,7 +56,7 @@ export function ContactSection() {
         </Reveal>
 
         <Reveal delay={100}>
-          <div className="surface-panel mt-10 grid gap-10 p-6 lg:mt-12 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)] lg:gap-16 lg:p-12">
+          <div className="surface-panel mt-10 grid grid-cols-1 gap-10 p-6 lg:mt-12 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)] lg:gap-16 lg:p-12">
             {/* Lewa: branding + autor + opinia klienta */}
             <div className="flex flex-col items-center text-center">
               <div className="mb-12 mt-6 scale-[1.6]">

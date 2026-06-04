@@ -39,7 +39,7 @@ export function ContentVideoSection() {
           <span className="underline-accent">{heading.accent}</span>
         </Reveal>
 
-        <div className="mt-14 grid gap-12 lg:mt-20 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-20">
+        <div className="mt-14 grid grid-cols-1 gap-12 lg:mt-20 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-20">
           {/* LEWA: tytuł problemu + 3 podpunkty */}
           <div>
             <Reveal

@@ -73,7 +73,7 @@ export function DifferentiatorSection() {
             {resultsStat}
           </Reveal>
 
-          <div className="mt-12 grid items-start gap-12 lg:mt-16 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:gap-16">
+          <div className="mt-12 grid grid-cols-1 items-start gap-12 lg:mt-16 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:gap-16">
             <Reveal className="surface-panel overflow-hidden">
               <Image
                 src={results.image}

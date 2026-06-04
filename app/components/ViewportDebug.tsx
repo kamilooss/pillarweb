@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 // Marker wersji — pozwala potwierdzić, że telefon NIE serwuje starego cache.
-const BUILD = "dbg-2";
+const BUILD = "dbg-3";
 
 /**
  * Panel diagnostyczny widoczny TYLKO gdy w adresie jest `?debug`
@@ -32,18 +32,29 @@ export function ViewportDebug() {
           widest = el;
         }
       });
-      let sel = "?";
+      const desc = (n: Element | null) => {
+        if (!n) return "-";
+        const c = (n.getAttribute("class") || "")
+          .trim()
+          .split(/\s+/)
+          .filter(Boolean)
+          .slice(0, 3)
+          .join(".");
+        return n.tagName.toLowerCase() + (c ? "." + c : "");
+      };
+      let detail = "?";
       if (widest) {
         const el: HTMLElement = widest;
-        const raw = el.getAttribute("class") || "";
-        const cls = raw ? "." + raw.trim().split(/\s+/).slice(0, 2).join(".") : "";
-        sel = el.tagName.toLowerCase() + cls;
+        const txt = (el.textContent || "").replace(/\s+/g, " ").trim().slice(0, 28);
+        const w = Math.round(el.getBoundingClientRect().width);
+        const pEl = el.parentElement;
+        const pw = pEl ? Math.round(pEl.getBoundingClientRect().width) : 0;
+        detail = `${desc(el)} w=${w}\n txt="${txt}"\n parent ${desc(pEl)} w=${pw}`;
       }
       const bodyW = Math.round(document.body.getBoundingClientRect().width);
       setInfo(
-        `[${BUILD}] inW=${window.innerWidth} cW=${de.clientWidth} sW=${de.scrollWidth}\n` +
-          `bodyW=${bodyW} vvW=${vv ? Math.round(vv.width) : "-"} scale=${vv ? vv.scale.toFixed(2) : "-"}\n` +
-          `widest(non-marquee)=${Math.round(max)} -> ${sel}`,
+        `[${BUILD}] inW=${window.innerWidth} cW=${de.clientWidth} sW=${de.scrollWidth} bodyW=${bodyW} scale=${vv ? vv.scale.toFixed(2) : "-"}\n` +
+          `widest(non-mq)=${Math.round(max)}\n${detail}`,
       );
     };
 
