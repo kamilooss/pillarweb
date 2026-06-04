@@ -10,7 +10,19 @@ const LOGOS = [
 
 export function LogosShowcase() {
   return (
-    <section className="border-t border-card-border bg-background" aria-labelledby="logos-title">
+    <>
+      {/* Preload logo z wysokim priorytetem — sekcja jest wysoko na stronie,
+          więc loga mają być gotowe zanim użytkownik do nich dojedzie. */}
+      {LOGOS.map((logo) => (
+        <link
+          key={`preload-${logo.src}`}
+          rel="preload"
+          as="image"
+          href={logo.src}
+          fetchPriority="high"
+        />
+      ))}
+      <section className="border-t border-card-border bg-background" aria-labelledby="logos-title">
       <div className="container-content py-14 lg:py-20">
         <Reveal
           as="h2"
@@ -58,5 +70,6 @@ export function LogosShowcase() {
         </Reveal>
       </div>
     </section>
+    </>
   );
 }
