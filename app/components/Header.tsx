@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { Logo } from "./Logo";
 import { Button } from "./Button";
@@ -157,12 +158,15 @@ export function Header() {
         </button>
       </div>
 
-      {/* Mobile menu — zwykły div renderowany warunkowo. NIE używamy tu
-          Framer Motion: jego animacja wejścia pod React 19 / motion v11
-          potrafiła nie odpalić i zostawiała panel na opacity:0 (menu się nie
-          pojawiało). Bez blokady body overflow, bo ta zerowała limit scrolla
-          Lenisa i klik w link nie przewijał strony. */}
-      {mobileOpen && (
+      {/* Mobile menu — renderowane przez PORTAL do <body>, NIE wewnątrz
+          <header>. Po przewinięciu header dostaje backdrop-blur
+          (backdrop-filter), co tworzy containing block dla position:fixed i
+          zwijało panel do wysokości 0 → menu otwierało się puste. Portal =>
+          panel zawsze względem viewportu. Zwykły div (bez Framer Motion,
+          którego animacja wejścia pod React 19 potrafiła nie odpalić) i bez
+          blokady body overflow (zerowała limit scrolla Lenisa). */}
+      {mobileOpen &&
+        createPortal(
           <div className="fixed inset-0 top-20 z-40 overflow-y-auto bg-background lg:hidden">
             <div className="container-content flex flex-col gap-1 py-8">
               {NAV_LINKS.map((link) => (
@@ -210,7 +214,8 @@ export function Header() {
                 </Button>
               </div>
             </div>
-          </div>
+          </div>,
+          document.body,
         )}
     </header>
   );
