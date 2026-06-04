@@ -4,6 +4,7 @@ import "./globals.css";
 import "lenis/dist/lenis.css";
 import SmoothScroll from "./components/SmoothScroll";
 import { FloatingCTA } from "./components/FloatingCTA";
+import { ViewportDebug } from "./components/ViewportDebug";
 
 const manrope = Manrope({
   subsets: ["latin", "latin-ext"],
@@ -59,6 +60,7 @@ export default function RootLayout({
         </a>
         {children}
         <FloatingCTA />
+        <ViewportDebug />
       </body>
     </html>
   );
