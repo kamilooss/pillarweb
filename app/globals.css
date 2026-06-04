@@ -64,6 +64,11 @@
   }
 
   html {
+    /* Blokuje auto-nadmuchiwanie tekstu przez mobilne Safari/Chrome przy
+       obrocie ekranu — bez tego po landscape→portrait layout się rozjeżdża
+       (treść szersza niż ekran, ucinanie). */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;

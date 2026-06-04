@@ -112,7 +112,7 @@ export function Testimonials() {
         </Reveal>
 
         <div className="mt-14">
-          <Button href={SITE.contactAnchor} size="lg" className="min-w-[260px]">
+          <Button href={SITE.contactAnchor} size="lg" className="max-w-full min-w-[260px]">
             Wznieś swój biznes na wyższy poziom
           </Button>
         </div>

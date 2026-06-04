@@ -42,7 +42,7 @@ export function VslSection() {
         </Reveal>
 
         <Reveal delay={140} className="mt-10 flex justify-center lg:mt-12">
-          <Button href={cta.href} size="xl" className="min-w-[320px]">
+          <Button href={cta.href} size="xl" className="max-w-full min-w-[320px]">
             {cta.label}
           </Button>
         </Reveal>
