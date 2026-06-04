@@ -25,12 +25,6 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
-    document.body.style.overflow = mobileOpen ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [mobileOpen]);
 
   return (
     <header
@@ -163,16 +157,13 @@ export function Header() {
         </button>
       </div>
 
-      {/* Mobile menu */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 top-20 z-40 overflow-y-auto bg-background lg:hidden"
-          >
+      {/* Mobile menu — zwykły div renderowany warunkowo. NIE używamy tu
+          Framer Motion: jego animacja wejścia pod React 19 / motion v11
+          potrafiła nie odpalić i zostawiała panel na opacity:0 (menu się nie
+          pojawiało). Bez blokady body overflow, bo ta zerowała limit scrolla
+          Lenisa i klik w link nie przewijał strony. */}
+      {mobileOpen && (
+          <div className="fixed inset-0 top-20 z-40 overflow-y-auto bg-background lg:hidden">
             <div className="container-content flex flex-col gap-1 py-8">
               {NAV_LINKS.map((link) => (
                 <div key={link.label} className="border-b border-card-border">
@@ -219,9 +210,8 @@ export function Header() {
                 </Button>
               </div>
             </div>
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
     </header>
   );
 }
