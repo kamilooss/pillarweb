@@ -16,25 +16,25 @@ const SERVICES: ServiceItem[] = [
     title: "Strona, która wygląda lepiej niż 99% Twojej konkurencji",
     description:
       "Tworzymy dopracowane strony, które budują marki premium i wyróżniają firmy na tle ich konkurencji.",
-    image: "/images/services/strona-lepsza-niz-konkurencja.svg",
+    image: "/images/services/strona-lepsza-niz-konkurencja.webp",
   },
   {
     title: "Klienci z Twojego miasta sami znajdą Cię w Google",
     description:
       "Strona zoptymalizowana pod frazy, które wpisują Twoi klienci — żebyś był widoczny wtedy, gdy ktoś szuka wykonawcy w Twojej okolicy.",
-    image: "/images/services/klienci-znajda-w-google.svg",
+    image: "/images/services/klienci-znajda-w-google.webp",
   },
   {
     title: "Kompleksowe wdrożenie bez Twojego udziału",
     description:
       "Copywriting, analityka, struktura dopracowana pod konwersje i pełne wdrożenie w jednym procesie. Jeden zespół, zero chaosu z koordynowaniem różnych dostawców.",
-    image: "/images/services/kompleksowe-wdrozenie.svg",
+    image: "/images/services/kompleksowe-wdrozenie.webp",
   },
   {
     title: "Innowacyjne technologie AI",
     description:
       "Chatbot AI, który sprzedaje za Ciebie 24/7. Automatyczne odpowiedzi na pytania klientów, umawianie wycen i zbieranie leadów — działa nieważne gdzie jesteś.",
-    image: "/images/services/innowacyjne-ai.svg",
+    image: "/images/services/innowacyjne-ai.webp",
   },
 ];
 

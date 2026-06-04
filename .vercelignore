@@ -8,6 +8,15 @@ public/videos/vsl.mp4
 public/videos/lennox.mp4
 public/videos/horyzont.mp4
 
+# Ciężkie źródła obrazów (raster zapakowany w SVG / duży PNG) zastąpione
+# zoptymalizowanymi .webp obok nich. Trzymane lokalnie jako backup, ale nie
+# wdrażane — strona używa wersji .webp.
+public/images/kim-jestesmy-pillarweb.svg
+public/images/o-nas-2.svg
+public/images/producenci-budowlani-pillarweb.svg
+public/images/services/*.svg
+public/images/testimonials/pergole-michal-plonka.png
+
 # Pliki tymczasowe edytora (atomic-save) i swap
 *.sb-*
 *.swp
