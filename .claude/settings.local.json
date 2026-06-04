@@ -182,7 +182,10 @@
       "Bash(sed -n '1,40p' app/components/PortfolioSection.tsx)",
       "Bash(node -p \"require\\('lenis/package.json'\\).version\")",
       "Bash(curl -s https://pillarweb-rho.vercel.app/ -o navlive.html)",
-      "Bash(grep -q 'id=\"__TRACKED_VAR__\"' navlive.html)"
+      "Bash(grep -q 'id=\"__TRACKED_VAR__\"' navlive.html)",
+      "Bash(curl -s https://pillarweb-rho.vercel.app/ -o lg.html)",
+      "Bash(curl -s http://localhost:9999)",
+      "Bash(curl -s https://pillarweb-rho.vercel.app/ -o final.html)"
     ]
   }
 }
