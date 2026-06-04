@@ -782,10 +782,10 @@ export const THANKYOU = {
  * `aspect` = natywne proporcje nagrania (kadr bez przycinania).
  */
 export const PORTFOLIO = {
-  headingPrefix: "Realizacje",
-  headingAccent: "mówią za siebie",
+  headingPrefix: "Zobacz, jak powinna wyglądać strona firmy budowlanej",
+  headingAccent: "w 2026 roku.",
   intro:
-    "Każdy z tych projektów prowadziliśmy od zera: od strategii i treści po wdrożenie. Zobacz, jak wyglądają w praktyce.",
+    "Każdy z tych projektów prowadziliśmy od zera: od research'u, analizy konkurencji, strategii, wdrożenia AI i treści po pełne wdrożenie. Zobacz, jak wyglądają w praktyce.",
   projects: [
     {
       slug: "korona",
