@@ -357,17 +357,24 @@
 .industries-marquee {
   position: relative;
   width: 100%;
+  max-width: 100%;
   margin-top: 0;
   background: var(--color-accent);
   color: var(--color-accent-foreground);
   overflow: hidden;
+  /* Izolacja layoutu: szeroki, animowany track NIE MOŻE rozpychać sekcji ani
+     całej strony (na mobilnym Chrome po obrocie samo overflow:hidden potrafi
+     zawieść i track ~4500px rozjeżdżał layout). */
+  contain: layout paint;
   isolation: isolate;
 }
 
 .industries-marquee__viewport {
   position: relative;
   width: 100%;
+  max-width: 100%;
   overflow: hidden;
+  contain: layout paint;
   padding-block: clamp(0.6rem, 0.95vw, 0.95rem);
   border-top: 1px solid rgba(20, 22, 10, 0.22);
   border-bottom: 1px solid rgba(20, 22, 10, 0.22);
@@ -433,7 +440,10 @@
 .logos-marquee {
   position: relative;
   width: 100%;
+  max-width: 100%;
   overflow: hidden;
+  /* Jak wyżej — track logo nie może rozpychać strony. */
+  contain: layout paint;
   -webkit-mask-image: linear-gradient(
     90deg,
     transparent,

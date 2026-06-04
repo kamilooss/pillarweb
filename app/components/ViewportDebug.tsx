@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 // Marker wersji — pozwala potwierdzić, że telefon NIE serwuje starego cache.
-const BUILD = "dbg-1";
+const BUILD = "dbg-2";
 
 /**
  * Panel diagnostyczny widoczny TYLKO gdy w adresie jest `?debug`
@@ -24,6 +24,8 @@ export function ViewportDebug() {
       let max = 0;
       document.querySelectorAll("body *").forEach((node) => {
         const el = node as HTMLElement;
+        // Pomijamy paski (marquee) — ich szerokość to animacja, nie bug.
+        if (el.closest(".industries-marquee, .logos-marquee")) return;
         const right = el.getBoundingClientRect().right;
         if (right > max) {
           max = right;
@@ -37,10 +39,11 @@ export function ViewportDebug() {
         const cls = raw ? "." + raw.trim().split(/\s+/).slice(0, 2).join(".") : "";
         sel = el.tagName.toLowerCase() + cls;
       }
+      const bodyW = Math.round(document.body.getBoundingClientRect().width);
       setInfo(
         `[${BUILD}] inW=${window.innerWidth} cW=${de.clientWidth} sW=${de.scrollWidth}\n` +
-          `vvW=${vv ? Math.round(vv.width) : "-"} scale=${vv ? vv.scale.toFixed(2) : "-"} dpr=${window.devicePixelRatio}\n` +
-          `widestRight=${Math.round(max)} -> ${sel}`,
+          `bodyW=${bodyW} vvW=${vv ? Math.round(vv.width) : "-"} scale=${vv ? vv.scale.toFixed(2) : "-"}\n` +
+          `widest(non-marquee)=${Math.round(max)} -> ${sel}`,
       );
     };
 
