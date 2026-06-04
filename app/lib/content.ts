@@ -775,6 +775,54 @@ export const THANKYOU = {
   backLabel: "Wróć na stronę główną",
 } as const;
 
+/**
+ * REALIZACJE — portfolio wideo.
+ * Trzy nagrania prawdziwych stron (H.264 1080p, faststart) odtwarzane na klik.
+ * `clientType` to wymagany podpis: dla kogo powstał projekt.
+ * `aspect` = natywne proporcje nagrania (kadr bez przycinania).
+ */
+export const PORTFOLIO = {
+  headingPrefix: "Realizacje",
+  headingAccent: "mówią za siebie",
+  intro:
+    "Każdy z tych projektów prowadziliśmy od zera: od strategii i treści po wdrożenie. Zobacz, jak wyglądają w praktyce.",
+  projects: [
+    {
+      slug: "korona",
+      clientType: "Dla dewelopera",
+      name: "Korona Estates",
+      description:
+        "Prezentacja inwestycji i oferty apartamentów premium, z czytelną ścieżką do kontaktu.",
+      video: "/videos/korona.mp4",
+      poster: "/images/portfolio/korona.jpg",
+      aspect: "1600 / 873",
+      duration: "0:42",
+    },
+    {
+      slug: "lennox",
+      clientType: "Dla firmy budującej domy",
+      name: "Lennox Homes",
+      description:
+        "Strona z interaktywnym kalkulatorem kosztów budowy i katalogiem gotowych realizacji.",
+      video: "/videos/lennox.mp4",
+      poster: "/images/portfolio/lennox.jpg",
+      aspect: "1600 / 947",
+      duration: "1:31",
+    },
+    {
+      slug: "horyzont",
+      clientType: "Dla generalnego wykonawcy",
+      name: "Horyzont",
+      description:
+        "Portfolio realizacji komercyjnych i przemysłowych, z prostą ścieżką do zapytania ofertowego.",
+      video: "/videos/horyzont.mp4",
+      poster: "/images/portfolio/horyzont.jpg",
+      aspect: "1600 / 944",
+      duration: "1:23",
+    },
+  ],
+} as const;
+
 export const FOOTER = {
   links: [{ label: "Polityka Prywatności", href: "/polityka-prywatnosci" }],
   copyright: "© 2026 pillarweb.pl",

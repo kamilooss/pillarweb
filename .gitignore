@@ -35,3 +35,6 @@ next-env.d.ts
 
 # local assets
 /drive-download-*
+
+# portfolio videos — duże binarki, hostowane zewnętrznie (CDN); postery są w repo
+/public/videos/
