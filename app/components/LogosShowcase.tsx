@@ -29,7 +29,7 @@ export function LogosShowcase() {
                 key={i}
                 src={logo.src}
                 alt=""
-                loading="lazy"
+                loading="eager"
                 decoding="async"
                 className={`w-auto shrink-0 opacity-55 [filter:brightness(0)] ${
                   logo.prominent ? "h-11" : "h-7"
@@ -46,7 +46,7 @@ export function LogosShowcase() {
               <img
                 src={logo.src}
                 alt={logo.alt}
-                loading="lazy"
+                loading="eager"
                 decoding="async"
                 aria-hidden={logo.alt === "" ? true : undefined}
                 className={`w-auto opacity-55 transition-opacity duration-300 hover:opacity-100 [filter:brightness(0)] ${
