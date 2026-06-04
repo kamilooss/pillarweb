@@ -823,6 +823,23 @@ export const PORTFOLIO = {
   ],
 } as const;
 
+/**
+ * VSL — film sprzedażowy. Pojedynczy, centralny "eksponat" w jasnym
+ * motywie (ciemny pas marki jest zarezerwowany dla OverlayCTA).
+ * Nagłówek nad wideo, pod wideo guzik CTA. Bez opisów.
+ */
+export const VSL = {
+  headingPrefix:
+    "Polecenia są nieprzewidywalne. Zbuduj firmę budowlaną, która ma",
+  headingAccent: "stały dopływ zleceń.",
+  video: "/videos/vsl.mp4",
+  poster: "/images/vsl.jpg",
+  aspect: "1600 / 900",
+  duration: "7:36",
+  name: "film sprzedażowy Pillar Web",
+  cta: { label: "Zdominuj swój lokalny rynek", href: "#kontakt" },
+} as const;
+
 export const FOOTER = {
   links: [{ label: "Polityka Prywatności", href: "/polityka-prywatnosci" }],
   copyright: "© 2026 pillarweb.pl",

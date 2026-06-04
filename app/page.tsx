@@ -5,6 +5,7 @@ import { LogosShowcase } from "./components/LogosShowcase";
 import { PortfolioSection } from "./components/PortfolioSection";
 import { ServicesAccordion } from "./components/ServicesAccordion";
 import { Testimonials } from "./components/Testimonials";
+import { VslSection } from "./components/VslSection";
 import { ContentVideoSection } from "./components/ContentVideoSection";
 import { OverlayCTA } from "./components/OverlayCTA";
 import { DifferentiatorSection } from "./components/DifferentiatorSection";
@@ -29,6 +30,7 @@ export default function HomePage() {
         <PortfolioSection />
         <ServicesAccordion />
         <Testimonials />
+        <VslSection />
         <ContentVideoSection />
         <OverlayCTA />
         <DifferentiatorSection />
