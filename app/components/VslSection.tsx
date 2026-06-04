@@ -29,7 +29,7 @@ export function VslSection() {
           <span className="underline-accent">{headingAccent}</span>
         </Reveal>
 
-        <Reveal delay={90} className="mx-auto mt-12 max-w-4xl lg:mt-16">
+        <Reveal delay={90} className="mx-auto mt-16 max-w-5xl lg:mt-20">
           <PortfolioVideo
             src={video}
             poster={poster}
@@ -42,7 +42,7 @@ export function VslSection() {
         </Reveal>
 
         <Reveal delay={140} className="mt-10 flex justify-center lg:mt-12">
-          <Button href={cta.href} size="lg" className="min-w-[280px]">
+          <Button href={cta.href} size="xl" className="min-w-[320px]">
             {cta.label}
           </Button>
         </Reveal>
