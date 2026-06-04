@@ -69,6 +69,11 @@
        (treść szersza niż ekran, ucinanie). */
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
+    /* Twarde obcięcie poziomego przepełnienia na poziomie roota. `clip`
+       (nie `hidden`) NIE tworzy kontenera przewijania, więc nie psuje
+       position:sticky ani Lenisa, a po obrocie ekranu strona nie może być
+       szersza niż viewport (znika ściśnięcie treści do lewej + pusty pas). */
+    overflow-x: clip;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;

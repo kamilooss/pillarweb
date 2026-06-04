@@ -44,8 +44,33 @@ export default function SmoothScroll() {
     };
     document.addEventListener("click", onClick);
 
+    // Naprawa buga obrotu na mobile (głównie iOS Safari): po landscape→portrait
+    // strona potrafi zostać w złej skali/szerokości (treść ściśnięta do lewej,
+    // pusty pas z prawej). Wymuszamy reset skali viewportu (chwilowo
+    // maximum-scale=1, potem przywrócenie, by nie blokować pinch-zoom) oraz
+    // przeliczenie wymiarów Lenisa.
+    const viewportMeta = document.querySelector('meta[name="viewport"]');
+    const baseViewport =
+      viewportMeta?.getAttribute("content") ??
+      "width=device-width, initial-scale=1";
+    let resetTimer: ReturnType<typeof setTimeout>;
+    const onOrientation = () => {
+      lenis.resize();
+      if (viewportMeta) {
+        viewportMeta.setAttribute("content", `${baseViewport}, maximum-scale=1`);
+        clearTimeout(resetTimer);
+        resetTimer = setTimeout(() => {
+          viewportMeta.setAttribute("content", baseViewport);
+          lenis.resize();
+        }, 400);
+      }
+    };
+    window.addEventListener("orientationchange", onOrientation);
+
     return () => {
       document.removeEventListener("click", onClick);
+      window.removeEventListener("orientationchange", onOrientation);
+      clearTimeout(resetTimer);
       cancelAnimationFrame(rafId);
       lenis.destroy();
     };
