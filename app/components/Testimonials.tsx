@@ -101,7 +101,6 @@ export function Testimonials() {
                 width={56}
                 height={56}
                 className="h-14 w-14 rounded-full object-cover grayscale"
-                unoptimized
               />
               <div>
                 <div className="font-bold text-foreground">{testimonial.author}</div>

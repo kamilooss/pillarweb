@@ -130,7 +130,6 @@ export function ServicesAccordion() {
                                 fill
                                 sizes="(min-width: 1024px) 0px, 90vw"
                                 className="object-contain p-6"
-                                unoptimized
                               />
                             </div>
                           </div>
@@ -163,7 +162,6 @@ export function ServicesAccordion() {
                         fill
                         sizes="(min-width: 1024px) 50vw, 100vw"
                         className="object-contain"
-                        unoptimized
                         priority
                       />
                     </div>

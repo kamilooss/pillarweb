@@ -44,7 +44,6 @@ export function AboutSection() {
                 width={767}
                 height={1024}
                 className="h-full w-full object-cover"
-                unoptimized
               />
             </div>
           </Reveal>

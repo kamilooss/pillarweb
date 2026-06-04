@@ -120,7 +120,6 @@ export function ProcessSection() {
                   width={768}
                   height={1024}
                   className="h-full w-full object-cover"
-                  unoptimized
                 />
               </div>
             </div>
@@ -135,7 +134,6 @@ export function ProcessSection() {
                 width={768}
                 height={1024}
                 className="h-full w-full object-cover"
-                unoptimized
               />
             </div>
           </div>

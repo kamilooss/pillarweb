@@ -47,7 +47,6 @@ export function SpecializationsSection() {
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] group-hover:scale-[1.05]"
-                    unoptimized
                   />
                   {/* Linia marki — wjeżdża od lewej na hover (znacznik strukturalny) */}
                   <span

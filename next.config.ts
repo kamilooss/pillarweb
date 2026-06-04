@@ -13,6 +13,10 @@ const config: NextConfig = {
       },
     ],
     formats: ["image/avif", "image/webp"],
+    // Zoptymalizowane obrazy (szczególnie zdalne z pillarweb.pl) trzymane w
+    // cache CDN przez 31 dni — bez tego Next ponawia pobranie z wolnego
+    // origin WordPressa po wygaśnięciu (domyślnie ~60 s).
+    minimumCacheTTL: 2678400,
   },
   experimental: {
     optimizePackageImports: ["motion"],

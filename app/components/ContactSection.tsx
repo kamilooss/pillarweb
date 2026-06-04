@@ -70,7 +70,6 @@ export function ContactSection() {
                   width={84}
                   height={84}
                   className="h-20 w-20 rounded-full object-cover"
-                  unoptimized
                 />
                 <div className="text-left">
                   <div className="text-lg font-bold">{CONTACT.ownerName}</div>

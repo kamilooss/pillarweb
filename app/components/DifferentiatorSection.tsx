@@ -81,7 +81,6 @@ export function DifferentiatorSection() {
                 width={1400}
                 height={900}
                 className="h-auto w-full"
-                unoptimized
               />
             </Reveal>
 

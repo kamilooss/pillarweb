@@ -121,7 +121,6 @@ export function Hero() {
                   alt="Realizacja firmy budowlanej — nowoczesny budynek w świetle dziennym"
                   fill
                   priority
-                  unoptimized
                   sizes="(max-width: 1024px) 100vw, 42vw"
                   className="object-cover"
                 />

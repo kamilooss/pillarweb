@@ -77,7 +77,6 @@ export function ContentVideoSection() {
                 width={1024}
                 height={572}
                 className="h-full w-full object-cover"
-                unoptimized
               />
             </Reveal>
 
