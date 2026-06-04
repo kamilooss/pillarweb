@@ -1,0 +1,14 @@
+# Materiały źródłowe / robocze — nie są częścią wdrażanej strony
+drive-download-20260509T105536Z-3-001
+research
+
+# Duże filmy hostowane w Vercel Blob (CDN) — przekraczają limit 100 MB/plik.
+# korona.mp4 (50 MB) zostaje i jest serwowany lokalnie.
+public/videos/vsl.mp4
+public/videos/lennox.mp4
+public/videos/horyzont.mp4
+
+# Pliki tymczasowe edytora (atomic-save) i swap
+*.sb-*
+*.swp
+.DS_Store

@@ -13,6 +13,15 @@
 
 export const ASSET_BASE = "https://pillarweb.pl/wp-content/uploads/2026/04";
 
+/**
+ * Duże filmy (>100 MB) są hostowane w Vercel Blob (CDN), bo przekraczają
+ * limit pojedynczego pliku w deployu. Mniejsze (np. korona.mp4) zostają
+ * lokalnie w /public/videos. Aby podmienić film: wgraj go ponownie przez
+ * `vercel blob put` do tego samego pathname.
+ */
+export const VIDEO_BLOB_BASE =
+  "https://yyu7eple7apnsr59.public.blob.vercel-storage.com/videos";
+
 export const SITE = {
   name: "Pillarweb",
   phone: "515-995-187",
@@ -804,7 +813,7 @@ export const PORTFOLIO = {
       name: "Lennox Homes",
       description:
         "Strona z interaktywnym kalkulatorem kosztów budowy i katalogiem gotowych realizacji.",
-      video: "/videos/lennox.mp4",
+      video: `${VIDEO_BLOB_BASE}/lennox.mp4`,
       poster: "/images/portfolio/lennox.jpg",
       aspect: "1600 / 947",
       duration: "1:31",
@@ -815,7 +824,7 @@ export const PORTFOLIO = {
       name: "Horyzont",
       description:
         "Portfolio realizacji komercyjnych i przemysłowych, z prostą ścieżką do zapytania ofertowego.",
-      video: "/videos/horyzont.mp4",
+      video: `${VIDEO_BLOB_BASE}/horyzont.mp4`,
       poster: "/images/portfolio/horyzont.jpg",
       aspect: "1600 / 944",
       duration: "1:23",
@@ -832,7 +841,7 @@ export const VSL = {
   headingPrefix:
     "Polecenia są nieprzewidywalne. Zbuduj firmę budowlaną, która ma",
   headingAccent: "stały dopływ zleceń.",
-  video: "/videos/vsl.mp4",
+  video: `${VIDEO_BLOB_BASE}/vsl.mp4`,
   poster: "/images/vsl.jpg",
   aspect: "1600 / 900",
   duration: "7:36",

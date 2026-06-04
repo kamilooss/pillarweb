@@ -38,3 +38,4 @@ next-env.d.ts
 
 # portfolio videos — duże binarki, hostowane zewnętrznie (CDN); postery są w repo
 /public/videos/
+.env*
