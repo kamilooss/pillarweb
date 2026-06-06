@@ -238,7 +238,11 @@
       "Bash(python3 build_report_pdf.py)",
       "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless=new --disable-gpu --no-pdf-header-footer --print-to-pdf=\"/tmp/raport-korzysci-firmy-budowlane.pdf\" \"file:///tmp/raport_pdf.html\")",
       "Bash(python3 -c \"from pypdf import PdfReader; r=PdfReader\\('/tmp/raport-korzysci-firmy-budowlane.pdf'\\); print\\('Strony:', len\\(r.pages\\)\\); print\\('Próbka tekstu str.1:'\\); print\\(r.pages[0].extract_text\\(\\)[:300]\\)\")",
-      "Bash(cp \"/tmp/raport-korzysci-firmy-budowlane.pdf\" \"/Users/kamil/pillarweb-clone-kopia 2/raport-korzysci-firmy-budowlane.pdf\")"
+      "Bash(cp \"/tmp/raport-korzysci-firmy-budowlane.pdf\" \"/Users/kamil/pillarweb-clone-kopia 2/raport-korzysci-firmy-budowlane.pdf\")",
+      "Bash(git switch *)",
+      "Bash(git merge *)",
+      "Bash(git stash *)",
+      "Bash(curl -sf -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000)"
     ]
   }
 }

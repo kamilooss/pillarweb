@@ -25,8 +25,14 @@ function FormattedText({ text }: { text: string }) {
   );
 }
 
-export function ContentVideoSection() {
-  const { heading, problems } = CONTENT_SECTION;
+interface ContentVideoSectionProps {
+  content?: typeof CONTENT_SECTION;
+}
+
+export function ContentVideoSection({
+  content = CONTENT_SECTION,
+}: ContentVideoSectionProps = {}) {
+  const { heading, problems } = content;
 
   return (
     <section className="border-t border-card-border bg-surface-sunken py-20 lg:py-28">

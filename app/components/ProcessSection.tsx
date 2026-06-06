@@ -6,8 +6,12 @@ import { motion } from "motion/react";
 import { Reveal } from "./Reveal";
 import { PROCESS } from "../lib/content";
 
-export function ProcessSection() {
-  const { heading, important, image, steps } = PROCESS;
+interface ProcessSectionProps {
+  content?: typeof PROCESS;
+}
+
+export function ProcessSection({ content = PROCESS }: ProcessSectionProps = {}) {
+  const { heading, important, image, steps } = content;
   const [activeIdx, setActiveIdx] = useState(0);
   const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
 

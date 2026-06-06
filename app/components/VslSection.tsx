@@ -10,9 +10,13 @@ import { VSL } from "../lib/content";
  * kadr w wyróżnionym arkuszu z limonkową krawędzią. Nagłówek nad wideo,
  * guzik CTA pod wideo. Bez opisów — wideo mówi samo.
  */
-export function VslSection() {
+interface VslSectionProps {
+  content?: typeof VSL;
+}
+
+export function VslSection({ content = VSL }: VslSectionProps = {}) {
   const { headingPrefix, headingAccent, video, poster, aspect, duration, name, cta } =
-    VSL;
+    content;
 
   return (
     <section

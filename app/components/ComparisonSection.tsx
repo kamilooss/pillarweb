@@ -65,8 +65,14 @@ function PlanBadge({ label }: { label: string }) {
   );
 }
 
-export function ComparisonSection() {
-  const { heading, subtitle, columns, categories } = COMPARISON;
+interface ComparisonSectionProps {
+  content?: typeof COMPARISON;
+}
+
+export function ComparisonSection({
+  content = COMPARISON,
+}: ComparisonSectionProps = {}) {
+  const { heading, subtitle, columns, categories } = content;
 
   const cols =
     "grid-cols-[minmax(0,1fr)_56px_72px] sm:grid-cols-[minmax(0,1fr)_minmax(140px,180px)_minmax(160px,220px)]";

@@ -8,7 +8,11 @@ import { Reveal } from "./Reveal";
 import { Button } from "./Button";
 import { CONTACT, THANKYOU } from "../lib/content";
 
-export function ContactSection() {
+interface ContactSectionProps {
+  content?: typeof CONTACT;
+}
+
+export function ContactSection({ content = CONTACT }: ContactSectionProps = {}) {
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
 
@@ -37,12 +41,12 @@ export function ContactSection() {
           as="h2"
           className="max-w-3xl font-display text-[clamp(1.9rem,3.8vw,3rem)] font-extrabold leading-[1.08] tracking-tight"
         >
-          {CONTACT.headingLine1}{" "}
-          <span className="underline-accent">{CONTACT.headingLine2}</span>
+          {content.headingLine1}{" "}
+          <span className="underline-accent">{content.headingLine2}</span>
         </Reveal>
 
         <Reveal as="p" delay={60} className="mt-6 max-w-3xl text-lg leading-relaxed text-muted-strong">
-          {CONTACT.description}
+          {content.description}
         </Reveal>
 
         <Reveal delay={80}>
@@ -51,7 +55,7 @@ export function ContactSection() {
             className="mt-8 inline-flex items-center gap-3 bg-accent px-5 py-3 font-display font-bold text-accent-foreground"
           >
             <span aria-hidden className="inline-block h-2 w-2 bg-accent-foreground" />
-            {CONTACT.urgencyNote}
+            {content.urgencyNote}
           </div>
         </Reveal>
 
@@ -65,36 +69,36 @@ export function ContactSection() {
 
               <div className="mb-8 flex items-center gap-4">
                 <Image
-                  src={CONTACT.ownerPhoto}
-                  alt={CONTACT.ownerName}
+                  src={content.ownerPhoto}
+                  alt={content.ownerName}
                   width={84}
                   height={84}
                   className="h-20 w-20 rounded-full object-cover"
                 />
                 <div className="text-left">
-                  <div className="text-lg font-bold">{CONTACT.ownerName}</div>
-                  <div className="text-sm text-muted">{CONTACT.ownerRole}</div>
+                  <div className="text-lg font-bold">{content.ownerName}</div>
+                  <div className="text-sm text-muted">{content.ownerRole}</div>
                 </div>
               </div>
 
               <blockquote className="space-y-3 text-sm leading-relaxed text-muted-strong">
-                {CONTACT.testimonial.quote.map((paragraph, i) => (
+                {content.testimonial.quote.map((paragraph, i) => (
                   <p key={i}>
                     {i === 0 && "„"}
                     {paragraph}
-                    {i === CONTACT.testimonial.quote.length - 1 && "”"}
+                    {i === content.testimonial.quote.length - 1 && "”"}
                   </p>
                 ))}
               </blockquote>
 
               <div className="mt-5 flex items-center justify-center gap-2 text-sm">
                 <span aria-hidden className="inline-block h-px w-4 bg-accent" />
-                <span className="font-semibold">{CONTACT.testimonial.author}</span>
-                <span className="text-muted">{CONTACT.testimonial.role}</span>
+                <span className="font-semibold">{content.testimonial.author}</span>
+                <span className="text-muted">{content.testimonial.role}</span>
               </div>
 
               <p className="mt-10 border-t border-card-border pt-10 font-medium leading-relaxed text-foreground">
-                {CONTACT.formNote}
+                {content.formNote}
               </p>
             </div>
 
@@ -122,7 +126,7 @@ export function ContactSection() {
                   <option value="" disabled>
                     Wybierz specjalizację
                   </option>
-                  {CONTACT.specializations.map((s) => (
+                  {content.specializations.map((s) => (
                     <option key={s} value={s}>
                       {s}
                     </option>
@@ -145,9 +149,9 @@ export function ContactSection() {
 
               <div className="space-y-3">
                 <Button type="submit" size="lg" className="w-full" disabled={submitting}>
-                  {submitting ? "Wysyłanie..." : CONTACT.submitLabel}
+                  {submitting ? "Wysyłanie..." : content.submitLabel}
                 </Button>
-                <p className="text-center text-sm text-muted-strong">{CONTACT.submitNote}</p>
+                <p className="text-center text-sm text-muted-strong">{content.submitNote}</p>
               </div>
             </form>
           </div>

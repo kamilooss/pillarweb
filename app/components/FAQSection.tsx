@@ -87,7 +87,11 @@ function FaqItem({
   );
 }
 
-export function FAQSection() {
+interface FAQSectionProps {
+  content?: typeof FAQ;
+}
+
+export function FAQSection({ content = FAQ }: FAQSectionProps = {}) {
   const [open, setOpen] = useState<Set<number>>(new Set());
 
   const toggle = (idx: number) => {
@@ -106,11 +110,11 @@ export function FAQSection() {
           as="h2"
           className="max-w-3xl font-display text-[clamp(1.9rem,3.8vw,3rem)] font-extrabold tracking-tight"
         >
-          {FAQ.heading}
+          {content.heading}
         </Reveal>
 
         <div className="mt-12 max-w-3xl space-y-3 lg:mt-16">
-          {FAQ.items.map((item, i) => (
+          {content.items.map((item, i) => (
             <Reveal key={i} delay={Math.min(i * 30, 200)}>
               <FaqItem
                 question={item.question}

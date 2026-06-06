@@ -3,19 +3,32 @@ import Image from "next/image";
 import { MagneticButton } from "./MagneticButton";
 import { HERO, SITE, ASSET_BASE } from "../lib/content";
 
-// Słowa nagłówka pogrupowane w linie; akcent (hi-vis lime) na "FIRM BUDOWLANYCH".
-const HEADLINE_LINES: { text: string; accent?: boolean }[][] = [
-  HERO.titleLine1.split(" ").map((text) => ({ text })),
-  [
-    { text: HERO.titleLine2Prefix },
-    ...HERO.titleLine2Accent.split(" ").map((text) => ({ text, accent: true })),
-  ],
-];
+// Domyślne zdjęcie realizacji — jasny, dzienny kadr zamiast ciemnego wideo.
+const DEFAULT_HERO_IMAGE = `${ASSET_BASE}/generalni-wykonawcy-pillarweb.webp`;
 
-// Realne zdjęcie realizacji — jasny, dzienny kadr zamiast ciemnego wideo.
-const HERO_IMAGE = `${ASSET_BASE}/generalni-wykonawcy-pillarweb.webp`;
+interface HeroProps {
+  content?: typeof HERO;
+  /** Override obrazka hero (np. dla podstron podnisz). */
+  heroImage?: string;
+  /** Override alt-text obrazka. */
+  heroImageAlt?: string;
+}
 
-export function Hero() {
+export function Hero({
+  content = HERO,
+  heroImage = DEFAULT_HERO_IMAGE,
+  heroImageAlt = "Realizacja firmy budowlanej — nowoczesny budynek w świetle dziennym",
+}: HeroProps = {}) {
+  // Słowa nagłówka pogrupowane w linie; akcent (hi-vis lime) na akcencie content.
+  const HEADLINE_LINES: { text: string; accent?: boolean }[][] = [
+    content.titleLine1.split(" ").map((text) => ({ text })),
+    [
+      { text: content.titleLine2Prefix },
+      ...content.titleLine2Accent
+        .split(" ")
+        .map((text) => ({ text, accent: true })),
+    ],
+  ];
   let wordIndex = -1;
 
   return (
@@ -35,7 +48,7 @@ export function Hero() {
               className="tick-label mb-7 animate-fade-up lg:mb-9"
               style={{ animationDelay: "0.05s" }}
             >
-              {HERO.brandLine}
+              {content.brandLine}
             </span>
 
             <h1 className="font-display font-extrabold uppercase leading-[1.06] tracking-tight text-[clamp(2.35rem,5.6vw,5rem)]">
@@ -64,7 +77,7 @@ export function Hero() {
               className="mt-7 max-w-[48ch] text-[clamp(1rem,1.4vw,1.25rem)] leading-relaxed text-muted-strong animate-fade-up lg:mt-9"
               style={{ animationDelay: "0.55s" }}
             >
-              {HERO.subtitleParts.map((part, i) => (
+              {content.subtitleParts.map((part, i) => (
                 <Fragment key={i}>
                   {i > 0 && " "}
                   <span className={part.accent ? "font-semibold text-foreground underline-accent" : undefined}>
@@ -79,10 +92,10 @@ export function Hero() {
               style={{ animationDelay: "0.72s" }}
             >
               <MagneticButton
-                href={HERO.cta.href}
+                href={content.cta.href}
                 className="px-8 py-4 text-base sm:whitespace-nowrap sm:text-[15px]"
               >
-                {HERO.cta.label}
+                {content.cta.label}
               </MagneticButton>
 
               <a
@@ -117,8 +130,8 @@ export function Hero() {
 
               <div className="relative aspect-[4/5] w-full overflow-hidden border border-card-border-strong bg-surface-sunken">
                 <Image
-                  src={HERO_IMAGE}
-                  alt="Realizacja firmy budowlanej — nowoczesny budynek w świetle dziennym"
+                  src={heroImage}
+                  alt={heroImageAlt}
                   fill
                   priority
                   sizes="(max-width: 1024px) 100vw, 42vw"

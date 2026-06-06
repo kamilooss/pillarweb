@@ -2,8 +2,12 @@ import Image from "next/image";
 import { Reveal } from "./Reveal";
 import { ABOUT } from "../lib/content";
 
-export function AboutSection() {
-  const { heading, paragraphs, image, imageAlt } = ABOUT;
+interface AboutSectionProps {
+  content?: typeof ABOUT;
+}
+
+export function AboutSection({ content = ABOUT }: AboutSectionProps = {}) {
+  const { heading, paragraphs, image, imageAlt } = content;
 
   return (
     <section className="border-t border-card-border py-20 lg:py-28">

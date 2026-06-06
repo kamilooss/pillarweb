@@ -2,9 +2,21 @@ import Image from "next/image";
 import { Reveal } from "./Reveal";
 import { GUARANTEES } from "../lib/content";
 
-export function GuaranteesSection() {
+interface GuaranteesSectionProps {
+  content?: typeof GUARANTEES;
+}
+
+export function GuaranteesSection({
+  content = GUARANTEES,
+}: GuaranteesSectionProps = {}) {
   const { headingLine1, headingLine2, subheadingPrefix, subheadingAccent, items } =
-    GUARANTEES;
+    content;
+  // Grid: 3 items → 3 kolumny; 4 items → 2x2 na md, 4 kolumny na xl.
+  // Wybieramy klasę dynamicznie, żeby układ nie wyglądał krzywo dla 4 items.
+  const gridCols =
+    items.length === 4
+      ? "md:grid-cols-2 md:gap-12 xl:grid-cols-4 xl:gap-0 xl:divide-x xl:divide-card-border"
+      : "md:grid-cols-3 md:gap-0 md:divide-x md:divide-card-border";
 
   return (
     <section id="gwarancje" className="border-t border-card-border py-20 lg:py-28">
@@ -27,7 +39,7 @@ export function GuaranteesSection() {
         </Reveal>
 
         {/* Numerowany pas z włosowymi pionowymi liniami — bez pudełek-kart */}
-        <div className="mt-14 grid gap-12 border-t border-card-border pt-12 md:grid-cols-3 md:gap-0 md:divide-x md:divide-card-border lg:mt-16">
+        <div className={`mt-14 grid gap-12 border-t border-card-border pt-12 ${gridCols} lg:mt-16`}>
           {items.map((item, i) => (
             <Reveal
               key={item.title}

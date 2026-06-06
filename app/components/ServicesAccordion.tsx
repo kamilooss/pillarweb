@@ -5,13 +5,13 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
 import { Reveal } from "./Reveal";
 
-type ServiceItem = {
+export type ServiceItem = {
   title: string;
   description: string;
   image: string;
 };
 
-const SERVICES: ServiceItem[] = [
+const DEFAULT_SERVICES: ServiceItem[] = [
   {
     title: "Strona, która wygląda lepiej niż 99% Twojej konkurencji",
     description:
@@ -40,9 +40,21 @@ const SERVICES: ServiceItem[] = [
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-export function ServicesAccordion() {
+interface ServicesAccordionProps {
+  /** Override 4 punktów benefitów. */
+  services?: ServiceItem[];
+  /** Override nagłówka — wsparcie dla podstron podnisz. */
+  headingPrefix?: string;
+  headingAccent?: string;
+}
+
+export function ServicesAccordion({
+  services = DEFAULT_SERVICES,
+  headingPrefix = "Co dostajesz w ramach",
+  headingAccent = "współpracy",
+}: ServicesAccordionProps = {}) {
   const [active, setActive] = useState(0);
-  const activeItem = SERVICES[active];
+  const activeItem = services[active];
 
   return (
     <section
@@ -54,13 +66,13 @@ export function ServicesAccordion() {
           as="h2"
           className="mb-12 max-w-3xl font-display text-[clamp(1.9rem,3.7vw,3rem)] font-extrabold leading-[1.08] tracking-tight lg:mb-16"
         >
-          Co dostajesz w ramach <span className="underline-accent">współpracy</span>
+          {headingPrefix} <span className="underline-accent">{headingAccent}</span>
         </Reveal>
 
         <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:gap-24">
           {/* LEFT — accordion */}
           <ul className="order-2 lg:order-1">
-            {SERVICES.map((item, i) => {
+            {services.map((item, i) => {
               const isActive = i === active;
               const panelId = `service-panel-${i}`;
               return (

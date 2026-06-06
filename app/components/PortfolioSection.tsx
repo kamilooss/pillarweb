@@ -9,8 +9,25 @@ import { PORTFOLIO } from "../lib/content";
  * Inny rytm layoutu niż reszta strony: tytuł-blok NAD pełnym kadrem,
  * zamiast splitu tekst-obok-mediów.
  */
-export function PortfolioSection() {
-  const { headingPrefix, headingAccent, intro, projects } = PORTFOLIO;
+interface PortfolioSectionProps {
+  /** Pełna override sekcji (heading, intro, projects). */
+  content?: typeof PORTFOLIO;
+  /** Sam override nagłówka/intro — projekty zostają z PORTFOLIO (przydatne dla podstron). */
+  headingPrefix?: string;
+  headingAccent?: string;
+  intro?: string;
+}
+
+export function PortfolioSection({
+  content = PORTFOLIO,
+  headingPrefix: headingPrefixOverride,
+  headingAccent: headingAccentOverride,
+  intro: introOverride,
+}: PortfolioSectionProps = {}) {
+  const { projects } = content;
+  const headingPrefix = headingPrefixOverride ?? content.headingPrefix;
+  const headingAccent = headingAccentOverride ?? content.headingAccent;
+  const intro = introOverride ?? content.intro;
 
   return (
     <section

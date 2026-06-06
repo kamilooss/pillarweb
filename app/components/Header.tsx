@@ -14,7 +14,12 @@ const PhoneIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-export function Header() {
+interface HeaderProps {
+  /** Override linków nawigacji — przydatne dla podstron podnisz. */
+  navLinks?: typeof NAV_LINKS;
+}
+
+export function Header({ navLinks = NAV_LINKS }: HeaderProps = {}) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
@@ -40,7 +45,7 @@ export function Header() {
 
         {/* Desktop nav */}
         <nav className="hidden items-center gap-1 lg:flex" aria-label="Główna nawigacja">
-          {NAV_LINKS.map((link) => {
+          {navLinks.map((link) => {
             if ("children" in link && link.children) {
               return (
                 <div
@@ -169,7 +174,7 @@ export function Header() {
         createPortal(
           <div className="fixed inset-0 top-20 z-40 overflow-y-auto bg-background lg:hidden">
             <div className="container-content flex flex-col gap-1 py-8">
-              {NAV_LINKS.map((link) => (
+              {navLinks.map((link) => (
                 <div key={link.label} className="border-b border-card-border">
                   <a
                     href={link.href}

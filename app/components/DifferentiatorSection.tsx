@@ -21,8 +21,14 @@ function FormattedText({ text }: { text: string }) {
   );
 }
 
-export function DifferentiatorSection() {
-  const { heading, pillars, results } = DIFFERENTIATOR;
+interface DifferentiatorSectionProps {
+  content?: typeof DIFFERENTIATOR;
+}
+
+export function DifferentiatorSection({
+  content = DIFFERENTIATOR,
+}: DifferentiatorSectionProps = {}) {
+  const { heading, pillars, results } = content;
   // Skill: zero em-dash w nagłówkach — zdejmujemy wiodący myślnik bez zmiany słów.
   const resultsStat = results.headingSuffix.replace(/^\s*[—–-]\s*/, "");
 
