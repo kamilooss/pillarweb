@@ -773,6 +773,22 @@ export const THANKYOU = {
 } as const;
 
 /**
+ * SPOTKANIE — ukryta podstrona z embedem Calendly.
+ * Nie linkowana z nawigacji; wejście wyłącznie z opisów Loom / zewnętrznych źródeł.
+ * `calendlyUrl` to publiczny event Calendly; parametry koloru dopasowują widget do
+ * systemu wizualnego (lime accent, ciepły papier, ciemny tusz).
+ */
+export const BOOKING = {
+  route: "/spotkanie",
+  calendlyUrl: "https://calendly.com/kamistrz/30min",
+  eyebrow: "Bezpłatna konsultacja",
+  headingPrefix: "Wybierz dogodny",
+  headingAccent: "termin rozmowy.",
+  subtext:
+    "Wybierz wolny slot w kalendarzu poniżej. Po potwierdzeniu otrzymasz e-mail z linkiem do spotkania oraz przypomnienie 24h wcześniej.",
+} as const;
+
+/**
  * REALIZACJE — portfolio wideo.
  * Trzy nagrania prawdziwych stron (H.264 1080p, faststart) odtwarzane na klik.
  * `clientType` to wymagany podpis: dla kogo powstał projekt.
