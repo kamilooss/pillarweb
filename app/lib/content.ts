@@ -786,6 +786,13 @@ export const BOOKING = {
   headingAccent: "termin rozmowy.",
   subtext:
     "Wybierz wolny slot w kalendarzu poniżej. Po potwierdzeniu otrzymasz e-mail z linkiem do spotkania oraz przypomnienie 24h wcześniej.",
+  // Wezwanie do akcji w e-mailu od Calendly — bez tego klient łatwo
+  // zapomni o spotkaniu (brak wpisu w Google Calendar = brak natywnego
+  // przypomnienia od telefonu/komputera).
+  note: {
+    heading: "Ważne — po rezerwacji",
+    body: 'W e-mailu z potwierdzeniem od Calendly kliknij przycisk „Dodaj do kalendarza". Spotkanie trafi wtedy do Twojego Google Calendar wraz z automatycznym przypomnieniem.',
+  },
 } as const;
 
 /**
