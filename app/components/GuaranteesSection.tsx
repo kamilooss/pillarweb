@@ -11,12 +11,17 @@ export function GuaranteesSection({
 }: GuaranteesSectionProps = {}) {
   const { headingLine1, headingLine2, subheadingPrefix, subheadingAccent, items } =
     content;
-  // Grid: 3 items → 3 kolumny; 4 items → 2x2 na md, 4 kolumny na xl.
-  // Wybieramy klasę dynamicznie, żeby układ nie wyglądał krzywo dla 4 items.
+  // Grid: 2 items → 2 kolumny; 3 items → 3 kolumny; 4 items → 2x2 na md,
+  // 4 kolumny na xl. Wybieramy klasę dynamicznie, żeby układ nie wyglądał
+  // krzywo dla różnej liczby kafelków. `count` rzutowany na number, bo dla
+  // defaultowego (as const) GUARANTEES `items.length` zawęża się do literału.
+  const count: number = items.length;
   const gridCols =
-    items.length === 4
-      ? "md:grid-cols-2 md:gap-12 xl:grid-cols-4 xl:gap-0 xl:divide-x xl:divide-card-border"
-      : "md:grid-cols-3 md:gap-0 md:divide-x md:divide-card-border";
+    count === 2
+      ? "md:grid-cols-2 md:gap-0 md:divide-x md:divide-card-border"
+      : count === 4
+        ? "md:grid-cols-2 md:gap-12 xl:grid-cols-4 xl:gap-0 xl:divide-x xl:divide-card-border"
+        : "md:grid-cols-3 md:gap-0 md:divide-x md:divide-card-border";
 
   return (
     <section id="gwarancje" className="border-t border-card-border py-20 lg:py-28">

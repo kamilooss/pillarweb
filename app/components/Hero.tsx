@@ -12,12 +12,15 @@ interface HeroProps {
   heroImage?: string;
   /** Override alt-text obrazka. */
   heroImageAlt?: string;
+  /** Opcjonalne CTA pomocnicze (np. „Zobacz, co zawiera” → kotwica). */
+  secondaryCta?: { label: string; href: string };
 }
 
 export function Hero({
   content = HERO,
   heroImage = DEFAULT_HERO_IMAGE,
   heroImageAlt = "Realizacja firmy budowlanej — nowoczesny budynek w świetle dziennym",
+  secondaryCta,
 }: HeroProps = {}) {
   // Słowa nagłówka pogrupowane w linie; akcent (hi-vis lime) na akcencie content.
   const HEADLINE_LINES: { text: string; accent?: boolean }[][] = [
@@ -116,6 +119,32 @@ export function Hero({
                 <span className="font-semibold tracking-tight tnum">{SITE.phone}</span>
               </a>
             </div>
+
+            {secondaryCta && (
+              <a
+                href={secondaryCta.href}
+                className="group mt-7 inline-flex items-center gap-2 text-sm font-semibold text-muted-strong transition-colors animate-fade-up hover:text-foreground lg:mt-8"
+                style={{ animationDelay: "0.85s" }}
+              >
+                {secondaryCta.label}
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  aria-hidden="true"
+                  className="transition-transform duration-300 group-hover:translate-y-0.5"
+                >
+                  <path
+                    d="M8 3v10M3.5 8.5L8 13l4.5-4.5"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </a>
+            )}
           </div>
 
           {/* Kadrowane zdjęcie realizacji — strukturalna ramka */}
