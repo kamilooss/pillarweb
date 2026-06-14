@@ -168,6 +168,30 @@ export function ContactSection({
                 />
               </div>
 
+              {/* Zgoda RODO — wymagana, bramkuje wysyłkę formularza. */}
+              <div className="flex items-start gap-3">
+                <input
+                  id="consent"
+                  name="consent"
+                  type="checkbox"
+                  required
+                  className="mt-1 h-4 w-4 shrink-0 cursor-pointer accent-accent"
+                />
+                <label htmlFor="consent" className="text-sm leading-relaxed text-muted-strong">
+                  Wyrażam zgodę na przetwarzanie moich danych osobowych przez Pillar Web
+                  w celu obsługi zapytania i kontaktu w sprawie oferty, zgodnie z{" "}
+                  <a
+                    href="/polityka-prywatnosci"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline underline-offset-2 hover:text-foreground"
+                  >
+                    Polityką Prywatności
+                  </a>
+                  . <span className="text-muted">*</span>
+                </label>
+              </div>
+
               <div className="space-y-3">
                 <Button type="submit" size="lg" className="w-full" disabled={submitting}>
                   {submitting ? "Wysyłanie..." : content.submitLabel}
