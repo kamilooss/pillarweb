@@ -10,28 +10,49 @@ import { CONTACT, THANKYOU } from "../lib/content";
 
 interface ContactSectionProps {
   content?: typeof CONTACT;
+  /**
+   * Źródło zgłoszenia — decyduje, do której grupy w MailerLite trafi
+   * subskrybent (rozdziela dane ze strony głównej od /landing-page).
+   * Musi pasować do kluczy w GROUP_BY_SOURCE w app/api/contact/route.ts.
+   */
+  source?: "home" | "landing-page";
 }
 
-export function ContactSection({ content = CONTACT }: ContactSectionProps = {}) {
+export function ContactSection({
+  content = CONTACT,
+  source = "home",
+}: ContactSectionProps = {}) {
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitting(true);
+    setError(null);
 
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries());
 
-    // TODO: Podłącz submit do backendu — np. /api/contact (Resend, Formspree,
-    // własny endpoint) albo bezpośrednio do Slack/Discord webhook.
-    console.log("Form submitted:", data);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...data, source }),
+      });
 
-    await new Promise((r) => setTimeout(r, 600));
+      if (!res.ok) throw new Error(`Request failed: ${res.status}`);
 
-    // Po wysłaniu — przejście na stronę z podziękowaniem (Thank You Page).
-    // Nie zerujemy `submitting`: przycisk zostaje zablokowany do nawigacji.
-    router.push(THANKYOU.route);
+      // Po wysłaniu — przejście na stronę z podziękowaniem (Thank You Page).
+      // Nie zerujemy `submitting`: przycisk zostaje zablokowany do nawigacji.
+      router.push(THANKYOU.route);
+    } catch (err) {
+      console.error("[ContactSection] Wysyłka nie powiodła się:", err);
+      setSubmitting(false);
+      setError(
+        "Coś poszło nie tak przy wysyłaniu. Spróbuj ponownie lub napisz do nas bezpośrednio.",
+      );
+    }
   };
 
   return (
@@ -151,6 +172,11 @@ export function ContactSection({ content = CONTACT }: ContactSectionProps = {}) 
                 <Button type="submit" size="lg" className="w-full" disabled={submitting}>
                   {submitting ? "Wysyłanie..." : content.submitLabel}
                 </Button>
+                {error && (
+                  <p role="alert" className="text-center text-sm font-medium text-red-600">
+                    {error}
+                  </p>
+                )}
                 <p className="text-center text-sm text-muted-strong">{content.submitNote}</p>
               </div>
             </form>

@@ -108,7 +108,10 @@ export default function LandingPagePage() {
         <LandingOwnership content={OWNERSHIP_LANDING} />
         <GuaranteesSection content={GUARANTEES_LANDING as unknown as typeof GUARANTEES} />
         <FAQSection content={FAQ_LANDING as unknown as typeof FAQ} />
-        <ContactSection content={CONTACT_LANDING as unknown as typeof CONTACT} />
+        <ContactSection
+          content={CONTACT_LANDING as unknown as typeof CONTACT}
+          source="landing-page"
+        />
       </main>
       <Footer />
     </>
