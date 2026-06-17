@@ -45,6 +45,16 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  // Wyłącza auto-detekcję iOS Safari (daty/adresy/numery/e-maile w treści).
+  // To ona nakładała kropkowaną, klikalną warstwę na nagłówek „Maksymalnie
+  // 7 dni" i próbowała otwierać Mapy. Jawne linki tel:/mailto: działają dalej,
+  // bo nie zależą od auto-wykrywania.
+  formatDetection: {
+    telephone: false,
+    date: false,
+    address: false,
+    email: false,
+  },
 };
 
 export default function RootLayout({
