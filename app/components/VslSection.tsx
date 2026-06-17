@@ -35,13 +35,12 @@ export function VslSection({ content = VSL }: VslSectionProps = {}) {
 
         <Reveal delay={90} className="mx-auto mt-16 max-w-5xl lg:mt-20">
           <PortfolioVideo
-            src={video}
+            videoId={video}
             poster={poster}
             aspect={aspect}
             name={name}
             duration={duration}
             frameClassName="surface-panel surface-panel--accent edge-accent-top"
-            large
           />
         </Reveal>
 

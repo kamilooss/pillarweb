@@ -74,11 +74,12 @@ export function PortfolioSection({
               </header>
 
               <PortfolioVideo
-                src={project.video}
+                videoId={project.video}
                 poster={project.poster}
                 aspect={project.aspect}
                 name={project.name}
                 duration={project.duration}
+                loop
               />
             </Reveal>
           ))}

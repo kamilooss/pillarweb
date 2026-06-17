@@ -20,10 +20,18 @@ export const ASSET_BASE = "/images";
 const ICON_ASSET_BASE = "https://pillarweb.pl/wp-content/uploads/2026/04";
 
 /**
- * Duże filmy (>100 MB) są hostowane w Vercel Blob (CDN), bo przekraczają
- * limit pojedynczego pliku w deployu. Mniejsze (np. korona.mp4) zostają
- * lokalnie w /public/videos. Aby podmienić film: wgraj go ponownie przez
- * `vercel blob put` do tego samego pathname.
+ * Wszystkie filmy (realizacje + VSL) hostujemy w Bunny Stream jako adaptacyjny
+ * streaming (HLS) — jedna biblioteka, start praktycznie natychmiast, bez
+ * brandingu obcych platform. Pole `video` w danych poniżej = Video GUID z Bunny;
+ * URL osadzenia składa komponent PortfolioVideo. Aby podmienić film: wgraj nowy
+ * do tej samej biblioteki w panelu Bunny i wstaw jego GUID.
+ */
+export const BUNNY_LIBRARY_ID = "685421";
+
+/**
+ * @deprecated Pozostałość po hostingu w Vercel Blob — żaden film już z tego nie
+ * korzysta (przenieśliśmy wszystko do Bunny). Zostaje, bo re-eksportują go inne
+ * moduły contentu; do usunięcia przy najbliższym sprzątaniu.
  */
 export const VIDEO_BLOB_BASE =
   "https://yyu7eple7apnsr59.public.blob.vercel-storage.com/videos";
@@ -819,7 +827,7 @@ export const PORTFOLIO = {
       name: "Korona Estates",
       description:
         "Prezentacja inwestycji i oferty apartamentów premium, z czytelną ścieżką do kontaktu.",
-      video: "/videos/korona.mp4",
+      video: "2a5a59a5-4f16-45ca-a23d-4a70c7086f1f",
       poster: "/images/portfolio/korona.jpg",
       aspect: "1600 / 873",
       duration: "0:42",
@@ -830,7 +838,7 @@ export const PORTFOLIO = {
       name: "Lennox Homes",
       description:
         "Strona z interaktywnym kalkulatorem kosztów budowy i katalogiem gotowych realizacji.",
-      video: "/videos/lennox.mp4",
+      video: "326a9893-e92b-454e-996e-bfc2334380cd",
       poster: "/images/portfolio/lennox.jpg",
       aspect: "1600 / 947",
       duration: "1:31",
@@ -841,7 +849,7 @@ export const PORTFOLIO = {
       name: "Horyzont",
       description:
         "Portfolio realizacji komercyjnych i przemysłowych, z prostą ścieżką do zapytania ofertowego.",
-      video: "/videos/horyzont.mp4",
+      video: "ea50eb46-8bc3-4196-b1c2-5c55032eaaca",
       poster: "/images/portfolio/horyzont.jpg",
       aspect: "1600 / 944",
       duration: "1:23",
@@ -858,7 +866,7 @@ export const VSL = {
   headingPrefix:
     "Polecenia są nieprzewidywalne. Zbuduj firmę budowlaną, która ma",
   headingAccent: "stały dopływ zleceń.",
-  video: "/videos/vsl.mp4",
+  video: "fbdc4249-7171-41a2-9bce-eec6d2dcbb55",
   poster: "/images/vsl.jpg",
   aspect: "1600 / 900",
   duration: "7:36",
