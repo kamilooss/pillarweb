@@ -29,6 +29,41 @@ interface ComparisonContent {
 const COLS =
   "md:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)_minmax(0,1.15fr)]";
 
+/* Ikony statusu na mobile — kształt kołowy (lock: icons rounded-full).
+   ✓ lime = oferta Pillar Web; − wygaszony = stan rynku. Niosą znaczenie
+   niezależnie od koloru (color-not-only). */
+function CheckIcon() {
+  return (
+    <span
+      aria-hidden="true"
+      className="mt-0.5 inline-flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-accent"
+    >
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path
+          d="M2 7.5L5.5 11L12 3"
+          stroke="var(--color-accent-foreground)"
+          strokeWidth="2.4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </span>
+  );
+}
+
+function MinusIcon() {
+  return (
+    <span
+      aria-hidden="true"
+      className="mt-0.5 inline-flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-foreground/[0.06] text-foreground/40"
+    >
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+        <path d="M3 7H11" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+      </svg>
+    </span>
+  );
+}
+
 export function LandingComparisonTable({
   content,
 }: {
@@ -126,29 +161,41 @@ export function LandingComparisonTable({
           </div>
         </Reveal>
 
-        {/* MOBILE — stos kart */}
-        <div className="mt-12 space-y-4 md:hidden">
+        {/* MOBILE — stos kart. Każda karta = jedno kryterium z wyraźnym
+            podziałem: u góry „stan rynku" (biała, wygaszona strefa, ikona −),
+            u dołu „Oferta w Pillar Web" jako odpowiedź — pełnowymiarowy
+            lime-blok (hi-vis fill, ikona ✓). Większy tekst i powietrze między
+            blokami zamiast wcześniejszych ściśniętych, drobnych wierszy. */}
+        <div className="mt-12 space-y-5 md:hidden">
           {rows.map((row, i) => (
             <Reveal
               key={row.feature}
               delay={Math.min(i * 30, 180)}
-              className="surface-panel p-5"
+              className="surface-panel overflow-hidden"
             >
-              <div className="font-display text-base font-bold tracking-tight text-foreground">
-                {row.feature}
-              </div>
-              <div className="mt-4 space-y-3">
-                <div>
-                  <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted">
-                    {columns.others}
-                  </span>
-                  <p className="mt-1 text-sm leading-snug text-muted">{row.others}</p>
+              <div className="p-6">
+                <h3 className="font-display text-lg font-bold leading-tight tracking-tight text-foreground">
+                  {row.feature}
+                </h3>
+                <div className="mt-5 flex items-start gap-3">
+                  <MinusIcon />
+                  <div>
+                    <span className="block text-xs font-bold uppercase tracking-[0.14em] text-muted">
+                      {columns.others}
+                    </span>
+                    <p className="mt-1.5 text-base leading-snug text-muted-strong">
+                      {row.others}
+                    </p>
+                  </div>
                 </div>
-                <div className="border-l-[3px] border-accent pl-3">
-                  <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-muted-strong">
+              </div>
+              <div className="flex items-start gap-3 border-t border-card-border bg-accent/[0.12] p-6">
+                <CheckIcon />
+                <div>
+                  <span className="block text-xs font-bold uppercase tracking-[0.14em] text-foreground/70">
                     {columns.pillar}
                   </span>
-                  <p className="mt-1 text-sm leading-snug text-foreground">
+                  <p className="mt-1.5 text-base font-semibold leading-snug text-foreground">
                     {row.pillar}
                   </p>
                 </div>

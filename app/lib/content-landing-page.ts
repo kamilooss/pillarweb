@@ -389,7 +389,7 @@ export const COMPARISON_LANDING = {
   columns: {
     criterion: "Co dostaje klient",
     others: "Większość firm / agencji",
-    pillar: "Twoja oferta w Pillar Web",
+    pillar: "Oferta w Pillar Web",
   },
   rows: [
     {
