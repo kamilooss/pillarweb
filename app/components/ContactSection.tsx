@@ -102,7 +102,9 @@ export function ContactSection({
                 </div>
               </div>
 
-              <blockquote className="space-y-3 text-sm leading-relaxed text-muted-strong">
+              {/* Opinia klienta — ukryta na mobile (zajmowała dużo miejsca nad
+                  formularzem i myliła się ze zdjęciem CEO); widoczna od md+. */}
+              <blockquote className="hidden space-y-3 text-sm leading-relaxed text-muted-strong md:block">
                 {content.testimonial.quote.map((paragraph, i) => (
                   <p key={i}>
                     {i === 0 && "„"}
@@ -112,7 +114,7 @@ export function ContactSection({
                 ))}
               </blockquote>
 
-              <div className="mt-5 flex items-center justify-center gap-2 text-sm">
+              <div className="mt-5 hidden items-center justify-center gap-2 text-sm md:flex">
                 <span aria-hidden className="inline-block h-px w-4 bg-accent" />
                 <span className="font-semibold">{content.testimonial.author}</span>
                 <span className="text-muted">{content.testimonial.role}</span>
