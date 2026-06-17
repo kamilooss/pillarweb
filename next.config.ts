@@ -1,22 +1,33 @@
 import type { NextConfig } from "next";
 
 const config: NextConfig = {
-  // Konfiguracja zewnętrznych obrazów — pozwala next/image używać assetów
-  // bezpośrednio z pillarweb.pl (CDN). Po pobraniu assetów lokalnie do /public
-  // można usunąć remotePatterns i zmienić ścieżki w lib/content.ts na lokalne.
   images: {
-    remotePatterns: [
+    // Obrazy serwujemy jako statyczne pliki prosto z edge CDN, BEZ optymalizatora
+    // na żądanie. Są już zoptymalizowane jako małe webp w /public/images, a
+    // kodowanie AVIF "na zimno" dodawało ~3 s opóźnienia przy pierwszym wejściu
+    // (zmierzone: optymalizator zimny 3.1 s vs statyczny edge 0.5 s dla 11 obrazów).
+    // Statyczne serwowanie jest odporne na redeploye i nie ma limitów współbieżności.
+    unoptimized: true,
+  },
+  async headers() {
+    return [
       {
-        protocol: "https",
-        hostname: "pillarweb.pl",
-        pathname: "/wp-content/uploads/**",
+        // Filmy z /public/videos (edge CDN) — długi, niezmienny cache u klienta,
+        // żeby powtórne wejścia nie rewalidowały dużych plików.
+        source: "/videos/:path*",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+        ],
       },
-    ],
-    formats: ["image/avif", "image/webp"],
-    // Zoptymalizowane obrazy (szczególnie zdalne z pillarweb.pl) trzymane w
-    // cache CDN przez 31 dni — bez tego Next ponawia pobranie z wolnego
-    // origin WordPressa po wygaśnięciu (domyślnie ~60 s).
-    minimumCacheTTL: 2678400,
+      {
+        // Obrazy z /public/images — cache u klienta + stale-while-revalidate,
+        // żeby powtórne wejścia nie rewalidowały każdego pliku z osobna.
+        source: "/images/:path*",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=86400, stale-while-revalidate=604800" },
+        ],
+      },
+    ];
   },
   experimental: {
     optimizePackageImports: ["motion"],

@@ -11,7 +11,13 @@
  * i zmień prefix ASSET_BASE poniżej na "/images".
  */
 
-export const ASSET_BASE = "https://pillarweb.pl/wp-content/uploads/2026/04";
+// Obrazy rastrowe hostowane lokalnie w /public/images (zoptymalizowane webp;
+// next/image dokłada AVIF + responsywny resize, serwowane z szybkiego edge).
+// Wcześniej z pillarweb.pl/wp-content — ten origin jest już martwy (domena → Vercel).
+export const ASSET_BASE = "/images";
+// Ikony filarów (PillarsSection — tylko strona główna) nie mają lokalnego źródła,
+// więc wciąż wskazują na stary origin. TODO: dostarczyć pliki ikon lub zastąpić.
+const ICON_ASSET_BASE = "https://pillarweb.pl/wp-content/uploads/2026/04";
 
 /**
  * Duże filmy (>100 MB) są hostowane w Vercel Blob (CDN), bo przekraczają
@@ -66,19 +72,19 @@ export const HERO = {
   videoSrc: `${ASSET_BASE}/pillarweb-film-instruktazowy-hero.mp4`,
   pillars: [
     {
-      icon: `${ASSET_BASE}/strategia-icon.svg`,
+      icon: `${ICON_ASSET_BASE}/strategia-icon.svg`,
       title: "Strategia i wizerunek",
       description:
         "Tworzymy dopracowane strony, które wzmacniają markę i wyróżniają firmę na tle konkurencji.",
     },
     {
-      icon: `${ASSET_BASE}/seo-i-widocznosc-icon.svg`,
+      icon: `${ICON_ASSET_BASE}/seo-i-widocznosc-icon.svg`,
       title: "SEO i widoczność",
       description:
         "Dbamy o strukturę, treści i optymalizację, aby strona lepiej pracowała w Google.",
     },
     {
-      icon: `${ASSET_BASE}/kompleksowe-wdrozenie-icon.svg`,
+      icon: `${ICON_ASSET_BASE}/kompleksowe-wdrozenie-icon.svg`,
       title: "Kompleksowe wdrożenie",
       description:
         "Copywriting, analityka, automatyzacje i pełne wdrożenie dopięte w jednym procesie.",
@@ -824,7 +830,7 @@ export const PORTFOLIO = {
       name: "Lennox Homes",
       description:
         "Strona z interaktywnym kalkulatorem kosztów budowy i katalogiem gotowych realizacji.",
-      video: `${VIDEO_BLOB_BASE}/lennox.mp4`,
+      video: "/videos/lennox.mp4",
       poster: "/images/portfolio/lennox.jpg",
       aspect: "1600 / 947",
       duration: "1:31",
@@ -835,7 +841,7 @@ export const PORTFOLIO = {
       name: "Horyzont",
       description:
         "Portfolio realizacji komercyjnych i przemysłowych, z prostą ścieżką do zapytania ofertowego.",
-      video: `${VIDEO_BLOB_BASE}/horyzont.mp4`,
+      video: "/videos/horyzont.mp4",
       poster: "/images/portfolio/horyzont.jpg",
       aspect: "1600 / 944",
       duration: "1:23",
@@ -852,7 +858,7 @@ export const VSL = {
   headingPrefix:
     "Polecenia są nieprzewidywalne. Zbuduj firmę budowlaną, która ma",
   headingAccent: "stały dopływ zleceń.",
-  video: `${VIDEO_BLOB_BASE}/vsl.mp4`,
+  video: "/videos/vsl.mp4",
   poster: "/images/vsl.jpg",
   aspect: "1600 / 900",
   duration: "7:36",

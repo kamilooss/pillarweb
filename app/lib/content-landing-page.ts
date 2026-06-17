@@ -115,7 +115,7 @@ export const VSL_LANDING = {
   headingPrefix:
     "Zanim zdecydujesz — zobacz, jak myślimy o landing page'u, który ma realnie",
   headingAccent: "pozyskiwać zapytania.",
-  video: `${VIDEO_BLOB_BASE}/vsl.mp4`,
+  video: "/videos/vsl.mp4",
   poster: "/images/vsl.jpg",
   aspect: "1600 / 900",
   duration: "7:36",

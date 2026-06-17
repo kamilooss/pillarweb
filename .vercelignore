@@ -2,11 +2,8 @@
 drive-download-20260509T105536Z-3-001
 research
 
-# Duże filmy hostowane w Vercel Blob (CDN) — przekraczają limit 100 MB/plik.
-# korona.mp4 (50 MB) zostaje i jest serwowany lokalnie.
-public/videos/vsl.mp4
-public/videos/lennox.mp4
-public/videos/horyzont.mp4
+# Wszystkie filmy (vsl/korona/lennox/horyzont) są teraz <100 MB i wdrażane z
+# /public/videos — serwowane z szybkiego edge CDN Vercela (nie z wolnego Blob).
 
 # Ciężkie źródła obrazów (raster zapakowany w SVG / duży PNG) zastąpione
 # zoptymalizowanymi .webp obok nich. Trzymane lokalnie jako backup, ale nie
