@@ -313,13 +313,16 @@
 /* =============================================
    ANIMACJE
    ============================================= */
+/* WAŻNE: wejściówka animuje TYLKO przesunięcie (slide-up), NIE opacity.
+   Gdyby animacja się nie wykonała (karta w tle, throttling/oszczędzanie baterii
+   na mobile, smooth-scroll Lenis), treść — w tym OBRAZY — i tak zostaje widoczna
+   (opacity:1). Wcześniej `from { opacity:0 }` + fill `backwards` zostawiał
+   niewyświetlone obrazy jako puste/szare prostokąty na telefonie. */
 @keyframes fade-up {
   from {
-    opacity: 0;
     transform: translateY(20px);
   }
   to {
-    opacity: 1;
     transform: translateY(0);
   }
 }
