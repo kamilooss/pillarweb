@@ -766,10 +766,6 @@ export const THANKYOU = {
         done: true,
       },
       {
-        title: "Potwierdzenie SMS i e-mail",
-        body: "W ciągu kilku chwil otrzymasz wiadomość SMS oraz e-mail z potwierdzeniem, że wszystko do nas dotarło.",
-      },
-      {
         title: "Telefon powitalny i umówienie spotkania",
         body: "Dzwonimy, żeby bliżej poznać Twoją firmę i to, dokąd chcesz ją zaprowadzić. Wspólnie nazywamy cele i mówimy wprost, czy nasza pomoc faktycznie ma dla Ciebie sens. Jeśli tak — ustalamy konkretny termin spotkania i to, na czym powinniśmy się skupić.",
       },
