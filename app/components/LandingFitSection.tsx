@@ -107,7 +107,7 @@ export function LandingFitSection({ content }: { content: FitContent }) {
 
         {/* Cena + CTA */}
         <Reveal delay={60} className="mt-8 lg:mt-10">
-          <div className="surface-panel surface-panel--accent edge-accent-top relative flex flex-col gap-7 p-8 lg:flex-row lg:items-center lg:justify-between lg:p-12">
+          <div className="surface-panel surface-panel--accent edge-accent-top relative flex flex-col gap-7 p-8 text-center lg:flex-row lg:items-center lg:justify-between lg:p-12 lg:text-left">
             <div>
               <p className="font-display text-[clamp(1.6rem,3vw,2.4rem)] font-extrabold leading-tight tracking-tight tnum text-foreground">
                 {price.amountPrefix}{" "}
@@ -126,7 +126,7 @@ export function LandingFitSection({ content }: { content: FitContent }) {
               <Button
                 href={cta.href}
                 size="lg"
-                className="w-full max-w-full sm:w-auto sm:min-w-[260px]"
+                className="w-full max-w-full text-center sm:w-auto sm:min-w-[260px]"
               >
                 {cta.label}
               </Button>
