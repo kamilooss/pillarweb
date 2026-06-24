@@ -7,6 +7,13 @@ import { FloatingCTA } from "./components/FloatingCTA";
 
 const GTM_ID = "GTM-5KHH6GDD";
 
+// CookieYes (certyfikowany CMP, plan Free) — wklej tu swój Site ID.
+// Znajdziesz go w skrypcie instalacyjnym CookieYes, w adresie:
+// https://cdn-cookieyes.com/client_data/<SITE_ID>/script.js
+// Dopóki zostaje placeholder, baner się NIE ładuje, a strona działa w trybie
+// „zgoda odrzucona" (Consent Mode = denied) — czyli bezpiecznie wg RODO.
+const COOKIEYES_ID: string = "WKLEJ_SITE_ID";
+
 const manrope = Manrope({
   subsets: ["latin", "latin-ext"],
   variable: "--font-manrope",
@@ -65,6 +72,29 @@ export default function RootLayout({
   return (
     <html lang="pl" className={manrope.variable}>
       <head>
+        {/* Google Consent Mode v2 — domyślnie WSZYSTKO odrzucone.
+            Musi być przed GTM, żeby tagi Google startowały w trybie bez zgody.
+            CookieYes zmieni te wartości na „granted" po akceptacji w banerze. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('consent','default',{'ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied','analytics_storage':'denied','functionality_storage':'denied','personalization_storage':'denied','security_storage':'granted','wait_for_update':500});
+gtag('set','ads_data_redaction',true);
+gtag('set','url_passthrough',true);`,
+          }}
+        />
+
+        {/* CookieYes — baner RODO + automatyczna aktualizacja Consent Mode.
+            W panelu CookieYes włącz „Google Consent Mode" i język polski. */}
+        {COOKIEYES_ID !== "WKLEJ_SITE_ID" && (
+          // eslint-disable-next-line @next/next/no-sync-scripts
+          <script
+            id="cookieyes"
+            type="text/javascript"
+            src={`https://cdn-cookieyes.com/client_data/${COOKIEYES_ID}/script.js`}
+          />
+        )}
+
         {/* Google Tag Manager */}
         <script
           dangerouslySetInnerHTML={{
