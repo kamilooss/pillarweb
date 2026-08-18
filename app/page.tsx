@@ -41,7 +41,7 @@ export default function HomePage() {
         <ComparisonSection />
         <AboutSection />
         <FAQSection />
-        <ContactSection />
+        <ContactSection extended />
       </main>
       <Footer />
     </>

@@ -2,34 +2,54 @@
  * API ROUTE — /api/contact
  * ------------------------
  * Odbiera zgłoszenia z formularza kontaktowego (ContactSection) i zapisuje
- * je w MailerLite po stronie serwera (klucz API nigdy nie trafia do
+ * je jako rekord w Airtable po stronie serwera (token nigdy nie trafia do
  * przeglądarki).
  *
- * Rozdzielenie danych: pole `source` z formularza decyduje, do której GRUPY
- * w MailerLite trafi subskrybent. Dzięki temu zgłoszenia ze strony głównej
- * i z podstrony /landing-page są od siebie oddzielone — i każda grupa może
- * odpalać własną automatyzację (mail powitalny + follow-upy).
+ * Rozdzielenie danych: pole `source` z formularza decyduje, do której TABELI
+ * w Airtable trafi kontakt. Zgłoszenia ze strony głównej i z podstrony
+ * /landing-page lądują w osobnych tabelach — każda jako oddzielna „metryka".
  *
  * Wymagane zmienne środowiskowe (.env.local lokalnie + Vercel na produkcji):
- *   MAILERLITE_API_KEY       — token z MailerLite (Integrations → API)
- *   MAILERLITE_GROUP_HOME    — ID grupy dla formularza ze strony głównej
- *   MAILERLITE_GROUP_LANDING — ID grupy dla formularza z /landing-page
+ *   AIRTABLE_TOKEN          — Personal Access Token (scope: data.records:write)
+ *   AIRTABLE_BASE_ID        — ID bazy (np. appXXXXXXXXXXXXXX)
+ *   AIRTABLE_TABLE_HOME     — nazwa lub ID tabeli dla formularza ze strony głównej
+ *   AIRTABLE_TABLE_LANDING  — nazwa lub ID tabeli dla formularza z /landing-page
+ *
+ * Kolumny oczekiwane w każdej tabeli (dokładne nazwy — Airtable dopasowuje
+ * po nazwie pola). Airtable NIE tworzy kolumn automatycznie — brakujące trzeba
+ * dodać ręcznie w tabeli (inaczej dana wartość zostanie pominięta):
+ *   Podstawowe (zawsze): „Imię i nazwisko" · „E-mail" · „Telefon" ·
+ *     „Specjalizacja" · „Wiadomość"
+ *   Rozszerzone (formularz strony głównej): „Obecna strona / social media" ·
+ *     „Funkcje interaktywne" · „Konkretne podstrony" · „Termin realizacji" ·
+ *     „Ma gotowe treści" · „Budżet" · „Jak nas znalazł" ·
+ *     „Polecenie / grupa (od kogo)" · „Kod promocyjny" · „Rodzaj spotkania"
+ *   + opcjonalnie „Data zgłoszenia" typu Created time (Airtable wypełnia sam).
+ * Typ pól „Budżet" / „Jak nas znalazł" / „Rodzaj spotkania" może być
+ * „Single select" — dzięki `typecast: true` Airtable sam dopisze brakujące opcje.
+ *
+ * Uwaga: checkbox zgody RODO jest WYMAGANY w UI (warunek wysyłki), ale nie
+ * trafia do Airtable — sam fakt wysłania = wyrażona zgoda. Jeśli kiedyś
+ * dojdzie kolumna „Zgoda RODO" w Airtable, dopisać do `fields` poniżej.
  */
 
 import { NextResponse } from "next/server";
 
-const MAILERLITE_API = "https://connect.mailerlite.com/api";
+const AIRTABLE_API = "https://api.airtable.com/v0";
 
-// Mapowanie źródła formularza → ID grupy w MailerLite.
-const GROUP_BY_SOURCE: Record<string, string | undefined> = {
-  home: process.env.MAILERLITE_GROUP_HOME,
-  "landing-page": process.env.MAILERLITE_GROUP_LANDING,
+// Mapowanie źródła formularza → nazwa/ID tabeli w Airtable.
+// Nieznane źródło (np. /producenci-budowlani, gdzie source nie jest ustawiony)
+// traktujemy jak stronę główną.
+const TABLE_BY_SOURCE: Record<string, string | undefined> = {
+  home: process.env.AIRTABLE_TABLE_HOME,
+  "landing-page": process.env.AIRTABLE_TABLE_LANDING,
 };
 
 export async function POST(req: Request) {
-  const apiKey = process.env.MAILERLITE_API_KEY;
-  if (!apiKey) {
-    console.error("[contact] Brak MAILERLITE_API_KEY w środowisku.");
+  const token = process.env.AIRTABLE_TOKEN;
+  const baseId = process.env.AIRTABLE_BASE_ID;
+  if (!token || !baseId) {
+    console.error("[contact] Brak AIRTABLE_TOKEN lub AIRTABLE_BASE_ID w środowisku.");
     return NextResponse.json(
       { ok: false, error: "Serwer nie jest skonfigurowany." },
       { status: 500 },
@@ -43,51 +63,86 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: "Nieprawidłowe dane." }, { status: 400 });
   }
 
-  const name = String(body.name ?? "").trim();
-  const email = String(body.email ?? "").trim();
-  const phone = String(body.phone ?? "").trim();
-  const specialization = String(body.specialization ?? "").trim();
-  const message = String(body.message ?? "").trim();
-  const source = String(body.source ?? "home").trim();
+  const str = (v: unknown) => String(v ?? "").trim();
+
+  const name = str(body.name);
+  const email = str(body.email);
+  const phone = str(body.phone);
+  const specialization = str(body.specialization);
+  const message = str(body.message);
+  const source = str(body.source) || "home";
+
+  // Pola rozszerzonego formularza (strona główna). Na krótkim formularzu
+  // przychodzą puste — pomijamy je niżej, żeby nie nadpisywać kolumn pustką.
+  const website = str(body.website);
+  const features = str(body.features);
+  const subpages = str(body.subpages);
+  const timeline = str(body.timeline);
+  const hasContent = str(body.hasContent);
+  const budget = str(body.budget);
+  const howFound = str(body.howFound);
+  const referralSource = str(body.referralSource);
+  const promoCode = str(body.promoCode);
+  const meetingType = str(body.meetingType);
 
   if (!email || !name) {
     return NextResponse.json({ ok: false, error: "Brak wymaganych pól." }, { status: 400 });
   }
 
-  // Domyślnie traktujemy nieznane źródło jak stronę główną.
-  const groupId = GROUP_BY_SOURCE[source] ?? GROUP_BY_SOURCE.home;
+  const table = TABLE_BY_SOURCE[source] ?? TABLE_BY_SOURCE.home;
+  if (!table) {
+    console.error(`[contact] Brak tabeli dla źródła "${source}" (sprawdź AIRTABLE_TABLE_*).`);
+    return NextResponse.json(
+      { ok: false, error: "Serwer nie jest skonfigurowany." },
+      { status: 500 },
+    );
+  }
 
-  const payload: Record<string, unknown> = {
-    email,
-    // `name` i `phone` to pola domyślne w MailerLite. `specializacja` i
-    // `wiadomosc` to klucze pól własnych w MailerLite (pola nazwane po polsku
-    // → klucze {$specializacja} / {$wiadomosc}). Po lewej klucz MailerLite,
-    // po prawej wartość z formularza (pola HTML mają nazwy angielskie).
-    fields: {
-      name,
-      phone,
-      specializacja: specialization,
-      wiadomosc: message,
-    },
-    ...(groupId ? { groups: [groupId] } : {}),
+  // Po lewej nazwa kolumny w Airtable, po prawej wartość z formularza.
+  // Pola rozszerzone dopisujemy tylko gdy niepuste (krótki formularz ich nie ma).
+  const fields: Record<string, string> = {
+    "Imię i nazwisko": name,
+    "E-mail": email,
+    Telefon: phone,
+    Specjalizacja: specialization,
+    Wiadomość: message,
+  };
+
+  const extendedFields: Record<string, string> = {
+    "Obecna strona / social media": website,
+    "Funkcje interaktywne": features,
+    "Konkretne podstrony": subpages,
+    "Termin realizacji": timeline,
+    "Ma gotowe treści": hasContent,
+    Budżet: budget,
+    "Jak nas znalazł": howFound,
+    "Polecenie / grupa (od kogo)": referralSource,
+    "Kod promocyjny": promoCode,
+    "Rodzaj spotkania": meetingType,
+  };
+  for (const [key, value] of Object.entries(extendedFields)) {
+    if (value) fields[key] = value;
+  }
+
+  const payload = {
+    typecast: true,
+    records: [{ fields }],
   };
 
   try {
-    // Endpoint upsert: tworzy subskrybenta albo aktualizuje istniejącego
-    // (po adresie e-mail) i dopisuje go do podanej grupy.
-    const res = await fetch(`${MAILERLITE_API}/subscribers`, {
+    // Nazwa tabeli może zawierać spacje/polskie znaki → kodujemy do URL.
+    const res = await fetch(`${AIRTABLE_API}/${baseId}/${encodeURIComponent(table)}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: `Bearer ${apiKey}`,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(payload),
     });
 
     if (!res.ok) {
       const detail = await res.text();
-      console.error(`[contact] MailerLite ${res.status}:`, detail);
+      console.error(`[contact] Airtable ${res.status}:`, detail);
       return NextResponse.json(
         { ok: false, error: "Nie udało się zapisać zgłoszenia." },
         { status: 502 },
@@ -96,7 +151,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ ok: true });
   } catch (err) {
-    console.error("[contact] Błąd połączenia z MailerLite:", err);
+    console.error("[contact] Błąd połączenia z Airtable:", err);
     return NextResponse.json({ ok: false, error: "Błąd połączenia." }, { status: 502 });
   }
 }

@@ -1,45 +1,51 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 
 type Props = {
   url: string;
 };
 
 /**
- * Inline Calendly widget. Ładuje skrypt widget.js raz per session
- * i renderuje kontener, którego Calendly oczekuje pod tą klasą.
- * Parametry koloru przekazujemy w URL — dopasowanie do systemu marki.
+ * Buduje URL osadzenia Calendly. `host` dokładamy tylko po stronie klienta
+ * (parametr `embed_domain`, którego Calendly używa do trybu inline) — dzięki
+ * temu render serwerowy i pierwszy render klienta są identyczne (bez rozjazdu
+ * hydratacji). Kolory dopasowują widok do systemu marki.
+ */
+function buildSrc(url: string, host: string | null): string {
+  const u = new URL(url);
+  u.searchParams.set("primary_color", "9bc414");
+  u.searchParams.set("text_color", "15160e");
+  u.searchParams.set("background_color", "faf8f1");
+  u.searchParams.set("hide_gdpr_banner", "1");
+  u.searchParams.set("embed_type", "Inline");
+  if (host) u.searchParams.set("embed_domain", host);
+  return u.toString();
+}
+
+/**
+ * Inline Calendly — osadzony jako ZWYKŁY <iframe>, bez ładowania skryptu
+ * widget.js. Powód: skrypt widget.js bywa blokowany przez menedżery zgód
+ * (Cookiebot) i ad-blockery, przez co `Calendly.initInlineWidget` nigdy się
+ * nie wykonuje i kontener zostaje pusty. Bezpośredni iframe renderuje się
+ * niezależnie od tego i nie potrzebuje zewnętrznego JS.
+ *
+ * Wysokość jest stała (bez auto-resize przez postMessage z widget.js) —
+ * Calendly renderuje wewnętrzny scroll, gdy trzeba.
  */
 export function CalendlyEmbed({ url }: Props) {
-  const ref = useRef<HTMLDivElement>(null);
+  const [src, setSrc] = useState(() => buildSrc(url, null));
 
   useEffect(() => {
-    const SRC = "https://assets.calendly.com/assets/external/widget.js";
-    const existing = document.querySelector(
-      `script[src="${SRC}"]`,
-    ) as HTMLScriptElement | null;
-
-    if (!existing) {
-      const script = document.createElement("script");
-      script.src = SRC;
-      script.async = true;
-      document.body.appendChild(script);
-    }
-  }, []);
-
-  const themedUrl = new URL(url);
-  themedUrl.searchParams.set("primary_color", "9bc414");
-  themedUrl.searchParams.set("text_color", "15160e");
-  themedUrl.searchParams.set("background_color", "faf8f1");
-  themedUrl.searchParams.set("hide_gdpr_banner", "1");
+    setSrc(buildSrc(url, window.location.host));
+  }, [url]);
 
   return (
-    <div
-      ref={ref}
-      className="calendly-inline-widget w-full"
-      data-url={themedUrl.toString()}
-      style={{ minWidth: "320px", height: "720px" }}
+    <iframe
+      src={src}
+      title="Kalendarz rezerwacji spotkania"
+      className="w-full"
+      style={{ minWidth: "320px", height: "700px", border: 0 }}
     />
   );
 }

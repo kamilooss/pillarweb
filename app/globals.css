@@ -24,6 +24,7 @@
   --color-accent: #c7f542;
   --color-accent-hover: #b6e22f;
   --color-accent-foreground: #14160a; /* tekst NA lime (ciemny) */
+  --color-accent-soft: rgba(199, 245, 66, 0.18); /* lime tint — np. zaznaczona opcja radio */
 
   /* Kanały RGB do alpha-mieszania */
   --accent-rgb: 199 245 66;

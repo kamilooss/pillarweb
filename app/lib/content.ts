@@ -723,6 +723,25 @@ export const CONTACT = {
     "Firma od elewacji bądź dachów",
     "Firma instalacyjna",
   ],
+  // Opcje list rozwijanych rozszerzonego formularza (strona główna).
+  budgetOptions: [
+    "0 – 5 000 zł",
+    "5 000 – 10 000 zł",
+    "10 000 – 15 000 zł",
+    "15 000 – 20 000 zł",
+    "20 000 zł +",
+  ],
+  // Uwaga: wartości „Polecenie" i „Grupa na Facebook" odblokowują dwa
+  // dodatkowe pola (źródło polecenia + kod promocyjny) — patrz
+  // REFERRAL_VALUES w app/components/ContactSection.tsx.
+  howFoundOptions: [
+    "Znalazłem Was w Google",
+    "Facebook",
+    "Instagram",
+    "LinkedIn",
+    "Polecenie",
+    "Grupa na Facebook",
+  ],
   testimonial: {
     quote: [
       "Umowa bez niespodzianek, kontakt zawsze natychmiastowy, jakość na najwyższym poziomie.",

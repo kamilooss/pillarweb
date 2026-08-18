@@ -2,29 +2,49 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, ReactNode } from "react";
 import { Logo } from "./Logo";
 import { Reveal } from "./Reveal";
 import { Button } from "./Button";
-import { CONTACT, THANKYOU } from "../lib/content";
+import { CalendlyEmbed } from "./CalendlyEmbed";
+import { CONTACT, THANKYOU, BOOKING } from "../lib/content";
 
 interface ContactSectionProps {
   content?: typeof CONTACT;
   /**
-   * Źródło zgłoszenia — decyduje, do której grupy w MailerLite trafi
-   * subskrybent (rozdziela dane ze strony głównej od /landing-page).
-   * Musi pasować do kluczy w GROUP_BY_SOURCE w app/api/contact/route.ts.
+   * Źródło zgłoszenia — decyduje, do której tabeli w Airtable trafi kontakt
+   * (rozdziela dane ze strony głównej od /landing-page).
+   * Musi pasować do kluczy w TABLE_BY_SOURCE w app/api/contact/route.ts.
    */
   source?: "home" | "landing-page";
+  /**
+   * Rozszerzony formularz (pełna kwalifikacja: budżet, termin, zakres,
+   * skąd o nas wie, rodzaj spotkania + kalendarz). Włączony tylko na stronie
+   * głównej — landing page i podstrony zostają przy krótkim formularzu.
+   */
+  extended?: boolean;
 }
+
+// Wybór jednej z tych opcji w „Jak nas znalazłeś?" odsłania dwa dodatkowe
+// pola: źródło polecenia oraz kod promocyjny.
+const REFERRAL_VALUES = ["Polecenie", "Grupa na Facebook"];
+
+// Rodzaj spotkania — wybór którejkolwiek opcji odsłania kalendarz Calendly.
+const MEETING_OPTIONS = ["Samo audio", "Wideo"];
 
 export function ContactSection({
   content = CONTACT,
   source = "home",
+  extended = false,
 }: ContactSectionProps = {}) {
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // Sterują polami warunkowymi (tylko w wariancie rozszerzonym).
+  const [howFound, setHowFound] = useState("");
+  const [meetingType, setMeetingType] = useState("");
+
+  const showReferralExtras = REFERRAL_VALUES.includes(howFound);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -82,8 +102,9 @@ export function ContactSection({
 
         <Reveal delay={100}>
           <div className="surface-panel mt-10 grid grid-cols-1 gap-10 p-6 lg:mt-12 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)] lg:gap-16 lg:p-12">
-            {/* Lewa: branding + autor + opinia klienta */}
-            <div className="flex flex-col items-center text-center">
+            {/* Lewa: branding + autor + opinia klienta.
+                Sticky na desktopie — przy długim formularzu branding zostaje w polu widzenia. */}
+            <div className="flex flex-col items-center text-center lg:sticky lg:top-28 lg:self-start">
               <div className="mb-12 mt-6 scale-[1.6]">
                 <Logo />
               </div>
@@ -131,44 +152,129 @@ export function ContactSection({
               <Field label="Adres e-mail" name="email" type="email" required placeholder="Podaj swój e-mail" />
               <Field label="Numer telefonu" name="phone" type="tel" required placeholder="Podaj swój numer telefonu" />
 
-              <div>
-                <label htmlFor="specialization" className="mb-2 block font-medium text-foreground">
-                  W czym się specjalizujesz? <span className="text-muted">*</span>
-                </label>
-                <select
-                  id="specialization"
-                  name="specialization"
-                  required
-                  defaultValue=""
-                  className="w-full appearance-none rounded-md border border-card-border-strong bg-card-elevated bg-[length:1.25rem] bg-[right_1rem_center] bg-no-repeat px-4 py-3 pr-12 text-foreground transition-colors focus:border-foreground focus:outline-none"
-                  style={{
-                    backgroundImage:
-                      "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23555044'><path d='M5.25 7.5l4.75 5 4.75-5z'/></svg>\")",
-                  }}
-                >
-                  <option value="" disabled>
-                    Wybierz specjalizację
-                  </option>
-                  {content.specializations.map((s) => (
-                    <option key={s} value={s}>
-                      {s}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              <SelectField
+                label="W czym się specjalizujesz?"
+                name="specialization"
+                required
+                placeholder="Wybierz specjalizację"
+                options={content.specializations}
+              />
 
-              <div>
-                <label htmlFor="message" className="mb-2 block font-medium text-foreground">
-                  Wiadomość <span className="font-normal text-muted">(nie jest wymagane)</span>
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={5}
-                  placeholder="Wpisz o co chciałbyś zapytać"
-                  className="w-full resize-y rounded-md border border-card-border-strong bg-card-elevated px-4 py-3 text-foreground placeholder:text-subtle transition-colors focus:border-foreground focus:outline-none"
-                />
-              </div>
+              {extended && (
+                <>
+                  <SectionLabel>O Twojej stronie</SectionLabel>
+
+                  <Field
+                    label="Aktualna strona lub profil w social mediach"
+                    name="website"
+                    type="text"
+                    optional
+                    placeholder="np. twojafirma.pl lub link do profilu"
+                  />
+
+                  <TextareaField
+                    label="Czy Twoja strona ma zawierać jakieś funkcje lub elementy interaktywne?"
+                    name="features"
+                    optional
+                    rows={3}
+                    placeholder="np. kalkulator, konfigurator, formularz wyceny, mapa realizacji…"
+                  />
+
+                  <TextareaField
+                    label="Czy Twoja strona ma zawierać jakieś konkretne podstrony?"
+                    name="subpages"
+                    optional
+                    rows={3}
+                    placeholder="np. Realizacje, Oferta, O nas, Blog, Kontakt…"
+                  />
+
+                  <Field
+                    label="Na kiedy chcesz mieć gotową stronę?"
+                    name="timeline"
+                    type="text"
+                    required
+                    placeholder="np. jak najszybciej, za 2 miesiące, do końca roku…"
+                  />
+
+                  <RadioGroup
+                    label="Masz już gotowe zdjęcia lub treści na stronę?"
+                    name="hasContent"
+                    required
+                    options={["Tak", "Nie"]}
+                  />
+
+                  <SelectField
+                    label="Jaki budżet planujesz przeznaczyć na stronę dla swojej firmy?"
+                    name="budget"
+                    required
+                    placeholder="Wybierz przedział budżetu"
+                    options={content.budgetOptions}
+                  />
+
+                  <SelectField
+                    label="Jak nas znalazłeś?"
+                    name="howFound"
+                    required
+                    placeholder="Wybierz źródło"
+                    options={content.howFoundOptions}
+                    onChange={(e) => setHowFound(e.target.value)}
+                  />
+
+                  {showReferralExtras && (
+                    <>
+                      <Field
+                        label="Jeśli to polecenie lub grupa na Facebooku – podaj jaka lub od kogo"
+                        name="referralSource"
+                        type="text"
+                        optional
+                        placeholder="np. imię osoby polecającej lub nazwa grupy"
+                      />
+                      <Field
+                        label="Masz kod promocyjny? Jeśli tak – wpisz go tutaj poniżej"
+                        name="promoCode"
+                        type="text"
+                        optional
+                        placeholder="Wpisz kod promocyjny"
+                      />
+                    </>
+                  )}
+                </>
+              )}
+
+              <TextareaField
+                label={extended ? "Czy chcesz nam coś jeszcze przekazać?" : "Wiadomość"}
+                name="message"
+                optional
+                rows={5}
+                placeholder="Wpisz o co chciałbyś zapytać"
+              />
+
+              {extended && (
+                <>
+                  <SectionLabel>Preferowane spotkanie</SectionLabel>
+
+                  <RadioGroup
+                    label="Jaki rodzaj spotkania najbardziej Ci odpowiada?"
+                    name="meetingType"
+                    required
+                    options={MEETING_OPTIONS}
+                    hint="Spotkanie odbędzie się na Google Meet."
+                    onChange={(e) => setMeetingType(e.target.value)}
+                  />
+
+                  {meetingType && (
+                    <div>
+                      <p className="mb-3 font-medium text-foreground">
+                        Wybierz dogodny termin spotkania{" "}
+                        <span className="font-normal text-muted">(data i godzina)</span>
+                      </p>
+                      <div className="overflow-hidden rounded-md border border-card-border bg-card-elevated p-1 sm:p-2">
+                        <CalendlyEmbed url={BOOKING.calendlyUrl} />
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
 
               {/* Zgoda RODO — wymagana, bramkuje wysyłkę formularza. */}
               <div className="flex items-start gap-3">
@@ -213,23 +319,40 @@ export function ContactSection({
   );
 }
 
+/* -------------------------------------------------------------------------- */
+/*  Pola formularza                                                           */
+/* -------------------------------------------------------------------------- */
+
+// Znacznik wymagalności obok etykiety: „*" gdy wymagane, „(nie jest wymagane)"
+// gdy opcjonalne.
+function RequiredMark({ required, optional }: { required?: boolean; optional?: boolean }) {
+  if (required) return <span className="text-muted">*</span>;
+  if (optional) return <span className="font-normal text-muted">(nie jest wymagane)</span>;
+  return null;
+}
+
+const INPUT_CLASS =
+  "w-full rounded-md border border-card-border-strong bg-card-elevated px-4 py-3 text-foreground placeholder:text-subtle transition-colors focus:border-foreground focus:outline-none";
+
 function Field({
   label,
   name,
   type,
   required,
+  optional,
   placeholder,
 }: {
   label: string;
   name: string;
   type: string;
   required?: boolean;
+  optional?: boolean;
   placeholder: string;
 }) {
   return (
     <div>
       <label htmlFor={name} className="mb-2 block font-medium text-foreground">
-        {label} {required && <span className="text-muted">*</span>}
+        {label} <RequiredMark required={required} optional={optional} />
       </label>
       <input
         id={name}
@@ -237,8 +360,159 @@ function Field({
         type={type}
         required={required}
         placeholder={placeholder}
-        className="w-full rounded-md border border-card-border-strong bg-card-elevated px-4 py-3 text-foreground placeholder:text-subtle transition-colors focus:border-foreground focus:outline-none"
+        className={INPUT_CLASS}
       />
     </div>
+  );
+}
+
+function TextareaField({
+  label,
+  name,
+  required,
+  optional,
+  rows = 4,
+  placeholder,
+}: {
+  label: string;
+  name: string;
+  required?: boolean;
+  optional?: boolean;
+  rows?: number;
+  placeholder: string;
+}) {
+  return (
+    <div>
+      <label htmlFor={name} className="mb-2 block font-medium text-foreground">
+        {label} <RequiredMark required={required} optional={optional} />
+      </label>
+      <textarea
+        id={name}
+        name={name}
+        required={required}
+        rows={rows}
+        placeholder={placeholder}
+        className={`${INPUT_CLASS} resize-y`}
+      />
+    </div>
+  );
+}
+
+function SelectField({
+  label,
+  name,
+  required,
+  optional,
+  placeholder,
+  options,
+  onChange,
+}: {
+  label: string;
+  name: string;
+  required?: boolean;
+  optional?: boolean;
+  placeholder: string;
+  options: readonly string[];
+  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+}) {
+  return (
+    <div>
+      <label htmlFor={name} className="mb-2 block font-medium text-foreground">
+        {label} <RequiredMark required={required} optional={optional} />
+      </label>
+      <select
+        id={name}
+        name={name}
+        required={required}
+        defaultValue=""
+        onChange={onChange}
+        className="w-full appearance-none rounded-md border border-card-border-strong bg-card-elevated bg-[length:1.25rem] bg-[right_1rem_center] bg-no-repeat px-4 py-3 pr-12 text-foreground transition-colors focus:border-foreground focus:outline-none"
+        style={{
+          backgroundImage:
+            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23555044'><path d='M5.25 7.5l4.75 5 4.75-5z'/></svg>\")",
+        }}
+      >
+        <option value="" disabled>
+          {placeholder}
+        </option>
+        {options.map((o) => (
+          <option key={o} value={o}>
+            {o}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+}
+
+function RadioGroup({
+  label,
+  name,
+  required,
+  optional,
+  options,
+  hint,
+  onChange,
+}: {
+  label: string;
+  name: string;
+  required?: boolean;
+  optional?: boolean;
+  options: readonly string[];
+  hint?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}) {
+  // Zaznaczenie trzymamy w stanie (a nie przez CSS `:has(:checked)`) — dzięki
+  // temu stan wyboru sterujemy jawnie stylem inline, bez zależności od
+  // specyficzności utility czy wsparcia `:has` w silniku.
+  const [selected, setSelected] = useState("");
+  return (
+    <fieldset>
+      <legend className="mb-2 block font-medium text-foreground">
+        {label} <RequiredMark required={required} optional={optional} />
+      </legend>
+      {hint && <p className="-mt-1 mb-3 text-sm text-muted">{hint}</p>}
+      <div className="flex flex-wrap gap-3">
+        {options.map((o) => {
+          const isSelected = selected === o;
+          return (
+            <label
+              key={o}
+              className="flex cursor-pointer items-center gap-2.5 rounded-md border border-card-border-strong bg-card-elevated px-4 py-3 text-foreground transition-colors hover:border-foreground"
+              style={
+                isSelected
+                  ? {
+                      borderColor: "var(--color-foreground)",
+                      backgroundColor: "var(--color-accent-soft)",
+                    }
+                  : undefined
+              }
+            >
+              <input
+                type="radio"
+                name={name}
+                value={o}
+                required={required}
+                checked={isSelected}
+                onChange={(e) => {
+                  setSelected(o);
+                  onChange?.(e);
+                }}
+                className="h-4 w-4 cursor-pointer accent-accent"
+              />
+              <span className="font-medium">{o}</span>
+            </label>
+          );
+        })}
+      </div>
+    </fieldset>
+  );
+}
+
+function SectionLabel({ children }: { children: ReactNode }) {
+  return (
+    <p className="border-t border-card-border pt-6 font-display text-xs font-extrabold uppercase tracking-[0.18em] text-muted-strong">
+      {children}
+    </p>
   );
 }
