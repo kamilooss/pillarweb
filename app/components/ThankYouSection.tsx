@@ -1,9 +1,16 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { Reveal } from "./Reveal";
-import { SITE, THANKYOU } from "../lib/content";
+import { CalendlyEmbed } from "./CalendlyEmbed";
+import { SITE, THANKYOU, BOOKING } from "../lib/content";
+
+// Dane przekazane z rozszerzonego formularza (app/components/ContactSection.tsx)
+// przez sessionStorage — do wypełnienia kalendarza rezerwacji.
+type BookingData = { name?: string; email?: string; meetingType?: string };
+const BOOKING_STORAGE_KEY = "pw_booking";
 
 const PhoneIcon = ({ className }: { className?: string }) => (
   <svg
@@ -23,14 +30,24 @@ export function ThankYouSection() {
   const {
     headingPrefix,
     headingAccent,
-    subtext,
-    responseLead,
-    responseAccent,
-    responseTail,
+    confirmation,
     phone,
     roadmap,
     backLabel,
   } = THANKYOU;
+
+  // Kalendarz pokazujemy tylko gdy zgłoszenie przyszło z rozszerzonego
+  // formularza (dane w sessionStorage). Odczyt po stronie klienta → brak
+  // rozjazdu hydratacji (sekcja dokłada się dopiero po zamontowaniu).
+  const [booking, setBooking] = useState<BookingData | null>(null);
+  useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem(BOOKING_STORAGE_KEY);
+      if (raw) setBooking(JSON.parse(raw));
+    } catch {
+      // brak lub niepoprawny wpis — kalendarza po prostu nie pokazujemy
+    }
+  }, []);
 
   return (
     <>
@@ -69,25 +86,63 @@ export function ThankYouSection() {
             <span className="underline-accent">{headingAccent}</span>
           </Reveal>
 
-          <Reveal
-            as="p"
-            delay={200}
-            className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-strong"
-          >
-            {subtext}
-          </Reveal>
-
-          <Reveal
-            as="p"
-            delay={280}
-            className="mt-8 max-w-2xl text-lg leading-relaxed text-foreground"
-          >
-            {responseLead}{" "}
-            <span className="mark font-semibold">{responseAccent}</span>{" "}
-            {responseTail}
-          </Reveal>
+          <div className="mt-12 flex w-full max-w-2xl flex-col gap-4">
+            {confirmation.map((para, i) => (
+              <Reveal
+                as="p"
+                key={i}
+                delay={200 + i * 60}
+                className="text-lg leading-relaxed text-muted-strong"
+              >
+                {para.before}
+                {para.mark && <span className="mark font-bold">{para.mark}</span>}
+                {para.after}
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
+
+      {/* 1b — REZERWACJA TERMINU
+          Pokazywana tylko dla zgłoszeń z rozszerzonego formularza (booking
+          w sessionStorage). Kalendarz wypełniony imieniem i mailem klienta —
+          bez ponownego wpisywania. Dane z formularza są już zapisane u nas
+          (wysłane przy submit), więc rezerwacja jest krokiem dodatkowym. */}
+      {booking && (
+        <section className="pb-4 lg:pb-8">
+          <div className="container-content">
+            <div className="mx-auto max-w-3xl text-center">
+              <Reveal
+                as="p"
+                className="font-display text-xs font-extrabold uppercase tracking-[0.22em] text-muted-strong"
+              >
+                {THANKYOU.booking.eyebrow}
+              </Reveal>
+              <Reveal
+                as="h2"
+                delay={80}
+                className="mt-4 font-display text-[clamp(1.6rem,3.4vw,2.5rem)] font-extrabold leading-[1.1] tracking-tight"
+              >
+                {THANKYOU.booking.headingPrefix}{" "}
+                <span className="underline-accent">{THANKYOU.booking.headingAccent}</span>
+              </Reveal>
+              <Reveal as="p" delay={140} className="mt-5 text-lg leading-relaxed text-muted-strong">
+                {THANKYOU.booking.subtext}
+              </Reveal>
+            </div>
+
+            <Reveal delay={200} className="mx-auto mt-8 max-w-3xl lg:mt-10">
+              <div className="surface-panel overflow-hidden p-2 sm:p-4">
+                <CalendlyEmbed
+                  url={BOOKING.formCalendlyUrl}
+                  prefill={{ name: booking.name, email: booking.email }}
+                  heightPx={1150}
+                />
+              </div>
+            </Reveal>
+          </div>
+        </section>
+      )}
 
       {/* 2 — TELEFON
           Jeden świadomy ciemny pas — ustalony język marki na "drogi" akcent.

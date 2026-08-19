@@ -6,8 +6,7 @@ import { useState, FormEvent, ReactNode } from "react";
 import { Logo } from "./Logo";
 import { Reveal } from "./Reveal";
 import { Button } from "./Button";
-import { CalendlyEmbed } from "./CalendlyEmbed";
-import { CONTACT, THANKYOU, BOOKING } from "../lib/content";
+import { CONTACT, THANKYOU } from "../lib/content";
 
 interface ContactSectionProps {
   content?: typeof CONTACT;
@@ -29,8 +28,13 @@ interface ContactSectionProps {
 // pola: źródło polecenia oraz kod promocyjny.
 const REFERRAL_VALUES = ["Polecenie", "Grupa na Facebook"];
 
-// Rodzaj spotkania — wybór którejkolwiek opcji odsłania kalendarz Calendly.
+// Rodzaj spotkania — preferencja klienta (leci do Airtable). Sam kalendarz
+// pokazujemy dopiero PO wysłaniu, na stronie „dziękujemy" — dzięki temu dane
+// z formularza zawsze do nas trafiają, zanim klient rezerwuje termin.
 const MEETING_OPTIONS = ["Samo audio", "Wideo"];
+
+// Klucz w sessionStorage: dane do wypełnienia kalendarza na stronie „dziękujemy".
+const BOOKING_STORAGE_KEY = "pw_booking";
 
 export function ContactSection({
   content = CONTACT,
@@ -40,9 +44,8 @@ export function ContactSection({
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  // Sterują polami warunkowymi (tylko w wariancie rozszerzonym).
+  // Steruje polami warunkowymi (źródło polecenia / kod promocyjny).
   const [howFound, setHowFound] = useState("");
-  const [meetingType, setMeetingType] = useState("");
 
   const showReferralExtras = REFERRAL_VALUES.includes(howFound);
 
@@ -62,6 +65,25 @@ export function ContactSection({
       });
 
       if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+
+      // Zapisujemy dane do prefillu kalendarza na stronie „dziękujemy"
+      // (tylko formularz rozszerzony pyta o rodzaj spotkania). sessionStorage,
+      // nie URL — nie wynosimy danych osobowych do adresu.
+      if (extended) {
+        try {
+          sessionStorage.setItem(
+            BOOKING_STORAGE_KEY,
+            JSON.stringify({
+              name: String(data.name ?? ""),
+              email: String(data.email ?? ""),
+              meetingType: String(data.meetingType ?? ""),
+            }),
+          );
+        } catch {
+          // sessionStorage niedostępny (np. tryb prywatny) — prefill po prostu
+          // się nie wypełni, reszta ścieżki działa normalnie.
+        }
+      }
 
       // Po wysłaniu — przejście na stronę z podziękowaniem (Thank You Page).
       // Nie zerujemy `submitting`: przycisk zostaje zablokowany do nawigacji.
@@ -258,21 +280,8 @@ export function ContactSection({
                     name="meetingType"
                     required
                     options={MEETING_OPTIONS}
-                    hint="Spotkanie odbędzie się na Google Meet."
-                    onChange={(e) => setMeetingType(e.target.value)}
+                    hint="Zaraz po wysłaniu formularza wybierzesz dogodny termin. Spotkanie odbędzie się na Google Meet."
                   />
-
-                  {meetingType && (
-                    <div>
-                      <p className="mb-3 font-medium text-foreground">
-                        Wybierz dogodny termin spotkania{" "}
-                        <span className="font-normal text-muted">(data i godzina)</span>
-                      </p>
-                      <div className="overflow-hidden rounded-md border border-card-border bg-card-elevated p-1 sm:p-2">
-                        <CalendlyEmbed url={BOOKING.calendlyUrl} />
-                      </div>
-                    </div>
-                  )}
                 </>
               )}
 

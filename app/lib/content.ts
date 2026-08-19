@@ -764,11 +764,27 @@ export const THANKYOU = {
   route: "/dziekujemy",
   headingPrefix: "Dziękujemy za",
   headingAccent: "pozostawienie kontaktu.",
-  subtext:
-    "Twoje zgłoszenie właśnie do nas dotarło. Teraz nasza kolej — odezwiemy się do Ciebie z konkretnym planem rozmowy.",
-  responseLead: "Odezwiemy się w ciągu",
-  responseAccent: "od 5 minut do maksymalnie 24 godzin",
-  responseTail: "(w dni robocze).",
+  // Akapity potwierdzenia. `mark` = fragment pogrubiony + podświetlony lime
+  // (najważniejsza informacja z danego akapitu).
+  confirmation: [
+    {
+      before: "Twoje zgłoszenie właśnie do nas dotarło. ",
+      mark: "Poniżej wybierz dzień i godzinę spotkania",
+      after: " — odbędzie się ono na Google Meet.",
+    },
+    {
+      before: "",
+      mark: "Po wybraniu terminu dostaniesz link na maila.",
+      after:
+        " Klikasz w niego i jesteś w środku (kamera opcjonalnie, mikrofon konieczny).",
+    },
+    {
+      before: "",
+      mark: "Dzień przed spotkaniem zadzwonimy",
+      after:
+        ", żeby je potwierdzić. Jeśli musisz odwołać, daj znać wcześniej — zwolnimy miejsce dla kogoś innego.",
+    },
+  ],
   phone: {
     heading: "Wolisz porozmawiać od razu?",
     sub: "Zadzwoń bezpośrednio — odbierzemy i od razu przejdziemy do konkretów.",
@@ -798,6 +814,16 @@ export const THANKYOU = {
       },
     ],
   },
+  // Sekcja rezerwacji na stronie „dziękujemy" — pokazywana tylko, gdy zgłoszenie
+  // przyszło z rozszerzonego formularza (dane w sessionStorage: pw_booking).
+  // Kalendarz: BOOKING.formCalendlyUrl, wypełniony imieniem i mailem klienta.
+  booking: {
+    eyebrow: "Ostatni krok",
+    headingPrefix: "Zarezerwuj termin",
+    headingAccent: "bezpłatnego doradztwa.",
+    subtext:
+      "Wybierz dogodny dzień i godzinę poniżej. Po rezerwacji dostaniesz e-mail z potwierdzeniem oraz linkiem do spotkania na Google Meet.",
+  },
   backLabel: "Wróć na stronę główną",
 } as const;
 
@@ -806,10 +832,16 @@ export const THANKYOU = {
  * Nie linkowana z nawigacji; wejście wyłącznie z opisów Loom / zewnętrznych źródeł.
  * `calendlyUrl` to publiczny event Calendly; parametry koloru dopasowują widget do
  * systemu wizualnego (lime accent, ciepły papier, ciemny tusz).
+ *
+ * Uwaga na dwa różne kalendarze:
+ *   `calendlyUrl`      — event dla podstrony /spotkanie (NIE ruszać).
+ *   `formCalendlyUrl`  — osobny event pokazywany w formularzu na stronie
+ *                        głównej po wyborze audio/wideo.
  */
 export const BOOKING = {
   route: "/spotkanie",
   calendlyUrl: "https://calendly.com/kamistrz/30min",
+  formCalendlyUrl: "https://calendly.com/kamistrz/darmowe-doradztwo",
   eyebrow: "Bezpłatna konsultacja",
   headingPrefix: "Wybierz dogodny",
   headingAccent: "termin rozmowy.",

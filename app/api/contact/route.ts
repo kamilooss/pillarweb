@@ -98,9 +98,8 @@ export async function POST(req: Request) {
     );
   }
 
-  // Po lewej nazwa kolumny w Airtable, po prawej wartość z formularza.
-  // Pola rozszerzone dopisujemy tylko gdy niepuste (krótki formularz ich nie ma).
-  const fields: Record<string, string> = {
+  // Pola podstawowe — te kolumny istnieją w tabeli od początku.
+  const coreFields: Record<string, string> = {
     "Imię i nazwisko": name,
     "E-mail": email,
     Telefon: phone,
@@ -108,6 +107,8 @@ export async function POST(req: Request) {
     Wiadomość: message,
   };
 
+  // Pola rozszerzone (formularz strony głównej) — dopisujemy tylko gdy niepuste.
+  // WYMAGAJĄ dodania odpowiadających kolumn w Airtable (patrz nagłówek pliku).
   const extendedFields: Record<string, string> = {
     "Obecna strona / social media": website,
     "Funkcje interaktywne": features,
@@ -120,28 +121,55 @@ export async function POST(req: Request) {
     "Kod promocyjny": promoCode,
     "Rodzaj spotkania": meetingType,
   };
+
+  const fullFields: Record<string, string> = { ...coreFields };
   for (const [key, value] of Object.entries(extendedFields)) {
-    if (value) fields[key] = value;
+    if (value) fullFields[key] = value;
   }
 
-  const payload = {
-    typecast: true,
-    records: [{ fields }],
-  };
-
-  try {
-    // Nazwa tabeli może zawierać spacje/polskie znaki → kodujemy do URL.
-    const res = await fetch(`${AIRTABLE_API}/${baseId}/${encodeURIComponent(table)}`, {
+  // Nazwa tabeli może zawierać spacje/polskie znaki → kodujemy do URL.
+  const endpoint = `${AIRTABLE_API}/${baseId}/${encodeURIComponent(table)}`;
+  const createRecord = (fields: Record<string, string>) =>
+    fetch(endpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(payload),
+      // typecast: Airtable sam dopasuje wartości do istniejących typów pól
+      // (np. dopisze brakującą opcję single-select). NIE tworzy kolumn.
+      body: JSON.stringify({ typecast: true, records: [{ fields }] }),
     });
+
+  try {
+    let res = await createRecord(fullFields);
 
     if (!res.ok) {
       const detail = await res.text();
+
+      // Zabezpieczenie: gdy w tabeli brakuje którejś z rozszerzonych kolumn,
+      // Airtable odrzuca CAŁY rekord (422 UNKNOWN_FIELD_NAME). Żeby nie zgubić
+      // leada, ponawiamy zapis z samymi polami podstawowymi. UWAGA: dane
+      // rozszerzone (budżet, termin, „jak nas znalazł" itd.) NIE zapiszą się,
+      // dopóki nie dodasz brakujących kolumn w Airtable.
+      if (res.status === 422 && detail.includes("UNKNOWN_FIELD_NAME")) {
+        console.error(
+          "[contact] Airtable 422 UNKNOWN_FIELD_NAME — brakuje kolumny w tabeli. " +
+            "Zapisuję tylko pola podstawowe; dodaj brakujące kolumny, aby zapisywać komplet danych. Szczegóły:",
+          detail,
+        );
+        res = await createRecord(coreFields);
+        if (!res.ok) {
+          const detail2 = await res.text();
+          console.error(`[contact] Airtable ${res.status} (fallback):`, detail2);
+          return NextResponse.json(
+            { ok: false, error: "Nie udało się zapisać zgłoszenia." },
+            { status: 502 },
+          );
+        }
+        return NextResponse.json({ ok: true });
+      }
+
       console.error(`[contact] Airtable ${res.status}:`, detail);
       return NextResponse.json(
         { ok: false, error: "Nie udało się zapisać zgłoszenia." },
