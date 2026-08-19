@@ -801,8 +801,20 @@ export const THANKYOU = {
         done: true,
       },
       {
-        title: "Telefon powitalny i umówienie spotkania",
-        body: "Dzwonimy, żeby bliżej poznać Twoją firmę i to, dokąd chcesz ją zaprowadzić. Wspólnie nazywamy cele i mówimy wprost, czy nasza pomoc faktycznie ma dla Ciebie sens. Jeśli tak — ustalamy konkretny termin spotkania i to, na czym powinniśmy się skupić.",
+        title: "Wybór terminu spotkania",
+        body: "W kalendarzu powyżej wybierasz dokładną datę i godzinę spotkania — tę, która pasuje Ci najbardziej.",
+      },
+      {
+        title: "Mail z linkiem do spotkania",
+        body: "Zaraz po rezerwacji dostajesz maila z linkiem. Klikasz — i jesteś na Google Meet: kamerę włączasz albo nie, mikrofon jest konieczny. Masz coś ważnego o swojej firmie do przekazania? Przygotuj to wcześniej — wykorzystamy ten czas najlepiej, jak się da.",
+      },
+      {
+        title: "Pierwsze spotkanie",
+        body: "Poznaję Twoją firmę od środka. Pytam, na czym Ci zależy i jakie masz cele biznesowe — gdzie jesteś, a gdzie chcesz być, ile nowych zapytań o Twoją usługę chcesz otrzymywać co miesiąc. Mówię wprost, czy realnie mogę Ci pomóc, czy nie.",
+      },
+      {
+        title: "Drugie spotkanie i oferta",
+        body: "Jeśli widzę, że realnie mogę Ci pomóc, umawiamy drugie spotkanie. Na nim przedstawiam konkretny, indywidualny plan działania krok po kroku — co wdrożymy na stronie i dlaczego, żeby dowieźć Twoje cele. Wtedy też pokazuję ofertę.",
       },
       {
         title: "Decyzja o współpracy",
@@ -810,7 +822,11 @@ export const THANKYOU = {
       },
       {
         title: "Rozpoczęcie współpracy",
-        body: "Ruszamy. Przejmujemy temat strony od A do Z i prowadzimy Cię przez cały proces krok po kroku.",
+        body: "Wprowadzam Cię w cały proces i tłumaczę, co dzieje się dalej. Pomagam skonfigurować komunikator, przez który masz stały kontakt ze specjalistą prowadzącym Twój projekt. Proszę Cię też o wypełnienie krótkiego formularza — informacje o Twojej firmie sprawią, że strona będzie skrojona dokładnie pod Twój biznes.",
+      },
+      {
+        title: "My startujemy — Ty nic nie robisz",
+        body: "Od teraz masz spokój. Nie musisz się niczym martwić: piszesz do swojego specjalisty, kiedy tylko chcesz, i dostajesz błyskawiczną odpowiedź. Czekasz maksymalnie trzy tygodnie — i masz gotową stronę.",
       },
     ],
   },
