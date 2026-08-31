@@ -353,152 +353,26 @@ export const PROCESS = {
   ],
 } as const;
 
-type PricingFeature = { title: string; description: string; accent?: boolean };
-
 export const PRICING = {
+  eyebrow: "Cennik",
   heading: {
-    accent: "Wybierz plan",
-    rest: " dopasowany do etapu, na którym jest Twoja firma.",
+    lead: "Ile zapłacisz, zależy od tego, ",
+    accent: "co ma robić Twoja strona.",
   },
-  subtitle: {
-    accent: "Trzy poziomy wdrożenia —",
-    rest:
-      " od profesjonalnej marki online po kompletną maszynę do generowania leadów z AI.",
-    note: "(Cennik jest poglądowy)",
-  },
-  plans: [
-    {
-      eyebrow: "PLAN SREBRNY",
-      name: "Plan srebrny",
-      price: "11 000 PLN",
-      tagline: "Fundament — Twoja profesjonalna marka online",
-      audience:
-        "Dla firm budowlanych, które chcą wyróżnić się online, budować markę premium i przestać polegać wyłącznie na poleceniach.",
-      featuresHeading: "CO ZYSKUJESZ:",
-      features: [
-        {
-          title: "Strona, która zamienia odwiedzających w zapytania",
-          description: "Każdy element i sekcja ułożona pod konwersję.",
-        },
-        {
-          title: "Indywidualny projekt premium — nie kolejny szablon",
-          description:
-            "Strona w pełni customowa, zbudowana od podstaw. Wygląda lepiej niż 99% stron konkurencji w Twojej branży.",
-        },
-        {
-          title: "Copywriting w języku Twoich klientów",
-          description:
-            "Teksty pisane przez specjalistów — każde zdanie prowadzi odwiedzającego do kontaktu.",
-        },
-        {
-          title: "Widoczny w Google gdy klient szuka wykonawcy w Twojej okolicy",
-          description:
-            "Pełna optymalizacja SEO od pierwszego dnia — metadane, struktura, treści.",
-        },
-        {
-          title:
-            "Profesjonalne materiały AI bez sesji fotograficznej (jeśli brakuje Ci zdjęć)",
-          description: "Zdjęcia i wideo gotowe do użycia — bez kosztów fotografa.",
-        },
-        {
-          title: "Pełna analityka — wiesz skąd przychodzą klienci",
-          description: "Google Analytics 4, GTM i Pixel skonfigurowane i gotowe.",
-        },
-        {
-          title:
-            "Gotowa maksymalnie w 4 tygodnie — albo oddajemy 50% wynagrodzenia",
-          description: "Nawet za jeden dzień spóźnienia.",
-        },
-      ] as PricingFeature[],
-      cta: { label: "Wybieram plan srebrny", href: "#kontakt" },
-      highlighted: false,
-    },
-    {
-      eyebrow: "PLAN ZŁOTY",
-      name: "Plan złoty",
-      price: "15 000 PLN",
-      tagline: "System — marka + automatyzacje, które pracują za Ciebie",
-      audience:
-        "Dla firm gotowych na pełną automatyzację marki i stały, przewidywalny napływ zapytań.",
-      featuresHeading: "WSZYSTKO Z PLANU SREBRNEGO, PLUS:",
-      features: [
-        {
-          title: "Spójna marka we wszystkich miejscach",
-          description:
-            "Logo, wizytówki i adres @TwojaFirma.pl zamiast gmail.com — spójność i profesjonalizm.",
-        },
-        {
-          title: "Google Maps zoptymalizowane pod lokalnych klientów",
-          description:
-            "Wizytówka Google w pełni skonfigurowana — widoczny tam, gdzie klient szuka wykonawcy.",
-        },
-        {
-          title: "Każde zapytanie automatycznie w Twojej bazie",
-          description:
-            "Żadnego ręcznego przepisywania — leady automatycznie trafiają do Twojego CRM/ bazy.",
-        },
-        {
-          title: "Wszystkie kontakty i zlecenia w jednym miejscu",
-          description:
-            "Integracja z CRM — koniec chaosu w zarządzaniu zapytaniami.",
-        },
-        {
-          title: "Automatyczne powiadomienia o nowych leadach",
-          description:
-            "Reagujesz pierwszy — zanim klient zdąży napisać do konkurencji. Każda sekunda ma znaczenie.",
-        },
-      ] as PricingFeature[],
-      cta: { label: "Wybieram plan złoty", href: "#kontakt" },
-      highlighted: true,
-      badge: "Najpopularniejszy",
-    },
-    {
-      eyebrow: "PLAN PLATYNA",
-      name: "Plan platyna",
-      price: "20 000 PLN",
-      tagline: "Maszyna — kompletny system AI generujący leady 24/7",
-      audience:
-        "Dla firm, które chcą kompletny system pozyskiwania klientów bazujący na najnowocześniejszych technologiach — od pierwszej wizyty na stronie po automatycznie umówioną wycenę. Maksymalne odciążenie.",
-      featuresHeading: "WSZYSTKO Z PLANU ZŁOTEGO, PLUS:",
-      features: [
-        {
-          title: "Chatbot AI uczony na wiedzy Twojej firmy",
-          description:
-            "Odpowiada na pytania klientów 24/7, odciążając Ciebie i Twoją ekipę — bez głupich i błędnych odpowiedzi. 100% merytoryki.",
-        },
-        {
-          title: "Klient sam umawia wycenę — zero telefonów w tę i z powrotem",
-          description:
-            "Automatyczny system rezerwacji zintegrowany z Twoim kalendarzem.",
-        },
-        {
-          title: "5 artykułów SEO pod Twoją branżę",
-          description:
-            "Treści przyciągające klientów z Google przez miesiące po publikacji.",
-        },
-        {
-          title:
-            "Twoja firma jako ekspert na Murator Dom, Murator Plus i Budujemy Dom",
-          description:
-            "Otrzymujesz artykuły sponsorowane na największych portalach budowlanych w Polsce.",
-        },
-        {
-          title: "Lead magnet: poradnik zbierający dane potencjalnych klientów",
-          description:
-            "Osoby zainteresowane Twoimi usługami zostawiają e-mail — budujesz własną bazę od pierwszego dnia.",
-        },
-        {
-          title: "Kampania Google Ads na miesiąc w cenie",
-          description: "",
-          accent: true,
-        },
-      ] as PricingFeature[],
-      cta: { label: "Wybieram plan platyna", href: "#kontakt" },
-      highlighted: false,
-    },
+  intro:
+    "Wycena zaczyna się od 11 000 zł. Ostateczna kwota zależy od zakresu projektu — prostsza strona-wizytówka kosztuje mniej niż rozbudowany serwis z automatyzacjami.",
+  price: { prefix: "od", value: "11 000 zł" },
+  factorsHeading: "Na wycenę wpływają",
+  factors: [
+    "Zakres funkcji",
+    "Liczba sekcji i podstron",
+    "Elementy interaktywne",
+    "Integracje i automatyzacje",
   ],
-  footnote:
-    "Zakres działań zależy od Twojej sytuacji. Właśnie od tego jesteśmy my. Najpierw poznajemy Twój biznes. Potem dobieramy właściwe rozwiązanie i prowadzimy Cię przez cały proces.",
+  consultation:
+    "Zanim podamy Ci cenę, rozmawiamy. Na bezpłatnej rozmowie wstępnej pytamy o Twoje cele i mówimy wprost, co warto mieć na stronie, a co jest zbędnym kosztem. Dostajesz wycenę pod to, co chcesz osiągnąć, bez płacenia za funkcje, których nie wykorzystasz.",
+  cta: { label: "Ustalmy to wspólnie", href: "#kontakt" },
+  ctaNote: "Rozmowa jest bezpłatna i do niczego nie zobowiązuje.",
 } as const;
 
 export const COMPARISON = {

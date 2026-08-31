@@ -18,3 +18,8 @@ public/images/testimonials/pergole-michal-plonka.png
 *.sb-*
 *.swp
 .DS_Store
+
+# Backup starej sekcji cennika + wewnętrzny przewodnik stylu — w gicie dla
+# bezpieczeństwa, ale nie są częścią wdrażanej strony.
+_backup
+anti-ai-style.md
