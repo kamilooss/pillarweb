@@ -57,14 +57,6 @@ function MissingX() {
   );
 }
 
-function PlanBadge({ label }: { label: string }) {
-  return (
-    <span className="ml-2 inline-flex items-center bg-accent px-2 py-0.5 align-middle text-[10px] font-bold uppercase tracking-[0.1em] text-accent-foreground whitespace-nowrap">
-      {label}
-    </span>
-  );
-}
-
 interface ComparisonSectionProps {
   content?: typeof COMPARISON;
 }
@@ -131,17 +123,13 @@ export function ComparisonSection({
 
                 {/* Rows */}
                 {cat.rows.map((row, ri) => {
-                  const plan = "plan" in row ? row.plan : undefined;
                   return (
                     <div
                       key={ri}
                       className={`grid ${cols} items-stretch border-b border-card-border last:border-b-0`}
                     >
                       <div className="flex items-center px-4 py-4 text-sm leading-snug text-foreground sm:px-8 sm:py-5 sm:text-[15px]">
-                        <span>
-                          {row.feature}
-                          {plan ? <PlanBadge label={plan} /> : null}
-                        </span>
+                        <span>{row.feature}</span>
                       </div>
                       <div className="flex items-center justify-center border-l border-card-border px-2 py-4 sm:px-4 sm:py-5">
                         {row.others ? <MutedCheck /> : <MissingX />}

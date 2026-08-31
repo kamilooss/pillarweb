@@ -425,29 +425,24 @@ export const COMPARISON = {
       rows: [
         {
           feature: "Chatbot AI uczony na wiedzy Twojej firmy",
-          plan: "Platyna",
           others: false,
         },
         {
           feature:
             "Asystent AI odbierający telefony i odpowiadający na pytania",
-          plan: "Platyna",
           others: false,
         },
         {
           feature:
             "Kalendarz na stronie — automatyczna rezerwacja spotkania lub rozmowy",
-          plan: "Platyna",
           others: false,
         },
         {
           feature: "Automatyczny przepływ leadów do CRM",
-          plan: "Złoto+",
           others: false,
         },
         {
           feature: "Automatyczne powiadomienia o nowych zapytaniach",
-          plan: "Złoto+",
           others: false,
         },
       ],
@@ -487,12 +482,6 @@ export const COMPARISON = {
         { feature: "Realizacja maksymalnie w 3 tygodnie", others: false },
         {
           feature: "Bieżąca komunikacja przez Slack — wiesz co się dzieje",
-          others: false,
-        },
-        {
-          feature:
-            "Artykuły sponsorowane na platformach takich jak Murator Dom, Budujemy Dom itp.",
-          plan: "Platyna",
           others: false,
         },
       ],
