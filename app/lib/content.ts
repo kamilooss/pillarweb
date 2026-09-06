@@ -313,7 +313,7 @@ export const PROCESS = {
       "Możesz do nas napisać kiedy tylko chcesz. Na bieżąco wiesz, co robimy, na jakim jesteśmy etapie i co dzieje się dalej.",
     suffix: "Pracujemy według jasnego planu i regularnie raportujemy postępy.",
   },
-  image: "/images/proces-wspolpracy-pillarweb.webp",
+  image: "/images/o-nas-2.webp",
   steps: [
     {
       number: "01",
@@ -501,7 +501,7 @@ export const ABOUT = {
     "Dajemy więcej niżeli nasi konkurenci. Twoja strona będzie zawierała wszystko, co potrzebne i wiele więcej, aby zmaksymalizować szansę na to, że użytkownik wchodząc na Twoją stronę pozostawi do siebie kontakt. Każdy najmniejszy element jest starannie dopracowany, aby wspierać ten cel. To właśnie nas wyróżnia.",
     "Pillar Web istnieje z jednego powodu: żeby firmy budowlane, które robią dobrą robotę w terenie, były równie mocne online.",
   ],
-  image: "/images/o-nas-2.webp",
+  image: "/images/kim-jestesmy-schody-pillarweb.webp",
   imageAlt:
     "Kamil Tomczyk i branża budowlana oraz marketing internetowy w ujęciu wizerunkowym Pillar Web",
 } as const;
