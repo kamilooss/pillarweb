@@ -26,7 +26,7 @@ const ICON_ASSET_BASE = "https://pillarweb.pl/wp-content/uploads/2026/04";
  * URL osadzenia składa komponent PortfolioVideo. Aby podmienić film: wgraj nowy
  * do tej samej biblioteki w panelu Bunny i wstaw jego GUID.
  */
-export const BUNNY_LIBRARY_ID = "697113";
+export const BUNNY_LIBRARY_ID = "755871";
 
 /**
  * @deprecated Pozostałość po hostingu w Vercel Blob — żaden film już z tego nie
@@ -753,7 +753,7 @@ export const PORTFOLIO = {
       name: "Korona Estates",
       description:
         "Prezentacja inwestycji i oferty apartamentów premium, z czytelną ścieżką do kontaktu.",
-      video: "f45bc8e8-36a3-4d7f-b58c-ccc561cc7321",
+      video: "2b879a4a-b966-4722-96bd-4397175daa69",
       poster: "/images/portfolio/korona.jpg",
       aspect: "1600 / 873",
       duration: "0:42",
@@ -764,7 +764,7 @@ export const PORTFOLIO = {
       name: "Lennox Homes",
       description:
         "Strona z interaktywnym kalkulatorem kosztów budowy i katalogiem gotowych realizacji.",
-      video: "cf26f636-d8c8-46cf-a63e-3e888d2bf7fe",
+      video: "cd6ee76f-bff1-46a4-ae3c-8d48a9ba8018",
       poster: "/images/portfolio/lennox.jpg",
       aspect: "1600 / 947",
       duration: "1:31",
@@ -775,7 +775,7 @@ export const PORTFOLIO = {
       name: "Horyzont",
       description:
         "Portfolio realizacji komercyjnych i przemysłowych, z prostą ścieżką do zapytania ofertowego.",
-      video: "4da86064-8f4d-4a5b-aa3c-978e5bd4aa59",
+      video: "bf26d721-d2b1-43af-b49e-22dc4dfb5cd6",
       poster: "/images/portfolio/horyzont.jpg",
       aspect: "1600 / 944",
       duration: "1:23",
@@ -792,7 +792,7 @@ export const VSL = {
   headingPrefix:
     "Polecenia są nieprzewidywalne. Zbuduj firmę budowlaną, która ma",
   headingAccent: "stały dopływ zleceń.",
-  video: "5b5cec42-a061-4813-b0df-8382e0265dae",
+  video: "3fcecca5-b66a-4d38-93a0-c2a4ab4e436e",
   poster: "/images/vsl.jpg",
   aspect: "1600 / 900",
   duration: "7:36",
