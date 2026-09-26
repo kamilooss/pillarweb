@@ -15,6 +15,9 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
+  // Domena kanoniczna: pillarweb.pl przekierowuje 308 na www.pillarweb.pl.
+  // Bez metadataBase Next buduje adresy obrazków OG względem localhosta.
+  metadataBase: new URL("https://www.pillarweb.pl"),
   title: "Pillarweb — Strony internetowe dla firm budowlanych",
   description:
     "Tworzymy strony internetowe, które wzmacniają markę firm budowlanych i pomagają zdobywać więcej zapytań od właściwych klientów. Strategia, copywriting, SEO i wdrożenie w jednym procesie.",
@@ -30,7 +33,7 @@ export const metadata: Metadata = {
     title: "Pillarweb — Strony internetowe dla firm budowlanych",
     description:
       "Profesjonalne strony, które realnie pomagają firmom budowlanym pozyskiwać klientów.",
-    url: "https://pillarweb.pl",
+    url: "https://www.pillarweb.pl",
     siteName: "Pillarweb",
     locale: "pl_PL",
     type: "website",

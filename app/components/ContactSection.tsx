@@ -7,6 +7,7 @@ import { Logo } from "./Logo";
 import { Reveal } from "./Reveal";
 import { Button } from "./Button";
 import { CONTACT, THANKYOU } from "../lib/content";
+import { LISTA_SCORE_STORAGE_KEY } from "../lib/content-lista";
 
 interface ContactSectionProps {
   content?: typeof CONTACT;
@@ -15,13 +16,24 @@ interface ContactSectionProps {
    * (rozdziela dane ze strony głównej od /landing-page).
    * Musi pasować do kluczy w TABLE_BY_SOURCE w app/api/contact/route.ts.
    */
-  source?: "home" | "landing-page";
+  source?: "home" | "landing-page" | "lista";
   /**
-   * Rozszerzony formularz (pełna kwalifikacja: budżet, termin, zakres,
-   * skąd o nas wie, rodzaj spotkania + kalendarz). Włączony tylko na stronie
-   * głównej — landing page i podstrony zostają przy krótkim formularzu.
+   * Zakres formularza:
+   *  „short”   — imię, e-mail, telefon, specjalizacja, wiadomość. Landing page
+   *              i podstrony podnisz.
+   *  „qualify” — short + obecna strona, termin, budżet i rodzaj spotkania.
+   *              Podstrona /lista: ruch z social mediów jest zimniejszy, więc
+   *              pytamy tylko o to, co realnie sortuje zgłoszenia.
+   *  „full”    — pełna kwalifikacja (zakres, funkcje, podstrony, skąd nas zna,
+   *              kod promocyjny). Strona główna.
    */
-  extended?: boolean;
+  variant?: "short" | "qualify" | "full";
+  /**
+   * Dokleja do zgłoszenia wynik testu z podstrony /lista (np. „7/15”), który
+   * ChecklistTest zapisuje w sessionStorage. Dzięki temu w Airtable widać,
+   * gdzie strona leada przecieka, zanim ktokolwiek do niego zadzwoni.
+   */
+  attachTestScore?: boolean;
 }
 
 // Wybór jednej z tych opcji w „Jak nas znalazłeś?" odsłania dwa dodatkowe
@@ -39,8 +51,20 @@ const BOOKING_STORAGE_KEY = "pw_booking";
 export function ContactSection({
   content = CONTACT,
   source = "home",
-  extended = false,
+  variant = "short",
+  attachTestScore = false,
 }: ContactSectionProps = {}) {
+  // „full” dokłada pytania o zakres prac; „qualify” zatrzymuje się na tych,
+  // które sortują leada (strona, termin, budżet). Oba pytają o rodzaj spotkania.
+  const isFull = variant === "full";
+  const showQualify = variant === "qualify" || isFull;
+
+  // `description` bywa jednym akapitem (strona główna, landing) albo tablicą
+  // akapitów (/lista, gdzie tekst jest dłuższy i jednym blokiem robił ścianę).
+  const rawDescription = content.description as string | readonly string[];
+  const descriptionParagraphs = Array.isArray(rawDescription)
+    ? rawDescription
+    : [rawDescription as string];
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -57,11 +81,21 @@ export function ContactSection({
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries());
 
+    // Wynik testu z /lista — jeśli ktoś przeszedł wszystkie 15 punktów.
+    let testScore = "";
+    if (attachTestScore) {
+      try {
+        testScore = sessionStorage.getItem(LISTA_SCORE_STORAGE_KEY) ?? "";
+      } catch {
+        // sessionStorage niedostępny — zgłoszenie leci bez wyniku.
+      }
+    }
+
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, source }),
+        body: JSON.stringify({ ...data, source, testScore }),
       });
 
       if (!res.ok) throw new Error(`Request failed: ${res.status}`);
@@ -69,7 +103,7 @@ export function ContactSection({
       // Zapisujemy dane do prefillu kalendarza na stronie „dziękujemy"
       // (tylko formularz rozszerzony pyta o rodzaj spotkania). sessionStorage,
       // nie URL — nie wynosimy danych osobowych do adresu.
-      if (extended) {
+      if (showQualify) {
         try {
           sessionStorage.setItem(
             BOOKING_STORAGE_KEY,
@@ -108,8 +142,12 @@ export function ContactSection({
           <span className="underline-accent">{content.headingLine2}</span>
         </Reveal>
 
-        <Reveal as="p" delay={60} className="mt-6 max-w-3xl text-lg leading-relaxed text-muted-strong">
-          {content.description}
+        <Reveal delay={60} className="mt-6 max-w-3xl space-y-4">
+          {descriptionParagraphs.map((paragraph, i) => (
+            <p key={i} className="text-lg leading-relaxed text-muted-strong">
+              {paragraph}
+            </p>
+          ))}
         </Reveal>
 
         <Reveal delay={80}>
@@ -182,7 +220,7 @@ export function ContactSection({
                 options={content.specializations}
               />
 
-              {extended && (
+              {showQualify && (
                 <>
                   <SectionLabel>O Twojej stronie</SectionLabel>
 
@@ -194,21 +232,25 @@ export function ContactSection({
                     placeholder="np. twojafirma.pl lub link do profilu"
                   />
 
-                  <TextareaField
-                    label="Czy Twoja strona ma zawierać jakieś funkcje lub elementy interaktywne?"
-                    name="features"
-                    optional
-                    rows={3}
-                    placeholder="np. kalkulator, konfigurator, formularz wyceny, mapa realizacji…"
-                  />
+                  {isFull && (
+                    <>
+                      <TextareaField
+                        label="Czy Twoja strona ma zawierać jakieś funkcje lub elementy interaktywne?"
+                        name="features"
+                        optional
+                        rows={3}
+                        placeholder="np. kalkulator, konfigurator, formularz wyceny, mapa realizacji…"
+                      />
 
-                  <TextareaField
-                    label="Czy Twoja strona ma zawierać jakieś konkretne podstrony?"
-                    name="subpages"
-                    optional
-                    rows={3}
-                    placeholder="np. Realizacje, Oferta, O nas, Blog, Kontakt…"
-                  />
+                      <TextareaField
+                        label="Czy Twoja strona ma zawierać jakieś konkretne podstrony?"
+                        name="subpages"
+                        optional
+                        rows={3}
+                        placeholder="np. Realizacje, Oferta, O nas, Blog, Kontakt…"
+                      />
+                    </>
+                  )}
 
                   <Field
                     label="Na kiedy chcesz mieć gotową stronę?"
@@ -218,12 +260,14 @@ export function ContactSection({
                     placeholder="np. jak najszybciej, za 2 miesiące, do końca roku…"
                   />
 
-                  <RadioGroup
-                    label="Masz już gotowe zdjęcia lub treści na stronę?"
-                    name="hasContent"
-                    required
-                    options={["Tak", "Nie"]}
-                  />
+                  {isFull && (
+                    <RadioGroup
+                      label="Masz już gotowe zdjęcia lub treści na stronę?"
+                      name="hasContent"
+                      required
+                      options={["Tak", "Nie"]}
+                    />
+                  )}
 
                   <SelectField
                     label="Jaki budżet planujesz przeznaczyć na stronę dla swojej firmy?"
@@ -233,16 +277,18 @@ export function ContactSection({
                     options={content.budgetOptions}
                   />
 
-                  <SelectField
-                    label="Jak nas znalazłeś?"
-                    name="howFound"
-                    required
-                    placeholder="Wybierz źródło"
-                    options={content.howFoundOptions}
-                    onChange={(e) => setHowFound(e.target.value)}
-                  />
+                  {isFull && (
+                    <SelectField
+                      label="Jak nas znalazłeś?"
+                      name="howFound"
+                      required
+                      placeholder="Wybierz źródło"
+                      options={content.howFoundOptions}
+                      onChange={(e) => setHowFound(e.target.value)}
+                    />
+                  )}
 
-                  {showReferralExtras && (
+                  {isFull && showReferralExtras && (
                     <>
                       <Field
                         label="Jeśli to polecenie lub grupa na Facebooku – podaj jaka lub od kogo"
@@ -264,14 +310,14 @@ export function ContactSection({
               )}
 
               <TextareaField
-                label={extended ? "Czy chcesz nam coś jeszcze przekazać?" : "Wiadomość"}
+                label={showQualify ? "Czy chcesz nam coś jeszcze przekazać?" : "Wiadomość"}
                 name="message"
                 optional
                 rows={5}
                 placeholder="Wpisz o co chciałbyś zapytać"
               />
 
-              {extended && (
+              {showQualify && (
                 <>
                   <SectionLabel>Preferowane spotkanie</SectionLabel>
 

@@ -14,6 +14,7 @@
  *   AIRTABLE_BASE_ID        — ID bazy (np. appXXXXXXXXXXXXXX)
  *   AIRTABLE_TABLE_HOME     — nazwa lub ID tabeli dla formularza ze strony głównej
  *   AIRTABLE_TABLE_LANDING  — nazwa lub ID tabeli dla formularza z /landing-page
+ *   AIRTABLE_TABLE_LISTA    — nazwa lub ID tabeli dla lead magnetu /lista
  *
  * Kolumny oczekiwane w każdej tabeli (dokładne nazwy — Airtable dopasowuje
  * po nazwie pola). Airtable NIE tworzy kolumn automatycznie — brakujące trzeba
@@ -24,6 +25,8 @@
  *     „Funkcje interaktywne" · „Konkretne podstrony" · „Termin realizacji" ·
  *     „Ma gotowe treści" · „Budżet" · „Jak nas znalazł" ·
  *     „Polecenie / grupa (od kogo)" · „Kod promocyjny" · „Rodzaj spotkania"
+ *   Lead magnet (/lista): „Wynik testu" — liczba TAK w formacie „7/15”. Puste,
+ *     gdy ktoś wysłał formularz bez przejścia wszystkich piętnastu punktów.
  *   + opcjonalnie „Data zgłoszenia" typu Created time (Airtable wypełnia sam).
  * Typ pól „Budżet" / „Jak nas znalazł" / „Rodzaj spotkania" może być
  * „Single select" — dzięki `typecast: true` Airtable sam dopisze brakujące opcje.
@@ -43,6 +46,7 @@ const AIRTABLE_API = "https://api.airtable.com/v0";
 const TABLE_BY_SOURCE: Record<string, string | undefined> = {
   home: process.env.AIRTABLE_TABLE_HOME,
   "landing-page": process.env.AIRTABLE_TABLE_LANDING,
+  lista: process.env.AIRTABLE_TABLE_LISTA,
 };
 
 export async function POST(req: Request) {
@@ -84,6 +88,8 @@ export async function POST(req: Request) {
   const referralSource = str(body.referralSource);
   const promoCode = str(body.promoCode);
   const meetingType = str(body.meetingType);
+  // Wynik testu z /lista, np. „7/15”.
+  const testScore = str(body.testScore);
 
   if (!email || !name) {
     return NextResponse.json({ ok: false, error: "Brak wymaganych pól." }, { status: 400 });
@@ -120,6 +126,7 @@ export async function POST(req: Request) {
     "Polecenie / grupa (od kogo)": referralSource,
     "Kod promocyjny": promoCode,
     "Rodzaj spotkania": meetingType,
+    "Wynik testu": testScore,
   };
 
   const fullFields: Record<string, string> = { ...coreFields };

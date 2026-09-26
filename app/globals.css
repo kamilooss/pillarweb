@@ -98,7 +98,19 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
     font-feature-settings: "ss01", "cv01";
+    /* Zapasowa blokada poziomego przepełnienia dla silników bez `overflow: clip`
+       (Safari < 16) — tam `hidden` zostaje. UWAGA: `overflow-x: hidden` czyni
+       z <body> kontener przewijania, a ponieważ przewija się <html>, KAŻDY
+       `position: sticky` w środku przestaje się przyklejać. Dlatego wszędzie,
+       gdzie `clip` jest wspierany, podmieniamy wartość niżej — `clip` obcina
+       tak samo, ale kontenera przewijania nie tworzy. */
     overflow-x: hidden;
+  }
+
+  @supports (overflow-x: clip) {
+    body {
+      overflow-x: clip;
+    }
   }
 
   /* Selekcja tekstu — hi-vis */

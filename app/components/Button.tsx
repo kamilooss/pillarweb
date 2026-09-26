@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { ComponentPropsWithoutRef } from "react";
 
-type Variant = "primary" | "outline" | "ghost";
-type Size = "sm" | "md" | "lg" | "xl";
+export type ButtonVariant = "primary" | "outline" | "ghost";
+export type ButtonSize = "sm" | "md" | "lg" | "xl";
+
+type Variant = ButtonVariant;
+type Size = ButtonSize;
 
 const variants: Record<Variant, string> = {
   primary:
@@ -28,6 +31,18 @@ type ButtonProps = {
   children: React.ReactNode;
 } & Omit<ComponentPropsWithoutRef<"button">, "className" | "children">;
 
+/**
+ * Klasy guzika bez samego komponentu — dla elementów, które muszą być zwykłym
+ * <a> (np. pobranie pliku z atrybutem `download`), a mają wyglądać identycznie.
+ */
+export function buttonClasses({
+  variant = "primary",
+  size = "md",
+  className = "",
+}: { variant?: Variant; size?: Size; className?: string } = {}) {
+  return `inline-flex items-center justify-center gap-2 rounded-md font-semibold tracking-tight transition-all duration-200 ease-out cursor-pointer ${variants[variant]} ${sizes[size]} ${className}`;
+}
+
 export function Button({
   variant = "primary",
   size = "md",
@@ -36,7 +51,7 @@ export function Button({
   children,
   ...props
 }: ButtonProps) {
-  const classes = `inline-flex items-center justify-center gap-2 rounded-md font-semibold tracking-tight transition-all duration-200 ease-out cursor-pointer ${variants[variant]} ${sizes[size]} ${className}`;
+  const classes = buttonClasses({ variant, size, className });
 
   if (href) {
     return (

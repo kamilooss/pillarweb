@@ -40,7 +40,12 @@ export default function SmoothScroll() {
       const target = document.querySelector(hash);
       if (!target) return;
       event.preventDefault();
-      lenis.scrollTo(target as HTMLElement, { offset: HEADER_OFFSET });
+      // Cel może poprosić o dodatkowy zapas atrybutem `data-scroll-offset`,
+      // gdy poza nagłówkiem zasłania go jeszcze coś przyklejonego — tak jest
+      // z punktami testu na /lista, nad którymi stoi pasek postępu.
+      const extra =
+        Number((target as HTMLElement).dataset?.scrollOffset ?? 0) || 0;
+      lenis.scrollTo(target as HTMLElement, { offset: HEADER_OFFSET - extra });
     };
     document.addEventListener("click", onClick);
 

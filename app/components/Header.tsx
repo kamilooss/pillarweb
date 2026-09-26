@@ -17,9 +17,15 @@ const PhoneIcon = ({ className }: { className?: string }) => (
 interface HeaderProps {
   /** Override linków nawigacji — przydatne dla podstron podnisz. */
   navLinks?: typeof NAV_LINKS;
+  /**
+   * Tryb okrojony dla podstron z jedną akcją (np. /lista): zostaje logo,
+   * klikalny numer i jeden guzik CTA. Bez menu i bez hamburgera, żeby nikt
+   * nie wychodził z treści w połowie.
+   */
+  minimal?: boolean;
 }
 
-export function Header({ navLinks = NAV_LINKS }: HeaderProps = {}) {
+export function Header({ navLinks = NAV_LINKS, minimal = false }: HeaderProps = {}) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
@@ -44,7 +50,10 @@ export function Header({ navLinks = NAV_LINKS }: HeaderProps = {}) {
         <Logo />
 
         {/* Desktop nav */}
-        <nav className="hidden items-center gap-1 lg:flex" aria-label="Główna nawigacja">
+        <nav
+          className={`${minimal ? "hidden" : "hidden lg:flex"} items-center gap-1`}
+          aria-label="Główna nawigacja"
+        >
           {navLinks.map((link) => {
             if ("children" in link && link.children) {
               return (
@@ -123,7 +132,13 @@ export function Header({ navLinks = NAV_LINKS }: HeaderProps = {}) {
         </nav>
 
         {/* Right side: phone + CTA */}
-        <div className="hidden items-center gap-5 lg:flex">
+        <div
+          className={
+            minimal
+              ? "flex items-center gap-3 sm:gap-5"
+              : "hidden items-center gap-5 lg:flex"
+          }
+        >
           <a
             href={`tel:${SITE.phoneTel}`}
             className="group flex items-center gap-2.5 text-foreground transition-colors"
@@ -131,17 +146,23 @@ export function Header({ navLinks = NAV_LINKS }: HeaderProps = {}) {
             <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-foreground/25 transition-colors group-hover:border-foreground group-hover:bg-accent">
               <PhoneIcon />
             </span>
-            <span className="font-medium tnum">{SITE.phone}</span>
+            <span className={`font-medium tnum${minimal ? " hidden sm:inline" : ""}`}>
+              {SITE.phone}
+            </span>
           </a>
-          <Button href={SITE.contactAnchor} className="ml-2">
-            {SITE.cta}
+          <Button
+            href={SITE.contactAnchor}
+            size={minimal ? "sm" : "md"}
+            className={minimal ? "" : "ml-2"}
+          >
+            {minimal ? "Umów rozmowę" : SITE.cta}
           </Button>
         </div>
 
         {/* Mobile burger */}
         <button
           onClick={() => setMobileOpen((v) => !v)}
-          className="flex flex-col gap-1.5 p-2 lg:hidden"
+          className={`${minimal ? "hidden" : "flex lg:hidden"} flex-col gap-1.5 p-2`}
           aria-label={mobileOpen ? "Zamknij menu" : "Otwórz menu"}
           aria-expanded={mobileOpen}
         >
@@ -170,7 +191,8 @@ export function Header({ navLinks = NAV_LINKS }: HeaderProps = {}) {
           panel zawsze względem viewportu. Zwykły div (bez Framer Motion,
           którego animacja wejścia pod React 19 potrafiła nie odpalić) i bez
           blokady body overflow (zerowała limit scrolla Lenisa). */}
-      {mobileOpen &&
+      {!minimal &&
+        mobileOpen &&
         createPortal(
           <div className="fixed inset-0 top-20 z-40 overflow-y-auto bg-background lg:hidden">
             <div className="container-content flex flex-col gap-1 py-8">
