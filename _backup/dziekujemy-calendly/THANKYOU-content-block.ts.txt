@@ -1,0 +1,83 @@
+export const THANKYOU = {
+  // Slug, na który przekierowuje formularz kontaktowy po wysłaniu.
+  route: "/dziekujemy",
+  headingPrefix: "Dziękujemy za",
+  headingAccent: "pozostawienie kontaktu.",
+  // Akapity potwierdzenia. `mark` = fragment pogrubiony + podświetlony lime
+  // (najważniejsza informacja z danego akapitu).
+  confirmation: [
+    {
+      before: "Twoje zgłoszenie właśnie do nas dotarło. ",
+      mark: "Poniżej wybierz dzień i godzinę spotkania",
+      after: " — odbędzie się ono na Google Meet.",
+    },
+    {
+      before: "",
+      mark: "Po wybraniu terminu dostaniesz link na maila.",
+      after:
+        " Klikasz w niego i jesteś w środku (kamera opcjonalnie, mikrofon konieczny).",
+    },
+    {
+      before: "",
+      mark: "Dzień przed spotkaniem zadzwonimy",
+      after:
+        ", żeby je potwierdzić. Jeśli musisz odwołać, daj znać wcześniej — zwolnimy miejsce dla kogoś innego.",
+    },
+  ],
+  phone: {
+    heading: "Wolisz porozmawiać od razu?",
+    sub: "Zadzwoń bezpośrednio — odbierzemy i od razu przejdziemy do konkretów.",
+    label: "Zadzwoń teraz",
+  },
+  roadmap: {
+    headingPrefix: "Co dzieje się",
+    headingAccent: "dalej",
+    doneLabel: "Zrobione",
+    steps: [
+      {
+        title: "Pozostawienie kontaktu",
+        body: "Twoje zgłoszenie właśnie do nas trafiło. Ten krok masz już za sobą.",
+        done: true,
+      },
+      {
+        title: "Wybór terminu spotkania",
+        body: "W kalendarzu powyżej wybierasz dokładną datę i godzinę spotkania — tę, która pasuje Ci najbardziej.",
+      },
+      {
+        title: "Mail z linkiem do spotkania",
+        body: "Zaraz po rezerwacji dostajesz maila z linkiem. Klikasz — i jesteś na Google Meet: kamerę włączasz albo nie, mikrofon jest konieczny. Masz coś ważnego o swojej firmie do przekazania? Przygotuj to wcześniej — wykorzystamy ten czas najlepiej, jak się da.",
+      },
+      {
+        title: "Pierwsze spotkanie",
+        body: "Poznaję Twoją firmę od środka. Pytam, na czym Ci zależy i jakie masz cele biznesowe — gdzie jesteś, a gdzie chcesz być, ile nowych zapytań o Twoją usługę chcesz otrzymywać co miesiąc. Mówię wprost, czy realnie mogę Ci pomóc, czy nie.",
+      },
+      {
+        title: "Drugie spotkanie i oferta",
+        body: "Jeśli widzę, że realnie mogę Ci pomóc, umawiamy drugie spotkanie. Na nim przedstawiam konkretny, indywidualny plan działania krok po kroku — co wdrożymy na stronie i dlaczego, żeby dowieźć Twoje cele. Wtedy też pokazuję ofertę.",
+      },
+      {
+        title: "Decyzja o współpracy",
+        body: "Po rozmowie obie strony podejmują świadomą decyzję. Ty oceniasz, czy to dla Ciebie. My potwierdzamy, że możemy poprowadzić Twój projekt z pełnym zaangażowaniem. Bez presji i bez zobowiązań.",
+      },
+      {
+        title: "Rozpoczęcie współpracy",
+        body: "Wprowadzam Cię w cały proces i tłumaczę, co dzieje się dalej. Pomagam skonfigurować komunikator, przez który masz stały kontakt ze specjalistą prowadzącym Twój projekt. Proszę Cię też o wypełnienie krótkiego formularza — informacje o Twojej firmie sprawią, że strona będzie skrojona dokładnie pod Twój biznes.",
+      },
+      {
+        title: "My startujemy — Ty nic nie robisz",
+        body: "Od teraz masz spokój. Nie musisz się niczym martwić: piszesz do swojego specjalisty, kiedy tylko chcesz, i dostajesz błyskawiczną odpowiedź. Czekasz maksymalnie trzy tygodnie — i masz gotową stronę.",
+      },
+    ],
+  },
+  // Sekcja rezerwacji na stronie „dziękujemy" — pokazywana tylko, gdy zgłoszenie
+  // przyszło z rozszerzonego formularza (dane w sessionStorage: pw_booking).
+  // Kalendarz: BOOKING.formCalendlyUrl, wypełniony imieniem i mailem klienta.
+  booking: {
+    eyebrow: "Ostatni krok",
+    headingPrefix: "Zarezerwuj termin",
+    headingAccent: "bezpłatnego doradztwa.",
+    subtext:
+      "Wybierz dogodny dzień i godzinę poniżej. Po rezerwacji dostaniesz e-mail z potwierdzeniem oraz linkiem do spotkania na Google Meet.",
+  },
+  backLabel: "Wróć na stronę główną",
+} as const;

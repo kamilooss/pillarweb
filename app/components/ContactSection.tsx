@@ -40,12 +40,15 @@ interface ContactSectionProps {
 // pola: źródło polecenia oraz kod promocyjny.
 const REFERRAL_VALUES = ["Polecenie", "Grupa na Facebook"];
 
-// Rodzaj spotkania — preferencja klienta (leci do Airtable). Sam kalendarz
-// pokazujemy dopiero PO wysłaniu, na stronie „dziękujemy" — dzięki temu dane
-// z formularza zawsze do nas trafiają, zanim klient rezerwuje termin.
+// Rodzaj spotkania — preferencja klienta (leci do Airtable), żeby wiedzieć,
+// czego się spodziewa, zanim zadzwonimy umówić termin.
 const MEETING_OPTIONS = ["Samo audio", "Wideo"];
 
-// Klucz w sessionStorage: dane do wypełnienia kalendarza na stronie „dziękujemy".
+// Klucz w sessionStorage: imię, e-mail i rodzaj spotkania dla strony
+// „dziękujemy". Od 2026-09-26 NIKT tego nie odczytuje — kalendarz z tamtej
+// strony zniknął, bo termin umawiamy telefonicznie. Zapis zostaje świadomie:
+// dzięki niemu przywrócenie kalendarza z _backup/dziekujemy-calendly/ to
+// podmiana dwóch plików, a nie szukanie brakującego ogniwa.
 const BOOKING_STORAGE_KEY = "pw_booking";
 
 export function ContactSection({
@@ -326,7 +329,7 @@ export function ContactSection({
                     name="meetingType"
                     required
                     options={MEETING_OPTIONS}
-                    hint="Zaraz po wysłaniu formularza wybierzesz dogodny termin. Spotkanie odbędzie się na Google Meet."
+                    hint="Zadzwonimy, żeby umówić termin. Samo spotkanie odbędzie się na Google Meet."
                   />
                 </>
               )}

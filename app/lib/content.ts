@@ -631,21 +631,10 @@ export const THANKYOU = {
   // (najważniejsza informacja z danego akapitu).
   confirmation: [
     {
-      before: "Twoje zgłoszenie właśnie do nas dotarło. ",
-      mark: "Poniżej wybierz dzień i godzinę spotkania",
-      after: " — odbędzie się ono na Google Meet.",
-    },
-    {
-      before: "",
-      mark: "Po wybraniu terminu dostaniesz link na maila.",
-      after:
-        " Klikasz w niego i jesteś w środku (kamera opcjonalnie, mikrofon konieczny).",
-    },
-    {
-      before: "",
-      mark: "Dzień przed spotkaniem zadzwonimy",
-      after:
-        ", żeby je potwierdzić. Jeśli musisz odwołać, daj znać wcześniej — zwolnimy miejsce dla kogoś innego.",
+      before:
+        "Twoje zgłoszenie właśnie do nas dotarło. Zadzwonimy do Ciebie w celu umówienia spotkania ",
+      mark: "od 5 min do maksymalnie 24h",
+      after: ". Bądź więc przy telefonie.",
     },
   ],
   phone: {
@@ -664,12 +653,8 @@ export const THANKYOU = {
         done: true,
       },
       {
-        title: "Wybór terminu spotkania",
-        body: "W kalendarzu powyżej wybierasz dokładną datę i godzinę spotkania — tę, która pasuje Ci najbardziej.",
-      },
-      {
-        title: "Mail z linkiem do spotkania",
-        body: "Zaraz po rezerwacji dostajesz maila z linkiem. Klikasz — i jesteś na Google Meet: kamerę włączasz albo nie, mikrofon jest konieczny. Masz coś ważnego o swojej firmie do przekazania? Przygotuj to wcześniej — wykorzystamy ten czas najlepiej, jak się da.",
+        title: "Czekaj na nasz telefon",
+        body: "Potrwa 3 min. Umówimy termin spotkania.",
       },
       {
         title: "Pierwsze spotkanie",
@@ -693,16 +678,9 @@ export const THANKYOU = {
       },
     ],
   },
-  // Sekcja rezerwacji na stronie „dziękujemy" — pokazywana tylko, gdy zgłoszenie
-  // przyszło z rozszerzonego formularza (dane w sessionStorage: pw_booking).
-  // Kalendarz: BOOKING.formCalendlyUrl, wypełniony imieniem i mailem klienta.
-  booking: {
-    eyebrow: "Ostatni krok",
-    headingPrefix: "Zarezerwuj termin",
-    headingAccent: "bezpłatnego doradztwa.",
-    subtext:
-      "Wybierz dogodny dzień i godzinę poniżej. Po rezerwacji dostaniesz e-mail z potwierdzeniem oraz linkiem do spotkania na Google Meet.",
-  },
+  // Sekcja rezerwacji (kalendarz Calendly) została usunięta 2026-09-26 —
+  // termin umawiamy telefonicznie. Stary blok `booking` wraz z komponentem
+  // leży w _backup/dziekujemy-calendly/ (patrz RESTORE.md).
   backLabel: "Wróć na stronę główną",
 } as const;
 
