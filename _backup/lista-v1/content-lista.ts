@@ -40,11 +40,7 @@ export const LISTA_HERO = {
   lead:
     "Ten plik powinienem sprzedawać, nie rozdawać za darmo. W środku jest wszystko, co sprawdzam na stronie firmy budowlanej, zanim powiem właścicielowi, dlaczego ta strona nie przynosi mu zapytań.",
   leadSecond:
-    "Możesz przejść ten test tutaj, na tej stronie — dostajesz jeden punkt na raz i przy każdym mówisz, czy u Ciebie jest OK, czy do poprawy. Wynik liczy się sam. Albo pobierz PDF i zrób to po swojemu.",
-  // Zdjęcie z hero strony głównej — ta sama realizacja, ta sama ramka.
-  image: "/images/generalni-wykonawcy-pillarweb.webp",
-  imageAlt:
-    "Realizacja firmy budowlanej — nowoczesny budynek w świetle dziennym",
+    "Możesz przejść ten test tutaj, na tej stronie — zaznaczasz TAK albo NIE, a wynik liczy się sam. Albo pobierz PDF i zrób to po swojemu.",
   pdfButton: "Pobierz PDF",
   pdfNote: "14 stron · bez zapisu, bez podawania maila",
   startButton: "Zacznij test",
@@ -53,8 +49,6 @@ export const LISTA_HERO = {
 /** Sekcja „Zanim zaczniesz” — kontekst + twarde liczby ze strony 2 PDF-a. */
 export const LISTA_INTRO = {
   heading: "Zanim zaczniesz",
-  // Sekcja jest domyślnie zwinięta — bez tego strona wita ścianą tekstu.
-  teaser: "Dlaczego strona firmy budowlanej decyduje o tym, czy klient zadzwoni.",
   paragraphs: [
     "W budowlance strona internetowa jest na szarym końcu listy. Większość firm nie traktuje jej poważnie i przez to zostaje z tyłu za tymi, które już to zrobiły. A strona stoi na końcu każdej drogi, którą klient do Ciebie idzie.",
     "Wrzucasz posty na Facebooka i ludzie zaczynają Cię obserwować. Dobrze. Tylko w momencie, w którym jeden z nich naprawdę chce budować, wchodzi na Twoją stronę. To tam decyduje, czy zadzwoni.",
@@ -76,7 +70,6 @@ export const LISTA_INTRO = {
 /** Sekcja „Jak przejść ten test” — instrukcja ze strony 3 PDF-a. */
 export const LISTA_HOWTO = {
   heading: "Jak przejść ten test",
-  teaser: "Cztery zasady, dzięki którym wynik będzie coś wart.",
   lead:
     "To nie jest lista o tym, czy Twoja strona jest ładna. O estetyce nie ma tu ani jednego punktu. Jest piętnaście miejsc, w których strona firmy budowlanej realnie traci pieniądze, i każde z nich sprawdzisz sam.",
   steps: [
@@ -85,8 +78,8 @@ export const LISTA_HOWTO = {
       body: "Nie na komputerze. Twoi klienci wchodzą z telefonu, więc test robisz tak, jak oni to widzą.",
     },
     {
-      title: "Dostajesz jeden punkt na raz.",
-      body: "Przy każdym masz jedną rzecz do sprawdzenia i dwie odpowiedzi: jest OK albo do poprawy. Po kliknięciu od razu przechodzisz dalej, a strona liczy odpowiedzi za Ciebie.",
+      title: "Przy każdym punkcie masz jedną rzecz do sprawdzenia.",
+      body: "Odpowiadasz TAK albo NIE. Nic nie musisz zapisywać — strona liczy Twoje odpowiedzi za Ciebie.",
     },
     {
       title: "Odpowiadaj uczciwie.",
@@ -94,15 +87,9 @@ export const LISTA_HOWTO = {
     },
     {
       title: "Całość zajmie Ci od dziesięciu do piętnastu minut.",
-      body: "Przy każdym punkcie masz od razu opisane, co tracisz i jak to naprawić. Możesz wdrożyć to sam albo przekazać osobie, która prowadzi Twoją stronę.",
+      body: "Przy każdym punkcie, w którym zaznaczysz NIE, odsłoni się gotowa naprawa. Możesz wdrożyć ją sam albo przekazać osobie, która prowadzi Twoją stronę.",
     },
   ],
-} as const;
-
-/** Spis tego, co obejmuje test — zwijany, nad samym testem. */
-export const LISTA_SCOPE = {
-  heading: "Co sprawdzamy",
-  teaser: "Piętnaście miejsc, przez które strona firmy budowlanej traci klientów.",
 } as const;
 
 /**
@@ -265,23 +252,8 @@ export const LISTA_POINTS = [
 ] as const;
 
 /**
- * Etykiety testu. Zamiast TAK/NIE mówimy językiem decyzji, którą klient
- * naprawdę podejmuje: u mnie jest w porządku albo to jest do naprawy.
- */
-export const LISTA_LABELS = {
-  answerOk: "Jest OK",
-  answerFix: "Do poprawy",
-  ifFix: "Jeśli do poprawy",
-  repair: "Naprawa",
-  back: "Wstecz",
-  backToResult: "Wróć do wyniku",
-  expand: "Rozwiń",
-  collapse: "Zwiń",
-} as const;
-
-/**
  * Progi wyniku ze strony 12 PDF-a. `min`/`max` włącznie — komponent szuka
- * pierwszego progu, w który wpada liczba punktów oznaczonych jako „Jest OK”.
+ * pierwszego progu, w który wpada liczba odpowiedzi TAK.
  */
 export const LISTA_VERDICTS = [
   {
@@ -323,9 +295,8 @@ export const LISTA_RESULT = {
   heading: "Twój wynik",
   scoreSuffix: "/ 15",
   leaksLabel: "Miejsca, w których przeciekasz",
-  leaksHint: "Kliknij punkt, żeby wrócić do niego i przeczytać naprawę.",
   leaksEmpty:
-    "Nie zaznaczyłeś ani jednego punktu do poprawy. Jeśli odpowiadałeś uczciwie, masz stronę lepszą niż większość firm w swoim mieście.",
+    "Nie zaznaczyłeś ani jednego NIE. Jeśli odpowiadałeś uczciwie, masz stronę lepszą niż większość firm w swoim mieście.",
   resetLabel: "Zacznij test od nowa",
 } as const;
 

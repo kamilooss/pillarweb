@@ -3,6 +3,18 @@
 import { useEffect } from "react";
 import Lenis from "lenis";
 
+/**
+ * Instancja Lenisa wystawiona globalnie. Komponenty, które muszą przewinąć
+ * stronę programowo (test na /lista przeskakuje do kolejnego punktu), nie mają
+ * jak dostać jej przez propsy, a natywny `scrollTo` rozjeżdża się z wewnętrznym
+ * stanem Lenisa i potrafi odskoczyć przy następnym ruchu kółkiem.
+ */
+declare global {
+  interface Window {
+    __lenis?: Lenis;
+  }
+}
+
 // Offset pod stały nagłówek (h-20 = 80px) + odrobina luzu, żeby tytuł sekcji
 // nie chował się pod headerem po przewinięciu z menu.
 const HEADER_OFFSET = -96;
@@ -16,6 +28,8 @@ export default function SmoothScroll() {
       touchMultiplier: 1.92,
       syncTouch: false,
     });
+
+    window.__lenis = lenis;
 
     let rafId: number;
     const raf = (time: number) => {
@@ -78,6 +92,7 @@ export default function SmoothScroll() {
       clearTimeout(resetTimer);
       cancelAnimationFrame(rafId);
       lenis.destroy();
+      delete window.__lenis;
     };
   }, []);
 

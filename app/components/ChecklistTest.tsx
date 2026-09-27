@@ -1,44 +1,46 @@
 "use client";
 
 /**
- * INTERAKTYWNY TEST — podstrona /lista
- * ------------------------------------
- * Odtwarza lead magnet „15 miejsc na stronie firmy budowlanej” jako test
- * TAK/NIE: wynik liczy się na żywo, a po piętnastej odpowiedzi odsłania się
- * werdykt z progami z PDF-a.
+ * TEST 15 PUNKTÓW — podstrona /lista
+ * ----------------------------------
+ * Kreator: na ekranie stoi JEDEN punkt naraz. Klient czyta, co sprawdzić,
+ * co traci i jak to naprawić, po czym klika „Jest OK” albo „Do poprawy”
+ * i od razu przechodzi dalej. Po piętnastym punkcie pokazuje się wynik.
  *
- * Trzy rzeczy warte uwagi:
+ * Dlaczego jeden punkt naraz (decyzja Kamila, 27.09.2026): pierwsza wersja
+ * pokazywała wszystkie piętnaście kart pod sobą i to przytłaczało. Świadomy
+ * koszt tej zmiany: w kodzie strony jest tylko bieżący punkt, więc Google nie
+ * zaindeksuje już całej treści listy. Poprzednia wersja leży w
+ * _backup/lista-v1/.
  *
- * 1. Treść „JEŚLI NIE” i „NAPRAWA” JEST ZAWSZE W DOM-ie, tylko zwinięta
- *    trikiem `grid-template-rows: 0fr → 1fr`. Dzięki temu Google indeksuje
- *    pełną treść listy (a to jest główny powód, dla którego ta podstrona
- *    w ogóle ma sens dla SEO), a zwijanie da się animować bez znajomości
- *    wysokości elementu.
+ * Dwie rzeczy warte uwagi:
  *
- * 2. Odpowiedzi trzymamy w localStorage — ktoś otwiera link z ManyChata,
- *    robi połowę testu, wraca wieczorem i ma gdzie skończył. Odczyt dzieje
- *    się PO montażu (flaga `hydrated`), żeby serwer i klient wyrenderowały
+ * 1. Odpowiedzi trzymamy w localStorage — ktoś otwiera link z ManyChata, robi
+ *    połowę testu, wraca wieczorem i wchodzi dokładnie tam, gdzie skończył.
+ *    Odczyt po montażu (flaga `hydrated`), żeby serwer i klient renderowały
  *    to samo.
  *
- * 3. Gotowy wynik („7/15”) ląduje w sessionStorage. Formularz na dole strony
- *    odczytuje go przy wysyłce i dokleja do rekordu w Airtable — dzięki temu
- *    przed rozmową wiesz, gdzie ta strona przecieka.
+ * 2. Gotowy wynik („7/15”) ląduje w sessionStorage. Formularz na dole strony
+ *    odczytuje go przy wysyłce i dokleja do rekordu w Airtable.
  */
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Reveal } from "./Reveal";
 import {
   LISTA_ANSWERS_STORAGE_KEY,
+  LISTA_LABELS,
   LISTA_POINTS,
   LISTA_RESULT,
   LISTA_SCORE_STORAGE_KEY,
   LISTA_VERDICTS,
 } from "../lib/content-lista";
 
-type Answer = "tak" | "nie";
+type Answer = "ok" | "fix";
 type Answers = Record<number, Answer>;
 
 const TOTAL = LISTA_POINTS.length;
+/** Odstęp od górnej krawędzi przy przeskoku do kolejnego punktu (nagłówek + luz). */
+const SCROLL_OFFSET = -112;
 
 const CheckIcon = ({ className = "" }: { className?: string }) => (
   <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" className={className}>
@@ -53,59 +55,72 @@ const CheckIcon = ({ className = "" }: { className?: string }) => (
   </svg>
 );
 
-const CrossIcon = ({ className = "" }: { className?: string }) => (
+const WrenchIcon = ({ className = "" }: { className?: string }) => (
   <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" className={className}>
     <path
-      d="M3.5 3.5l9 9M12.5 3.5l-9 9"
+      d="M10.6 1.8a3.6 3.6 0 00-4.3 4.6L1.9 10.8a1.4 1.4 0 102 2l4.4-4.4a3.6 3.6 0 004.6-4.3l-2.1 2.1-1.9-.5-.5-1.9z"
       fill="none"
       stroke="currentColor"
-      strokeWidth="2.2"
-      strokeLinecap="round"
+      strokeWidth="1.5"
+      strokeLinejoin="round"
     />
   </svg>
 );
 
-const ChevronIcon = ({ open }: { open: boolean }) => (
+const ArrowIcon = ({ back = false }: { back?: boolean }) => (
   <svg
-    viewBox="0 0 12 12"
-    width="12"
-    height="12"
+    viewBox="0 0 16 16"
+    width="14"
+    height="14"
     aria-hidden="true"
-    className={`transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+    className={back ? "rotate-180" : ""}
   >
-    <path d="M2 4.5l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    <path
+      d="M3 8h10M9 4l4 4-4 4"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </svg>
 );
 
 export function ChecklistTest() {
   const [answers, setAnswers] = useState<Answers>({});
-  const [open, setOpen] = useState<Record<number, boolean>>({});
+  const [index, setIndex] = useState(0);
+  const [showResult, setShowResult] = useState(false);
   const [hydrated, setHydrated] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+  /** Przewijamy dopiero po interakcji — nie przy wejściu na stronę. */
+  const shouldScroll = useRef(false);
 
-  /* --- Wczytanie zapisanego postępu (po montażu, żeby nie rozjechać SSR) --- */
+  /* --- Wczytanie zapisanego postępu --- */
   useEffect(() => {
     try {
       const raw = localStorage.getItem(LISTA_ANSWERS_STORAGE_KEY);
       if (raw) {
-        const parsed = JSON.parse(raw) as Answers;
-        setAnswers(parsed);
-        // Punkty z odpowiedzią NIE wracają rozwinięte — to tam jest naprawa.
-        const reopened: Record<number, boolean> = {};
-        for (const [id, value] of Object.entries(parsed)) {
-          if (value === "nie") reopened[Number(id)] = true;
+        const zapisane = JSON.parse(raw) as Answers;
+        setAnswers(zapisane);
+        const odpowiedzianych = Object.keys(zapisane).length;
+        if (odpowiedzianych === TOTAL) {
+          setShowResult(true);
+        } else {
+          // Wracamy na pierwszy punkt bez odpowiedzi.
+          const pierwszyPusty = LISTA_POINTS.findIndex((p) => !zapisane[p.id]);
+          setIndex(pierwszyPusty === -1 ? 0 : pierwszyPusty);
         }
-        setOpen(reopened);
       }
     } catch {
-      // Brak dostępu do localStorage (tryb prywatny) — test działa dalej,
-      // tylko bez zapamiętywania postępu.
+      // Brak dostępu do localStorage (tryb prywatny) — test działa, tylko bez
+      // zapamiętywania postępu.
     }
     setHydrated(true);
   }, []);
 
   const answeredCount = Object.keys(answers).length;
   const score = useMemo(
-    () => Object.values(answers).filter((a) => a === "tak").length,
+    () => Object.values(answers).filter((a) => a === "ok").length,
     [answers],
   );
   const complete = answeredCount === TOTAL;
@@ -121,28 +136,66 @@ export function ChecklistTest() {
         sessionStorage.removeItem(LISTA_SCORE_STORAGE_KEY);
       }
     } catch {
-      // jw. — brak pamięci przeglądarki nie psuje samego testu
+      // jw.
     }
   }, [answers, complete, score, hydrated]);
 
-  const answer = useCallback((id: number, value: Answer) => {
-    setAnswers((prev) => ({ ...prev, [id]: value }));
-    // NIE rozwija naprawę od razu, TAK zwija — nikt nie musi nic klikać,
-    // żeby zobaczyć to, co go dotyczy.
-    setOpen((prev) => ({ ...prev, [id]: value === "nie" }));
+  /* --- Przeskok do góry karty po zmianie punktu --- */
+  useEffect(() => {
+    if (!shouldScroll.current) return;
+    shouldScroll.current = false;
+    const el = cardRef.current;
+    if (!el) return;
+
+    // Jeśli góra karty i tak jest w wygodnym miejscu, nie szarpiemy stroną.
+    const gora = el.getBoundingClientRect().top;
+    if (gora > 80 && gora < 240) return;
+
+    const lenis = window.__lenis;
+    if (lenis) {
+      lenis.scrollTo(el, { offset: SCROLL_OFFSET });
+    } else {
+      // Bez Lenisa (np. prefers-reduced-motion wyłączyło smooth scroll)
+      window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY + SCROLL_OFFSET });
+    }
+  }, [index, showResult]);
+
+  const answer = useCallback(
+    (id: number, value: Answer) => {
+      const nowe = { ...answers, [id]: value };
+      setAnswers(nowe);
+      shouldScroll.current = true;
+
+      if (Object.keys(nowe).length === TOTAL) {
+        setShowResult(true);
+        return;
+      }
+      // Następny punkt bez odpowiedzi, licząc od bieżącego w prawo.
+      const kolejny =
+        LISTA_POINTS.findIndex((p, i) => i > index && !nowe[p.id]) !== -1
+          ? LISTA_POINTS.findIndex((p, i) => i > index && !nowe[p.id])
+          : LISTA_POINTS.findIndex((p) => !nowe[p.id]);
+      setIndex(kolejny);
+    },
+    [answers, index],
+  );
+
+  const goTo = useCallback((i: number) => {
+    shouldScroll.current = true;
+    setShowResult(false);
+    setIndex(i);
   }, []);
 
-  const toggle = useCallback((id: number) => {
-    setOpen((prev) => ({ ...prev, [id]: !prev[id] }));
-  }, []);
-
-  const expandAll = useCallback(() => {
-    setOpen(Object.fromEntries(LISTA_POINTS.map((p) => [p.id, true])));
+  const backToResult = useCallback(() => {
+    shouldScroll.current = true;
+    setShowResult(true);
   }, []);
 
   const reset = useCallback(() => {
     setAnswers({});
-    setOpen({});
+    setIndex(0);
+    setShowResult(false);
+    shouldScroll.current = true;
     try {
       localStorage.removeItem(LISTA_ANSWERS_STORAGE_KEY);
       sessionStorage.removeItem(LISTA_SCORE_STORAGE_KEY);
@@ -154,273 +207,235 @@ export function ChecklistTest() {
   const verdict =
     LISTA_VERDICTS.find((v) => score >= v.min && score <= v.max) ??
     LISTA_VERDICTS[LISTA_VERDICTS.length - 1];
+  const leaks = LISTA_POINTS.filter((p) => answers[p.id] === "fix");
 
-  const leaks = LISTA_POINTS.filter((p) => answers[p.id] === "nie");
-  const allOpen = LISTA_POINTS.every((p) => open[p.id]);
+  const point = LISTA_POINTS[index];
+  const current = answers[point.id];
 
   return (
-    <>
-      <section id="test" className="relative scroll-mt-28 py-16 lg:py-24">
-        <div className="container-content">
-          {/* ---------- Pasek postępu (przykleja się pod nagłówkiem) ---------- */}
-          <div className="sticky top-20 z-30 -mx-5 mb-10 border-y border-card-border bg-background/92 px-5 py-3 backdrop-blur-md md:-mx-8 md:px-8">
-            <div className="flex items-center justify-between gap-4">
-              <div className="min-w-0">
-                <div className="font-display text-sm font-extrabold tracking-tight tnum">
-                  {answeredCount} <span className="text-muted">z {TOTAL} punktów</span>
+    <section id="test" className="scroll-mt-28 border-t border-card-border py-16 lg:py-24">
+      <div className="container-content">
+        <div ref={cardRef} className="mx-auto max-w-3xl scroll-mt-28">
+          {showResult ? (
+            <ResultPanel
+              score={score}
+              verdict={verdict}
+              leaks={leaks}
+              onGoTo={goTo}
+              onReset={reset}
+            />
+          ) : (
+            <>
+              {/* --- Postęp --- */}
+              <div className="mb-8">
+                <div className="flex items-baseline justify-between gap-4">
+                  <span className="font-display text-sm font-extrabold tracking-tight tnum">
+                    Punkt {index + 1} <span className="text-muted">z {TOTAL}</span>
+                  </span>
+                  <span className="text-xs text-muted tnum">
+                    {answeredCount === 0
+                      ? "Odpowiedziano: 0"
+                      : `Jest OK: ${score} · Do poprawy: ${answeredCount - score}`}
+                  </span>
                 </div>
-                <div className="mt-0.5 truncate text-xs text-muted tnum">
-                  {answeredCount === 0
-                    ? "Zaznacz TAK albo NIE przy każdym punkcie"
-                    : `TAK: ${score} · NIE: ${answeredCount - score}`}
+                <div
+                  className="mt-3 h-1 w-full overflow-hidden bg-surface-sunken"
+                  role="progressbar"
+                  aria-valuenow={answeredCount}
+                  aria-valuemin={0}
+                  aria-valuemax={TOTAL}
+                  aria-label="Postęp testu"
+                >
+                  <div
+                    className="h-full bg-accent transition-[width] duration-500 ease-out"
+                    style={{ width: `${(answeredCount / TOTAL) * 100}%` }}
+                  />
                 </div>
               </div>
 
-              {complete ? (
-                <a
-                  href="#wynik"
-                  className="shrink-0 rounded-md bg-accent px-4 py-2.5 font-display text-sm font-bold text-accent-foreground transition-colors hover:bg-accent-hover"
-                >
-                  Zobacz wynik
-                </a>
-              ) : (
+              {/* --- Karta punktu --- */}
+              <article
+                key={point.id}
+                className={`surface-panel animate-fade-up p-6 md:p-10 ${
+                  current === "fix" ? "edge-accent-top" : ""
+                }`}
+              >
+                <div className="flex items-start gap-4 md:gap-6">
+                  <span className="arch-index shrink-0 text-[2.5rem] md:text-[3.25rem]">
+                    {String(point.id).padStart(2, "0")}
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <h3 className="font-display text-xl font-extrabold leading-tight tracking-tight md:text-2xl">
+                      {point.title}
+                    </h3>
+                    <p className="mt-3 text-[1.0625rem] leading-relaxed text-muted-strong">
+                      {point.check}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Opis i naprawa — widoczne od razu, bez rozwijania. */}
+                <div className="mt-7 space-y-5 border-t border-card-border pt-6">
+                  <div>
+                    <div className="font-display text-xs font-extrabold uppercase tracking-[0.18em] text-subtle">
+                      {LISTA_LABELS.ifFix}
+                    </div>
+                    <p className="mt-2 leading-relaxed text-muted-strong">{point.ifNo}</p>
+                  </div>
+                  <div className="border-l-2 border-accent pl-4">
+                    <div className="font-display text-xs font-extrabold uppercase tracking-[0.18em] text-foreground">
+                      {LISTA_LABELS.repair}
+                    </div>
+                    <p className="mt-2 leading-relaxed text-muted-strong">{point.fix}</p>
+                  </div>
+                </div>
+
+                {/* --- Odpowiedź --- */}
+                <div className="mt-8 flex flex-col gap-3 border-t border-card-border pt-6 sm:flex-row">
+                  <AnswerButton
+                    label={LISTA_LABELS.answerOk}
+                    icon={<CheckIcon />}
+                    selected={current === "ok"}
+                    tone="ink"
+                    onClick={() => answer(point.id, "ok")}
+                  />
+                  <AnswerButton
+                    label={LISTA_LABELS.answerFix}
+                    icon={<WrenchIcon />}
+                    selected={current === "fix"}
+                    tone="accent"
+                    onClick={() => answer(point.id, "fix")}
+                  />
+                </div>
+              </article>
+
+              {/* --- Nawigacja --- */}
+              <div className="mt-6 flex items-center justify-between gap-4">
                 <button
                   type="button"
-                  onClick={expandAll}
-                  disabled={allOpen}
-                  className="hidden shrink-0 text-sm font-medium text-muted underline underline-offset-4 transition-colors hover:text-foreground disabled:opacity-40 sm:block"
+                  onClick={() => goTo(index - 1)}
+                  disabled={index === 0}
+                  className="inline-flex items-center gap-2 text-sm font-medium text-muted transition-colors hover:text-foreground disabled:pointer-events-none disabled:opacity-0"
                 >
-                  Rozwiń wszystkie opisy
+                  <ArrowIcon back />
+                  {LISTA_LABELS.back}
                 </button>
-              )}
-            </div>
 
-            <div
-              className="mt-3 h-1 w-full overflow-hidden bg-surface-sunken"
-              role="progressbar"
-              aria-valuenow={answeredCount}
-              aria-valuemin={0}
-              aria-valuemax={TOTAL}
-              aria-label="Postęp testu"
-            >
-              <div
-                className="h-full bg-accent transition-[width] duration-500 ease-out"
-                style={{ width: `${(answeredCount / TOTAL) * 100}%` }}
-              />
-            </div>
-          </div>
-
-          {/* ---------- Piętnaście punktów ---------- */}
-          <ol className="space-y-5">
-            {LISTA_POINTS.map((point) => {
-              const value = answers[point.id];
-              const isOpen = Boolean(open[point.id]);
-
-              return (
-                // `data-scroll-offset` — zapas pod przyklejony pasek postępu
-                // przy skoku z kotwicy (obsługuje SmoothScroll). `scroll-mt`
-                // robi to samo dla natywnego skoku, gdy ktoś wejdzie prosto
-                // z linku z hashem.
-                <li
-                  key={point.id}
-                  id={`punkt-${point.id}`}
-                  data-scroll-offset="92"
-                  className="scroll-mt-44"
-                >
-                  <article
-                    className={`surface-panel relative p-6 transition-colors duration-300 md:p-8 ${
-                      value === "nie" ? "edge-accent-top" : ""
-                    }`}
-                  >
-                    <div className="flex items-start gap-4 md:gap-6">
-                      <span className="arch-index shrink-0 text-[2.5rem] md:text-[3.25rem]">
-                        {String(point.id).padStart(2, "0")}
-                      </span>
-
-                      <div className="min-w-0 flex-1">
-                        <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-                          <h3 className="font-display text-xl font-extrabold leading-tight tracking-tight md:text-2xl">
-                            {point.title}
-                          </h3>
-                          {value === "tak" && (
-                            <span className="inline-flex items-center gap-1.5 border border-card-border-strong px-2 py-0.5 text-xs font-bold uppercase tracking-[0.12em] text-muted-strong">
-                              <CheckIcon /> Zaliczone
-                            </span>
-                          )}
-                          {value === "nie" && (
-                            <span className="inline-flex items-center gap-1.5 bg-accent px-2 py-0.5 text-xs font-bold uppercase tracking-[0.12em] text-accent-foreground">
-                              <CrossIcon /> Do naprawy
-                            </span>
-                          )}
-                        </div>
-
-                        <p className="mt-3 text-[1.0625rem] leading-relaxed text-muted-strong">
-                          {point.check}
-                        </p>
-
-                        {/* Odpowiedź */}
-                        <div className="mt-5 flex flex-wrap items-center gap-3">
-                          <AnswerButton
-                            label="TAK"
-                            selected={value === "tak"}
-                            tone="ink"
-                            onClick={() => answer(point.id, "tak")}
-                          />
-                          <AnswerButton
-                            label="NIE"
-                            selected={value === "nie"}
-                            tone="accent"
-                            onClick={() => answer(point.id, "nie")}
-                          />
-
-                          <button
-                            type="button"
-                            onClick={() => toggle(point.id)}
-                            aria-expanded={isOpen}
-                            aria-controls={`punkt-${point.id}-opis`}
-                            className="inline-flex items-center gap-2 pl-1 text-sm font-medium text-muted transition-colors hover:text-foreground"
-                          >
-                            {isOpen ? "Zwiń" : "O co chodzi w tym punkcie?"}
-                            <ChevronIcon open={isOpen} />
-                          </button>
-                        </div>
-
-                        {/* Opis + naprawa. Zawsze w DOM (SEO), zwijany przez grid. */}
-                        <div
-                          id={`punkt-${point.id}-opis`}
-                          aria-hidden={!isOpen}
-                          className="grid transition-[grid-template-rows] duration-300 ease-out"
-                          style={{ gridTemplateRows: isOpen ? "1fr" : "0fr" }}
-                        >
-                          <div className="overflow-hidden">
-                            <div className="mt-6 space-y-5 border-t border-card-border pt-6">
-                              <div>
-                                <div className="font-display text-xs font-extrabold uppercase tracking-[0.18em] text-subtle">
-                                  Jeśli nie
-                                </div>
-                                <p className="mt-2 leading-relaxed text-muted-strong">
-                                  {point.ifNo}
-                                </p>
-                              </div>
-                              <div className="border-l-2 border-accent pl-4">
-                                <div className="font-display text-xs font-extrabold uppercase tracking-[0.18em] text-foreground">
-                                  Naprawa
-                                </div>
-                                <p className="mt-2 leading-relaxed text-muted-strong">
-                                  {point.fix}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </article>
-                </li>
-              );
-            })}
-          </ol>
-        </div>
-      </section>
-
-      {/* ---------- Wynik ---------- */}
-      <section id="wynik" className="scroll-mt-28 border-t border-card-border py-16 lg:py-24">
-        <div className="container-content">
-          {!complete ? (
-            <div className="mx-auto max-w-2xl border border-dashed border-card-border-strong bg-card p-8 text-center md:p-12">
-              <div className="font-display text-2xl font-extrabold tracking-tight">
-                {LISTA_RESULT.lockedHeading}
-              </div>
-              <p className="mx-auto mt-4 max-w-md leading-relaxed text-muted-strong">
-                {LISTA_RESULT.lockedBody}
-              </p>
-              <p className="mt-6 font-display text-sm font-bold uppercase tracking-[0.18em] text-subtle tnum">
-                {LISTA_RESULT.lockedCounter(TOTAL - answeredCount)}
-              </p>
-            </div>
-          ) : (
-            <Reveal className="surface-panel surface-panel--accent p-8 md:p-12">
-              <div className="grid grid-cols-1 gap-10 lg:grid-cols-[auto_minmax(0,1fr)] lg:gap-16">
-                <div className="text-center lg:text-left">
-                  <div className="font-display text-xs font-extrabold uppercase tracking-[0.18em] text-subtle">
-                    {LISTA_RESULT.heading}
-                  </div>
-                  <div className="mt-3 flex items-baseline justify-center gap-2 lg:justify-start">
-                    <span className="font-display text-[5rem] font-extrabold leading-none tracking-tight tnum md:text-[6.5rem]">
-                      {score}
-                    </span>
-                    <span className="font-display text-2xl font-bold text-muted tnum">
-                      {LISTA_RESULT.scoreSuffix}
-                    </span>
-                  </div>
-                </div>
-
-                <div>
-                  <h2 className="font-display text-[clamp(1.6rem,3vw,2.4rem)] font-extrabold leading-tight tracking-tight">
-                    <span className="underline-accent">{verdict.label}</span>
-                  </h2>
-                  <p className="mt-5 text-lg leading-relaxed text-muted-strong">{verdict.body}</p>
-
-                  <div className="mt-8 border-t border-card-border pt-8">
-                    <div className="font-display text-xs font-extrabold uppercase tracking-[0.18em] text-subtle">
-                      {LISTA_RESULT.leaksLabel}
-                    </div>
-                    {leaks.length === 0 ? (
-                      <p className="mt-3 leading-relaxed text-muted-strong">
-                        {LISTA_RESULT.leaksEmpty}
-                      </p>
-                    ) : (
-                      <ul className="mt-4 flex flex-wrap gap-2">
-                        {leaks.map((leak) => (
-                          <li key={leak.id}>
-                            <a
-                              href={`#punkt-${leak.id}`}
-                              className="inline-flex items-center gap-2 border border-card-border-strong bg-card-elevated px-3 py-2 text-sm font-medium transition-colors hover:border-foreground"
-                            >
-                              <span className="font-display font-extrabold tnum text-subtle">
-                                {String(leak.id).padStart(2, "0")}
-                              </span>
-                              {leak.title}
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-
+                {complete && (
                   <button
                     type="button"
-                    onClick={reset}
-                    className="mt-8 text-sm font-medium text-muted underline underline-offset-4 transition-colors hover:text-foreground"
+                    onClick={backToResult}
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-foreground underline underline-offset-4"
                   >
-                    {LISTA_RESULT.resetLabel}
+                    {LISTA_LABELS.backToResult}
+                    <ArrowIcon />
                   </button>
-                </div>
+                )}
               </div>
-            </Reveal>
+            </>
           )}
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }
 
 /* -------------------------------------------------------------------------- */
 
+function ResultPanel({
+  score,
+  verdict,
+  leaks,
+  onGoTo,
+  onReset,
+}: {
+  score: number;
+  verdict: (typeof LISTA_VERDICTS)[number];
+  leaks: (typeof LISTA_POINTS)[number][];
+  onGoTo: (i: number) => void;
+  onReset: () => void;
+}) {
+  return (
+    <Reveal id="wynik" className="surface-panel surface-panel--accent scroll-mt-28 p-8 md:p-12">
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-[auto_minmax(0,1fr)] lg:gap-14">
+        <div className="text-center lg:text-left">
+          <div className="font-display text-xs font-extrabold uppercase tracking-[0.18em] text-subtle">
+            {LISTA_RESULT.heading}
+          </div>
+          <div className="mt-3 flex items-baseline justify-center gap-2 lg:justify-start">
+            <span className="font-display text-[5rem] font-extrabold leading-none tracking-tight tnum md:text-[6.5rem]">
+              {score}
+            </span>
+            <span className="font-display text-2xl font-bold text-muted tnum">
+              {LISTA_RESULT.scoreSuffix}
+            </span>
+          </div>
+        </div>
+
+        <div>
+          <h2 className="font-display text-[clamp(1.6rem,3vw,2.4rem)] font-extrabold leading-tight tracking-tight">
+            <span className="underline-accent">{verdict.label}</span>
+          </h2>
+          <p className="mt-5 text-lg leading-relaxed text-muted-strong">{verdict.body}</p>
+
+          <div className="mt-8 border-t border-card-border pt-8">
+            <div className="font-display text-xs font-extrabold uppercase tracking-[0.18em] text-subtle">
+              {LISTA_RESULT.leaksLabel}
+            </div>
+            {leaks.length === 0 ? (
+              <p className="mt-3 leading-relaxed text-muted-strong">{LISTA_RESULT.leaksEmpty}</p>
+            ) : (
+              <>
+                <p className="mt-2 text-sm text-muted">{LISTA_RESULT.leaksHint}</p>
+                <ul className="mt-4 flex flex-wrap gap-2">
+                  {leaks.map((leak) => (
+                    <li key={leak.id}>
+                      <button
+                        type="button"
+                        onClick={() => onGoTo(LISTA_POINTS.findIndex((p) => p.id === leak.id))}
+                        className="inline-flex cursor-pointer items-center gap-2 border border-card-border-strong bg-card-elevated px-3 py-2 text-left text-sm font-medium transition-colors hover:border-foreground"
+                      >
+                        <span className="font-display font-extrabold tnum text-subtle">
+                          {String(leak.id).padStart(2, "0")}
+                        </span>
+                        {leak.title}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+          </div>
+
+          <button
+            type="button"
+            onClick={onReset}
+            className="mt-8 text-sm font-medium text-muted underline underline-offset-4 transition-colors hover:text-foreground"
+          >
+            {LISTA_RESULT.resetLabel}
+          </button>
+        </div>
+      </div>
+    </Reveal>
+  );
+}
+
 function AnswerButton({
   label,
+  icon,
   selected,
   tone,
   onClick,
 }: {
   label: string;
+  icon: React.ReactNode;
   selected: boolean;
-  /** „ink” = odpowiedź neutralna (TAK), „accent” = oznaczenie hi-vis (NIE). */
+  /** „ink” = u mnie w porządku, „accent” = oznaczenie hi-vis miejsca do naprawy. */
   tone: "ink" | "accent";
   onClick: () => void;
 }) {
   const base =
-    "min-w-[5.5rem] rounded-md border px-5 py-2.5 font-display text-sm font-extrabold tracking-[0.08em] transition-all duration-200 cursor-pointer active:scale-[0.97]";
+    "flex flex-1 cursor-pointer items-center justify-center gap-2.5 rounded-md border px-6 py-4 font-display text-[15px] font-extrabold tracking-tight transition-all duration-200 active:scale-[0.98]";
   const idle =
     "border-card-border-strong bg-card-elevated text-muted-strong hover:border-foreground hover:text-foreground";
   const active =
@@ -435,6 +450,7 @@ function AnswerButton({
       aria-pressed={selected}
       className={`${base} ${selected ? active : idle}`}
     >
+      {icon}
       {label}
     </button>
   );

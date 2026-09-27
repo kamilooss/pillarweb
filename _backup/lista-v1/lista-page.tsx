@@ -25,7 +25,6 @@ import {
   ListaHowTo,
   ListaIntro,
   ListaPaths,
-  ListaScope,
 } from "../components/ListaSections";
 import { ContactSection } from "../components/ContactSection";
 import { CONTACT } from "../lib/content";
@@ -103,7 +102,6 @@ export default function ListaPage() {
         <ListaHero />
         <ListaIntro />
         <ListaHowTo />
-        <ListaScope />
         <ChecklistTest />
         <ListaPaths />
         <ContactSection
