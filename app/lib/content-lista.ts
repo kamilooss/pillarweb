@@ -277,6 +277,10 @@ export const LISTA_LABELS = {
   backToResult: "Wróć do wyniku",
   expand: "Rozwiń",
   collapse: "Zwiń",
+  // Przełącznik opisu punktu — widoczny wyłącznie na telefonie. Nazwa mówi
+  // wprost, co jest w środku, żeby opłacało się kliknąć.
+  detailsOpen: "Co tracisz i jak to naprawić",
+  detailsClose: "Zwiń opis",
 } as const;
 
 /**

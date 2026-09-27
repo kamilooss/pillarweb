@@ -119,6 +119,13 @@ export function ChecklistTest() {
   const [answers, setAnswers] = useState<Answers>({});
   const [index, setIndex] = useState(0);
   const [showResult, setShowResult] = useState(false);
+  /**
+   * Czy pokazywać opis punktu („Jeśli do poprawy” + „Naprawa”). Dotyczy TYLKO
+   * telefonu — od `md` w górę opis jest widoczny zawsze, sterowane klasami.
+   * Stan jest wspólny dla wszystkich punktów, a nie osobny dla każdego: kto raz
+   * pokazał, że chce czytać, nie powinien klikać piętnaście razy.
+   */
+  const [showDetails, setShowDetails] = useState(false);
   const [hydrated, setHydrated] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
   /** Przewijamy dopiero po interakcji — nie przy wejściu na stronę. */
@@ -212,10 +219,13 @@ export function ChecklistTest() {
     [answers, index],
   );
 
-  const goTo = useCallback((i: number) => {
+  const goTo = useCallback((i: number, odsloniOpis = false) => {
     shouldScroll.current = true;
     setShowResult(false);
     setIndex(i);
+    // Powrót z listy przecieków = ktoś chce przeczytać naprawę, więc nie każemy
+    // mu jeszcze raz klikać w przełącznik.
+    if (odsloniOpis) setShowDetails(true);
   }, []);
 
   const backToResult = useCallback(() => {
@@ -306,13 +316,51 @@ export function ChecklistTest() {
                   </div>
                 </div>
 
-                {/* Opis i naprawa — widoczne od razu, bez rozwijania.
-                    Na telefonie tekst jest o stopień mniejszy i ciaśniej
-                    złożony: przy pełnym rozmiarze guziki odpowiedzi lądowały
-                    pod zgięciem i trzeba było scrollować, żeby w ogóle móc
-                    odpowiedzieć. Od `md` w górę wszystko wraca do pełnych
-                    rozmiarów — desktop zostaje bez zmian. */}
-                <div className="mt-6 space-y-4 border-t border-card-border pt-5 md:mt-7 md:space-y-5 md:pt-6">
+                {/* Przełącznik opisu — tylko na telefonie. Pełna szerokość,
+                    ramka i daszek w kółku (ten sam język co zwijane sekcje
+                    wyżej), żeby nie dało się przeoczyć, że to się rozwija. */}
+                <button
+                  type="button"
+                  onClick={() => setShowDetails((v) => !v)}
+                  aria-expanded={showDetails}
+                  aria-controls={`opis-punktu-${point.id}`}
+                  className="mt-6 flex w-full cursor-pointer items-center justify-between gap-3 rounded-md border border-card-border-strong bg-card px-4 py-3 text-left font-display text-[0.9375rem] font-bold tracking-tight text-foreground transition-colors hover:border-foreground md:hidden"
+                >
+                  {showDetails ? LISTA_LABELS.detailsClose : LISTA_LABELS.detailsOpen}
+                  <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-foreground/25">
+                    <svg
+                      viewBox="0 0 12 12"
+                      width="12"
+                      height="12"
+                      aria-hidden="true"
+                      className={`transition-transform duration-300 ${showDetails ? "rotate-180" : ""}`}
+                    >
+                      <path
+                        d="M2 4.5l4 4 4-4"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                  </span>
+                </button>
+
+                {/* Opis i naprawa.
+
+                    Na telefonie chowane za przełącznikiem powyżej i złożone
+                    o stopień mniejszym tekstem: przy pełnym rozmiarze guziki
+                    odpowiedzi lądowały pod zgięciem i trzeba było przewijać,
+                    żeby w ogóle móc odpowiedzieć.
+
+                    Od `md` w górę opis jest widoczny ZAWSZE (md:block) i w
+                    pełnych rozmiarach — desktop zostaje bez zmian. Treść
+                    siedzi w DOM-ie niezależnie od stanu, tylko z display:none,
+                    więc nic z niej nie ginie. */}
+                <div
+                  id={`opis-punktu-${point.id}`}
+                  className={`${showDetails ? "block" : "hidden"} mt-5 space-y-4 border-t border-card-border pt-5 md:mt-7 md:block md:space-y-5 md:pt-6`}
+                >
                   <div>
                     <div className="font-display text-[0.6875rem] font-extrabold uppercase tracking-[0.16em] text-subtle md:text-xs md:tracking-[0.18em]">
                       {LISTA_LABELS.ifFix}
@@ -393,7 +441,7 @@ function ResultPanel({
   score: number;
   verdict: (typeof LISTA_VERDICTS)[number];
   leaks: (typeof LISTA_POINTS)[number][];
-  onGoTo: (i: number) => void;
+  onGoTo: (i: number, odsloniOpis?: boolean) => void;
   onReset: () => void;
 }) {
   return (
@@ -433,7 +481,9 @@ function ResultPanel({
                     <li key={leak.id}>
                       <button
                         type="button"
-                        onClick={() => onGoTo(LISTA_POINTS.findIndex((p) => p.id === leak.id))}
+                        onClick={() =>
+                          onGoTo(LISTA_POINTS.findIndex((p) => p.id === leak.id), true)
+                        }
                         className="inline-flex cursor-pointer items-center gap-2 border border-card-border-strong bg-card-elevated px-3 py-2 text-left text-sm font-medium transition-colors hover:border-foreground"
                       >
                         <span className="font-display font-extrabold tnum text-subtle">
