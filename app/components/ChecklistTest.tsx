@@ -306,24 +306,33 @@ export function ChecklistTest() {
                   </div>
                 </div>
 
-                {/* Opis i naprawa — widoczne od razu, bez rozwijania. */}
-                <div className="mt-7 space-y-5 border-t border-card-border pt-6">
+                {/* Opis i naprawa — widoczne od razu, bez rozwijania.
+                    Na telefonie tekst jest o stopień mniejszy i ciaśniej
+                    złożony: przy pełnym rozmiarze guziki odpowiedzi lądowały
+                    pod zgięciem i trzeba było scrollować, żeby w ogóle móc
+                    odpowiedzieć. Od `md` w górę wszystko wraca do pełnych
+                    rozmiarów — desktop zostaje bez zmian. */}
+                <div className="mt-6 space-y-4 border-t border-card-border pt-5 md:mt-7 md:space-y-5 md:pt-6">
                   <div>
-                    <div className="font-display text-xs font-extrabold uppercase tracking-[0.18em] text-subtle">
+                    <div className="font-display text-[0.6875rem] font-extrabold uppercase tracking-[0.16em] text-subtle md:text-xs md:tracking-[0.18em]">
                       {LISTA_LABELS.ifFix}
                     </div>
-                    <p className="mt-2 leading-relaxed text-muted-strong">{point.ifNo}</p>
+                    <p className="mt-2 text-[0.9375rem] leading-[1.55] text-muted-strong md:text-base md:leading-relaxed">
+                      {point.ifNo}
+                    </p>
                   </div>
-                  <div className="border-l-2 border-accent pl-4">
-                    <div className="font-display text-xs font-extrabold uppercase tracking-[0.18em] text-foreground">
+                  <div className="border-l-2 border-accent pl-3.5 md:pl-4">
+                    <div className="font-display text-[0.6875rem] font-extrabold uppercase tracking-[0.16em] text-foreground md:text-xs md:tracking-[0.18em]">
                       {LISTA_LABELS.repair}
                     </div>
-                    <p className="mt-2 leading-relaxed text-muted-strong">{point.fix}</p>
+                    <p className="mt-2 text-[0.9375rem] leading-[1.55] text-muted-strong md:text-base md:leading-relaxed">
+                      {point.fix}
+                    </p>
                   </div>
                 </div>
 
                 {/* --- Odpowiedź --- */}
-                <div className="mt-8 flex flex-col gap-3 border-t border-card-border pt-6 sm:flex-row">
+                <div className="mt-6 flex flex-col gap-3 border-t border-card-border pt-5 sm:flex-row md:mt-8 md:pt-6">
                   <AnswerButton
                     label={LISTA_LABELS.answerOk}
                     icon={<CheckIcon />}
