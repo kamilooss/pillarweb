@@ -86,6 +86,35 @@ const ArrowIcon = ({ back = false }: { back?: boolean }) => (
   </svg>
 );
 
+/**
+ * Czyta zapisany postęp i ODRZUCA wszystko, co nie pasuje do obecnego formatu.
+ *
+ * Powód: pierwsza wersja testu zapisywała odpowiedzi jako „tak”/„nie”. Po
+ * przejściu na „ok”/„fix” taki zapis nadal miał piętnaście kluczy, więc
+ * komponent uznawał test za ukończony i witał wynikiem 0/15 zamiast pierwszym
+ * pytaniem. Dotyczyło każdego, kto wszedł na /lista przed 27.09.2026.
+ */
+function wczytajOdpowiedzi(raw: string): Answers | null {
+  let dane: unknown;
+  try {
+    dane = JSON.parse(raw);
+  } catch {
+    return null;
+  }
+  if (!dane || typeof dane !== "object" || Array.isArray(dane)) return null;
+
+  // Set<number>, bo LISTA_POINTS jest `as const` i p.id ma typ literalny.
+  const dozwoloneId = new Set<number>(LISTA_POINTS.map((p) => p.id));
+  const wynik: Answers = {};
+  for (const [klucz, wartosc] of Object.entries(dane as Record<string, unknown>)) {
+    const id = Number(klucz);
+    if (!dozwoloneId.has(id)) return null;
+    if (wartosc !== "ok" && wartosc !== "fix") return null;
+    wynik[id] = wartosc;
+  }
+  return Object.keys(wynik).length > 0 ? wynik : null;
+}
+
 export function ChecklistTest() {
   const [answers, setAnswers] = useState<Answers>({});
   const [index, setIndex] = useState(0);
@@ -99,17 +128,20 @@ export function ChecklistTest() {
   useEffect(() => {
     try {
       const raw = localStorage.getItem(LISTA_ANSWERS_STORAGE_KEY);
-      if (raw) {
-        const zapisane = JSON.parse(raw) as Answers;
+      const zapisane = raw ? wczytajOdpowiedzi(raw) : null;
+      if (zapisane) {
         setAnswers(zapisane);
-        const odpowiedzianych = Object.keys(zapisane).length;
-        if (odpowiedzianych === TOTAL) {
+        if (Object.keys(zapisane).length === TOTAL) {
           setShowResult(true);
         } else {
           // Wracamy na pierwszy punkt bez odpowiedzi.
           const pierwszyPusty = LISTA_POINTS.findIndex((p) => !zapisane[p.id]);
           setIndex(pierwszyPusty === -1 ? 0 : pierwszyPusty);
         }
+      } else if (raw) {
+        // Zapis w starym formacie — kasujemy, żeby nie wracał przy odświeżeniu.
+        localStorage.removeItem(LISTA_ANSWERS_STORAGE_KEY);
+        sessionStorage.removeItem(LISTA_SCORE_STORAGE_KEY);
       }
     } catch {
       // Brak dostępu do localStorage (tryb prywatny) — test działa, tylko bez

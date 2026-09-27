@@ -117,37 +117,39 @@ function Collapsible({
 }) {
   return (
     <details className="group border-t border-card-border pt-10 lg:pt-14">
-      {/* Na wąskim ekranie etykieta „Rozwiń” schodzi pod nagłówek zamiast się
-          chować — sam daszek to za słaba zachęta, żeby ktoś kliknął. */}
-      <summary className="flex cursor-pointer list-none flex-col gap-4 [&::-webkit-details-marker]:hidden sm:flex-row sm:items-start sm:justify-between sm:gap-6">
-        <div className="min-w-0">
+      {/* Przełącznik stoi TUŻ PRZY nagłówku, nie przy prawej krawędzi sekcji.
+          Przy szerokim ekranie „Rozwiń” odsunięte na drugi koniec wiersza
+          ginęło klientom z oczu i sekcje wyglądały na martwe. */}
+      <summary className="flex cursor-pointer list-none flex-col gap-3 [&::-webkit-details-marker]:hidden">
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
           <h2 className="font-display text-[clamp(1.7rem,3.2vw,2.6rem)] font-extrabold leading-[1.1] tracking-tight">
             {heading}
           </h2>
-          <p className="mt-3 max-w-2xl leading-relaxed text-muted">{teaser}</p>
+
+          <span className="inline-flex shrink-0 items-center gap-2.5 text-sm font-semibold text-muted-strong transition-colors group-hover:text-foreground">
+            <span className="group-[[open]]:hidden">{LISTA_LABELS.expand}</span>
+            <span className="hidden group-[[open]]:inline">{LISTA_LABELS.collapse}</span>
+            <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-foreground/25 transition-colors group-hover:border-foreground group-hover:bg-accent">
+              <svg
+                viewBox="0 0 12 12"
+                width="12"
+                height="12"
+                aria-hidden="true"
+                className="transition-transform duration-300 group-[[open]]:rotate-180"
+              >
+                <path
+                  d="M2 4.5l4 4 4-4"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </span>
+          </span>
         </div>
 
-        <span className="inline-flex shrink-0 items-center gap-2.5 text-sm font-semibold text-muted-strong transition-colors group-hover:text-foreground sm:mt-1.5">
-          <span className="group-[[open]]:hidden">{LISTA_LABELS.expand}</span>
-          <span className="hidden group-[[open]]:inline">{LISTA_LABELS.collapse}</span>
-          <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-foreground/25 transition-colors group-hover:border-foreground group-hover:bg-accent">
-            <svg
-              viewBox="0 0 12 12"
-              width="12"
-              height="12"
-              aria-hidden="true"
-              className="transition-transform duration-300 group-[[open]]:rotate-180"
-            >
-              <path
-                d="M2 4.5l4 4 4-4"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-              />
-            </svg>
-          </span>
-        </span>
+        <p className="max-w-2xl leading-relaxed text-muted">{teaser}</p>
       </summary>
 
       <div className="pt-10">{children}</div>
