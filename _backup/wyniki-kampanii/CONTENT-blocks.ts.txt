@@ -1,0 +1,118 @@
+// --- STATS + TESTIMONIALS (app/lib/content.ts, linie 104-181) ---
+export const STATS = [
+  {
+    value: 147,
+    prefix: "",
+    suffix: "",
+    label: "zapytań w jednym miesiącu",
+  },
+  {
+    value: 15,
+    prefix: "",
+    suffix: "",
+    label: "domkniętych projektów",
+  },
+  {
+    value: 330000,
+    prefix: "~$",
+    suffix: "",
+    label: "wartości pozyskanych zleceń",
+  },
+] as const;
+
+type QuoteSegment = { text: string; accent?: boolean };
+type Testimonial = {
+  quote: QuoteSegment[][];
+  author: string;
+  role: string;
+  avatar: string;
+};
+
+export const TESTIMONIALS: Testimonial[] = [
+  {
+    quote: [
+      [
+        { text: "Przez lata działałem tylko na poleceniach.", accent: true },
+        {
+          text: " W końcu zrozumiałem — to nie jest system. Bałem się skalować, bo nie miałem wpływu na to, skąd przyjdą kolejne zlecenia.",
+        },
+      ],
+      [
+        { text: "Współpraca zaskoczyła mnie od pierwszego dnia. " },
+        {
+          text: "Konkretni ludzie, terminy dotrzymane, rozmowa jak między partnerami.",
+          accent: true,
+        },
+      ],
+      [
+        { text: "147 zapytań w jednym miesiącu.", accent: true },
+        { text: " Nigdy wcześniej nie miałem tylu kontaktów naraz. Serdecznie polecam." },
+      ],
+    ],
+    author: "Krzysztof Głaz",
+    role: "właściciel Glaz Construction, Hickory Hills, IL",
+    avatar: `${ASSET_BASE}/krzysztof-glaz-glaz-construction-opinia-pillarweb-150x150.webp`,
+  },
+  {
+    quote: [
+      [
+        {
+          text: "Umowa bez niespodzianek, kontakt zawsze natychmiastowy i jakość wykonania na najwyższym poziomie. Od pierwszego spotkania czułem, że jestem w dobrych rękach. Wszystko było jasno ustalone, bez chaosu i bez niepotrzebnego przeciągania tematu.",
+        },
+      ],
+      [
+        {
+          text: "Współpraca przebiegała bardzo sprawnie. Na każdym etapie wiedziałem, co się dzieje, a każda moja wiadomość spotykała się z szybką i konkretną odpowiedzią. Całość była prowadzona profesjonalnie, ale bez sztywnej atmosfery — po prostu normalna, uczciwa współpraca.",
+        },
+      ],
+      [
+        {
+          text: "Strona gotowa, działa bez zarzutu i dokładnie tego oczekiwałem. Firma została pokazana tak, jak powinna, a ja od początku do końca miałem poczucie, że jestem w dobrych rękach. Serdecznie polecam każdemu z branży budowlanej.",
+        },
+      ],
+    ],
+    author: "Michał Płonka",
+    role: "właściciel Pergole do ogrodu, Kraków",
+    avatar: `${ASSET_BASE}/michal-plonka-pergole-do-ogrodu-opinia-pillarweb-150x150.webp`,
+  },
+];
+
+
+// --- DIFFERENTIATOR (app/lib/content.ts, linie 214-250) ---
+export const DIFFERENTIATOR = {
+  heading: {
+    prefix: "Nie jesteśmy agencją od wszystkiego.",
+    accent: "Pracujemy tylko z firmami budowlanymi.",
+  },
+  pillars: [
+    {
+      title: "Wiemy, jak komunikują się klienci firm budowlanych",
+      body: "Rozumiemy, jakie pytania zadają, czego się obawiają, czego oczekują od firm Twojego pokroju i co wpływa na ich decyzję. Dzięki temu strona może mówić językiem, który brzmi naturalnie i trafia do właściwych klientów.",
+    },
+    {
+      title: "Wiemy, jak ułożyć stronę, żeby wspierała sprzedaż. Każda sekcja ma znaczenie.",
+      body: "Każda sekcja ma swoje zadanie. Strona nie ma tylko „być”, ale prowadzić użytkownika od pierwszego wrażenia do kontaktu i budować zaufanie po drodze.",
+    },
+    {
+      title: "Wiemy, co działa w tej branży, a co tylko wygląda dobrze",
+      body: "Firmy budowlane nie potrzebują przypadkowych rozwiązań ani modnych sztuczek. Potrzebują strony, która wygląda profesjonalnie, wzmacnia markę i pomaga domykać więcej wartościowych klientów.",
+    },
+    {
+      title: "Zero eksperymentów na Twoim projekcie — tylko to, co działa",
+      body: "Właśnie dlatego nasze strony nie są tylko wizytówkami — są zaprojektowane pod pozyskiwanie zapytań od pierwszego dnia. Przykład? Kampania Google Ads uruchomiona na stronie, którą stworzyliśmy: 46 zapytań w 27 dni, koszt jednego kontaktu — 37,74 zł.",
+    },
+  ],
+  results: {
+    headingPrefix: "Zobacz czego możesz się spodziewać",
+    headingAccent: "jeśli o to zadbasz",
+    headingSuffix: " — 46 zapytań. 27 dni. Budżet reklamowy: 1 732 zł",
+    image: `${ASSET_BASE}/wyniki-google-ads-firma-budowlana-pillarweb.webp`,
+    paragraphs: [
+      "Strona została zaprojektowana z uwzględnieniem wszystkich elementów, które mają pozytywny wpływ na współczynnik konwersji. **Od 1 do 27 marca 2026** roku klient specjalizujący się w generalnych remontach mieszkań i lokali **pozyskał 46 zapytań przy budżecie reklamowym 1 732 zł — jeden kontakt kosztował go 37,74 zł.** Inwestycja w stronę: 16 000 zł jednorazowo. Wartość jednego zlecenia generalnego remontu: 80 000 – 100 000 zł.",
+      "Strona to koszt jednorazowy. Zapytania z niej możesz pozyskiwać przez cały czas, gdy prowadzisz firmę.",
+    ],
+    closing:
+      "**Dlatego w PillarWeb nie tworzymy stron „dla każdego”.** Tworzymy je dla firm budowlanych, które stale chcą się skalować.",
+  },
+} as const;
+

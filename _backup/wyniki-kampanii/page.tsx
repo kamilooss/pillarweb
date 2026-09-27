@@ -4,7 +4,7 @@ import { IndustriesMarquee } from "./components/IndustriesMarquee";
 import { LogosShowcase } from "./components/LogosShowcase";
 import { PortfolioSection } from "./components/PortfolioSection";
 import { ServicesAccordion } from "./components/ServicesAccordion";
-import { CampaignResults } from "./components/CampaignResults";
+import { Testimonials } from "./components/Testimonials";
 import { VslSection } from "./components/VslSection";
 import { ContentVideoSection } from "./components/ContentVideoSection";
 import { OverlayCTA } from "./components/OverlayCTA";
@@ -29,12 +29,11 @@ export default function HomePage() {
         <LogosShowcase />
         <PortfolioSection />
         <ServicesAccordion />
-        <CampaignResults />
+        <Testimonials />
         <VslSection />
         <ContentVideoSection />
         <OverlayCTA />
-        {/* showResults=false — dowód kampanijny jest wyżej, w CampaignResults */}
-        <DifferentiatorSection showResults={false} />
+        <DifferentiatorSection />
         <SpecializationsSection />
         <GuaranteesSection />
         <ProcessSection />

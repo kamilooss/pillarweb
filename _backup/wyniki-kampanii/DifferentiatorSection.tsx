@@ -23,19 +23,10 @@ function FormattedText({ text }: { text: string }) {
 
 interface DifferentiatorSectionProps {
   content?: typeof DIFFERENTIATOR;
-  /**
-   * Blok dowodowy „Zobacz czego możesz się spodziewać…" ze screenem kampanii.
-   * Strona główna ma od 2026-09-27 własną sekcję CampaignResults z kompletem
-   * zrzutów z Google Ads, więc wyłącza ten blok, żeby nie pokazywać dwa razy
-   * tego samego dowodu (w dodatku na starszych, słabszych liczbach).
-   * /landing-page i /producenci-budowlani zostają bez zmian.
-   */
-  showResults?: boolean;
 }
 
 export function DifferentiatorSection({
   content = DIFFERENTIATOR,
-  showResults = true,
 }: DifferentiatorSectionProps = {}) {
   const { heading, pillars, results } = content;
   // Skill: zero em-dash w nagłówkach — zdejmujemy wiodący myślnik bez zmiany słów.
@@ -71,7 +62,6 @@ export function DifferentiatorSection({
       </div>
 
       {/* Sekcja wyników — dowód */}
-      {showResults && (
       <div className="border-t border-card-border bg-surface-sunken">
         <div className="container-content py-20 lg:py-28">
           <Reveal
@@ -113,7 +103,6 @@ export function DifferentiatorSection({
           </div>
         </div>
       </div>
-      )}
     </section>
   );
 }

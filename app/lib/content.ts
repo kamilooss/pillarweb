@@ -231,7 +231,7 @@ export const DIFFERENTIATOR = {
     },
     {
       title: "Zero eksperymentów na Twoim projekcie — tylko to, co działa",
-      body: "Właśnie dlatego nasze strony nie są tylko wizytówkami — są zaprojektowane pod pozyskiwanie zapytań od pierwszego dnia. Przykład? Kampania Google Ads uruchomiona na stronie, którą stworzyliśmy: 46 zapytań w 27 dni, koszt jednego kontaktu — 37,74 zł.",
+      body: "Właśnie dlatego nasze strony nie są tylko wizytówkami, są zaprojektowane pod pozyskiwanie zapytań od pierwszego dnia. Zrzuty z kont Google Ads, które pokazaliśmy wyżej, pochodzą z kampanii prowadzonych właśnie na takich stronach.",
     },
   ],
   results: {
@@ -246,6 +246,90 @@ export const DIFFERENTIATOR = {
     closing:
       "**Dlatego w PillarWeb nie tworzymy stron „dla każdego”.** Tworzymy je dla firm budowlanych, które stale chcą się skalować.",
   },
+} as const;
+
+/**
+ * WYNIKI KAMPANII — dowód liczbowy na stronie głównej.
+ * Zastępuje dawną sekcję „To nie są obietnice…" (Testimonials) oraz blok
+ * `results` w DifferentiatorSection. Grafiki to gotowe kreacje 9:16
+ * (1080×1920 webp) ze zrzutem z konta Google Ads klienta — wgrywane w całości,
+ * razem ze stopką marki, więc nie dopisujemy pod nimi liczb, które i tak są na
+ * obrazku. Tekst przy każdym przypadku niesie to, czego na grafice NIE ma:
+ * branżę, cel biznesowy i definicję kontaktu.
+ *
+ * Nowy miesiąc = dorzucenie wpisu do `shots` (siatka sama się ułoży).
+ * Nowa branża = nowy obiekt w `cases`.
+ */
+export const CAMPAIGN_RESULTS = {
+  heading: {
+    prefix: "Tak pracują strony, które zbudowaliśmy.",
+    accent: "Zrzuty prosto z kont Google Ads naszych klientów.",
+  },
+  intro:
+    "Na każdej grafice jest zrzut z konta Google Ads klienta za konkretny miesiąc. Kampanie kierowały ruch na strony, które dla tych firm zbudowaliśmy, a jako kontakt liczymy telefon do firmy albo wypełniony formularz. Wydatek na reklamę i koszt jednego kontaktu widać na każdym zrzucie.",
+  labels: {
+    goal: "Cel",
+    conversion: "Co liczymy jako kontakt",
+  },
+  cases: [
+    {
+      industry: "Generalny wykonawca",
+      goal: "Zdobywanie zleceń na budowy i wykończenia",
+      conversion: "Telefon do firmy i wypełniony formularz",
+      shots: [
+        {
+          period: "Sierpień 2026",
+          image: `${ASSET_BASE}/wyniki/wynik-kampanii-generalny-wykonawca-sierpien-2026-pillarweb.webp`,
+          alt: "Zrzut z konta Google Ads generalnego wykonawcy za sierpień 2026: 149 kontaktów, wydatek 2 827,75 zł, koszt jednego kontaktu 18,98 zł",
+        },
+        {
+          period: "Lipiec 2026",
+          image: `${ASSET_BASE}/wyniki/wynik-kampanii-generalny-wykonawca-lipiec-2026-pillarweb.webp`,
+          alt: "Zrzut z konta Google Ads generalnego wykonawcy za lipiec 2026: 73 kontakty, wydatek 2 818,44 zł, koszt jednego kontaktu 38,59 zł",
+        },
+      ],
+    },
+    {
+      industry: "Deweloper",
+      goal: "Sprzedaż mieszkań i lokali z inwestycji",
+      conversion: "Telefon do biura sprzedaży i wypełniony formularz",
+      shots: [
+        {
+          period: "Sierpień 2026",
+          image: `${ASSET_BASE}/wyniki/wynik-kampanii-deweloper-sierpien-2026-pillarweb.webp`,
+          alt: "Zrzut z konta Google Ads dewelopera za sierpień 2026: 27 kontaktów, wydatek 1 761,71 zł, koszt jednego kontaktu 65,25 zł",
+        },
+        {
+          period: "Lipiec 2026",
+          image: `${ASSET_BASE}/wyniki/wynik-kampanii-deweloper-lipiec-2026-pillarweb.webp`,
+          alt: "Zrzut z konta Google Ads dewelopera za lipiec 2026: 38 kontaktów, wydatek 2 023,72 zł, koszt jednego kontaktu 53,26 zł",
+        },
+        {
+          period: "Czerwiec 2026",
+          image: `${ASSET_BASE}/wyniki/wynik-kampanii-deweloper-czerwiec-2026-pillarweb.webp`,
+          alt: "Zrzut z konta Google Ads dewelopera za czerwiec 2026: 79 kontaktów, wydatek 2 227,82 zł, koszt jednego kontaktu 28,20 zł",
+        },
+      ],
+    },
+    {
+      industry: "Remonty łazienek",
+      goal: "Zdobywanie zleceń na remonty łazienek",
+      conversion: "Telefon do firmy i wypełniony formularz",
+      shots: [
+        {
+          period: "Sierpień 2026",
+          image: `${ASSET_BASE}/wyniki/wynik-kampanii-remonty-lazienek-sierpien-2026-pillarweb.webp`,
+          alt: "Zrzut z konta Google Ads firmy remontującej łazienki za sierpień 2026: 17 kontaktów, wydatek 2 006,20 zł, koszt jednego kontaktu 117,99 zł",
+        },
+        {
+          period: "Lipiec 2026",
+          image: `${ASSET_BASE}/wyniki/wynik-kampanii-remonty-lazienek-lipiec-2026-pillarweb.webp`,
+          alt: "Zrzut z konta Google Ads firmy remontującej łazienki za lipiec 2026: 12 kontaktów, wydatek 1 252,86 zł, koszt jednego kontaktu 104,40 zł",
+        },
+      ],
+    },
+  ],
+  cta: { label: "Wznieś swój biznes na wyższy poziom", href: "#kontakt" },
 } as const;
 
 export const SPECIALIZATIONS = {
