@@ -20,13 +20,26 @@ export const ASSET_BASE = "/images";
 const ICON_ASSET_BASE = "https://pillarweb.pl/wp-content/uploads/2026/04";
 
 /**
- * Wszystkie filmy (realizacje + VSL) hostujemy w Bunny Stream jako adaptacyjny
- * streaming (HLS) — jedna biblioteka, start praktycznie natychmiast, bez
- * brandingu obcych platform. Pole `video` w danych poniżej = Video GUID z Bunny;
- * URL osadzenia składa komponent PortfolioVideo. Aby podmienić film: wgraj nowy
- * do tej samej biblioteki w panelu Bunny i wstaw jego GUID.
+ * Wszystkie filmy hostujemy w Bunny Stream jako adaptacyjny streaming (HLS) —
+ * start praktycznie natychmiast, bez brandingu obcych platform. Pole `video`
+ * w danych poniżej = Video GUID z Bunny; URL osadzenia składa komponent
+ * PortfolioVideo. Aby podmienić film: wgraj nowy do biblioteki w panelu Bunny
+ * i wstaw jego GUID.
+ *
+ * Biblioteka REALIZACJI (Korona / Lennox / Horyzont) — konto założone 2026-10-01.
  */
-export const BUNNY_LIBRARY_ID = "755871";
+export const BUNNY_LIBRARY_ID = "767469";
+
+/**
+ * VSL został w POPRZEDNIEJ bibliotece — nie przenieśliśmy go razem z
+ * realizacjami, więc musi mieć własny Library ID. Inaczej zwraca 404 na stronie
+ * głównej, /landing-page i /producenci-budowlani.
+ *
+ * TODO: wgrać public/videos/vsl.mp4 do biblioteki 767469, podmienić GUID VSL
+ * w content.ts + content-landing-page.ts + content-producenci.ts i skasować tę
+ * stałą. Stare konto wygasa, więc do tego czasu VSL przestanie działać.
+ */
+export const BUNNY_LIBRARY_ID_VSL = "755871";
 
 /**
  * @deprecated Pozostałość po hostingu w Vercel Blob — żaden film już z tego nie
@@ -815,7 +828,7 @@ export const PORTFOLIO = {
       name: "Korona Estates",
       description:
         "Prezentacja inwestycji i oferty apartamentów premium, z czytelną ścieżką do kontaktu.",
-      video: "2b879a4a-b966-4722-96bd-4397175daa69",
+      video: "1edd4c6e-6659-4466-ac43-834ce7e397c1",
       poster: "/images/portfolio/korona.jpg",
       aspect: "1600 / 873",
       duration: "0:42",
@@ -826,7 +839,7 @@ export const PORTFOLIO = {
       name: "Lennox Homes",
       description:
         "Strona z interaktywnym kalkulatorem kosztów budowy i katalogiem gotowych realizacji.",
-      video: "cd6ee76f-bff1-46a4-ae3c-8d48a9ba8018",
+      video: "d29710ea-c770-4533-965a-a17959e9a476",
       poster: "/images/portfolio/lennox.jpg",
       aspect: "1600 / 947",
       duration: "1:31",
@@ -837,7 +850,7 @@ export const PORTFOLIO = {
       name: "Horyzont",
       description:
         "Portfolio realizacji komercyjnych i przemysłowych, z prostą ścieżką do zapytania ofertowego.",
-      video: "bf26d721-d2b1-43af-b49e-22dc4dfb5cd6",
+      video: "5d588692-4ab3-4323-acc4-32d3e7f9547b",
       poster: "/images/portfolio/horyzont.jpg",
       aspect: "1600 / 944",
       duration: "1:23",

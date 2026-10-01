@@ -1,7 +1,7 @@
 import { Reveal } from "./Reveal";
 import { PortfolioVideo } from "./PortfolioVideo";
 import { Button } from "./Button";
-import { VSL } from "../lib/content";
+import { BUNNY_LIBRARY_ID_VSL, VSL } from "../lib/content";
 
 /**
  * VSL — film sprzedażowy jako pojedynczy, centralny "eksponat".
@@ -36,6 +36,7 @@ export function VslSection({ content = VSL }: VslSectionProps = {}) {
         <Reveal delay={90} className="mx-auto mt-16 max-w-5xl lg:mt-20">
           <PortfolioVideo
             videoId={video}
+            libraryId={BUNNY_LIBRARY_ID_VSL}
             poster={poster}
             aspect={aspect}
             name={name}
