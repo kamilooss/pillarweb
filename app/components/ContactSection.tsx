@@ -6,7 +6,7 @@ import { useState, FormEvent, ReactNode } from "react";
 import { Logo } from "./Logo";
 import { Reveal } from "./Reveal";
 import { Button } from "./Button";
-import { CONTACT, THANKYOU } from "../lib/content";
+import { CONTACT, SITE, THANKYOU } from "../lib/content";
 import { LISTA_SCORE_STORAGE_KEY } from "../lib/content-lista";
 
 interface ContactSectionProps {
@@ -128,9 +128,7 @@ export function ContactSection({
     } catch (err) {
       console.error("[ContactSection] Wysyłka nie powiodła się:", err);
       setSubmitting(false);
-      setError(
-        "Coś poszło nie tak przy wysyłaniu. Spróbuj ponownie lub napisz do nas bezpośrednio.",
-      );
+      setError("Nie udało się wysłać formularza. Spróbuj ponownie albo zadzwoń:");
     }
   };
 
@@ -363,9 +361,15 @@ export function ContactSection({
                   {submitting ? "Wysyłanie..." : content.submitLabel}
                 </Button>
                 {error && (
-                  <p role="alert" className="text-center text-sm font-medium text-red-600">
-                    {error}
-                  </p>
+                  <div role="alert" className="text-center text-sm font-medium text-red-600">
+                    <p>{error}</p>
+                    <a
+                      href={`tel:${SITE.phoneTel}`}
+                      className="mt-1 inline-block text-base font-bold underline underline-offset-4"
+                    >
+                      {SITE.phone}
+                    </a>
+                  </div>
                 )}
                 <p className="text-center text-sm text-muted-strong">{content.submitNote}</p>
               </div>

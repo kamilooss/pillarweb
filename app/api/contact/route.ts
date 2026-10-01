@@ -1,9 +1,20 @@
 /**
  * API ROUTE — /api/contact
  * ------------------------
- * Odbiera zgłoszenia z formularza kontaktowego (ContactSection) i zapisuje
- * je jako rekord w Airtable po stronie serwera (token nigdy nie trafia do
- * przeglądarki).
+ * Odbiera zgłoszenia z formularza kontaktowego (ContactSection) i rozsyła je
+ * DWIEMA niezależnymi drogami:
+ *   1. zapis rekordu w Airtable (baza / CRM),
+ *   2. powiadomienie na Telegram + e-mail (app/api/contact/notify.ts).
+ *
+ * Kluczowe założenie: drogi są NIEZALEŻNE. Awaria Airtable nie blokuje
+ * powiadomienia, a awaria Telegrama nie blokuje zapisu. Zgłoszenie uznajemy
+ * za przyjęte, gdy zadziałał PRZYNAJMNIEJ JEDEN kanał — dzięki temu lead nie
+ * ginie przez awarię pojedynczej usługi. Gdy padną wszystkie, formularz
+ * dostaje błąd i pokazuje kontakt bezpośredni.
+ *
+ * Status zapisu w Airtable trafia do TREŚCI powiadomienia („⚠️ NIE zapisało
+ * się w Airtable”), więc o awarii bazy wiadomo od razu z telefonu, a nie
+ * dopiero z logów Vercela.
  *
  * Rozdzielenie danych: pole `source` z formularza decyduje, do której TABELI
  * w Airtable trafi kontakt. Zgłoszenia ze strony głównej i z podstrony
@@ -15,6 +26,7 @@
  *   AIRTABLE_TABLE_HOME     — nazwa lub ID tabeli dla formularza ze strony głównej
  *   AIRTABLE_TABLE_LANDING  — nazwa lub ID tabeli dla formularza z /landing-page
  *   AIRTABLE_TABLE_LISTA    — nazwa lub ID tabeli dla lead magnetu /lista
+ *   (powiadomienia: TELEGRAM_* / RESEND_* — opis w notify.ts)
  *
  * Kolumny oczekiwane w każdej tabeli (dokładne nazwy — Airtable dopasowuje
  * po nazwie pola). Airtable NIE tworzy kolumn automatycznie — brakujące trzeba
@@ -37,6 +49,7 @@
  */
 
 import { NextResponse } from "next/server";
+import { notifyLead, type Lead } from "./notify";
 
 const AIRTABLE_API = "https://api.airtable.com/v0";
 
@@ -49,90 +62,36 @@ const TABLE_BY_SOURCE: Record<string, string | undefined> = {
   lista: process.env.AIRTABLE_TABLE_LISTA,
 };
 
-export async function POST(req: Request) {
+/**
+ * Zapis rekordu w Airtable. Nigdy nie rzuca wyjątkiem — zwraca `true/false`,
+ * bo porażka bazy NIE może przerwać wysyłki powiadomień.
+ */
+async function saveToAirtable(lead: Lead): Promise<boolean> {
   const token = process.env.AIRTABLE_TOKEN;
   const baseId = process.env.AIRTABLE_BASE_ID;
   if (!token || !baseId) {
     console.error("[contact] Brak AIRTABLE_TOKEN lub AIRTABLE_BASE_ID w środowisku.");
-    return NextResponse.json(
-      { ok: false, error: "Serwer nie jest skonfigurowany." },
-      { status: 500 },
-    );
+    return false;
   }
 
-  let body: Record<string, unknown>;
-  try {
-    body = await req.json();
-  } catch {
-    return NextResponse.json({ ok: false, error: "Nieprawidłowe dane." }, { status: 400 });
-  }
-
-  const str = (v: unknown) => String(v ?? "").trim();
-
-  const name = str(body.name);
-  const email = str(body.email);
-  const phone = str(body.phone);
-  const specialization = str(body.specialization);
-  const message = str(body.message);
-  const source = str(body.source) || "home";
-
-  // Pola rozszerzonego formularza (strona główna). Na krótkim formularzu
-  // przychodzą puste — pomijamy je niżej, żeby nie nadpisywać kolumn pustką.
-  const website = str(body.website);
-  const features = str(body.features);
-  const subpages = str(body.subpages);
-  const timeline = str(body.timeline);
-  const hasContent = str(body.hasContent);
-  const budget = str(body.budget);
-  const howFound = str(body.howFound);
-  const referralSource = str(body.referralSource);
-  const promoCode = str(body.promoCode);
-  const meetingType = str(body.meetingType);
-  // Wynik testu z /lista, np. „7/15”.
-  const testScore = str(body.testScore);
-
-  if (!email || !name) {
-    return NextResponse.json({ ok: false, error: "Brak wymaganych pól." }, { status: 400 });
-  }
-
-  const table = TABLE_BY_SOURCE[source] ?? TABLE_BY_SOURCE.home;
+  const table = TABLE_BY_SOURCE[lead.source] ?? TABLE_BY_SOURCE.home;
   if (!table) {
-    console.error(`[contact] Brak tabeli dla źródła "${source}" (sprawdź AIRTABLE_TABLE_*).`);
-    return NextResponse.json(
-      { ok: false, error: "Serwer nie jest skonfigurowany." },
-      { status: 500 },
-    );
+    console.error(`[contact] Brak tabeli dla źródła "${lead.source}" (sprawdź AIRTABLE_TABLE_*).`);
+    return false;
   }
 
   // Pola podstawowe — te kolumny istnieją w tabeli od początku.
   const coreFields: Record<string, string> = {
-    "Imię i nazwisko": name,
-    "E-mail": email,
-    Telefon: phone,
-    Specjalizacja: specialization,
-    Wiadomość: message,
+    "Imię i nazwisko": lead.name,
+    "E-mail": lead.email,
+    Telefon: lead.phone,
+    Specjalizacja: lead.specialization,
+    Wiadomość: lead.message,
   };
 
-  // Pola rozszerzone (formularz strony głównej) — dopisujemy tylko gdy niepuste.
-  // WYMAGAJĄ dodania odpowiadających kolumn w Airtable (patrz nagłówek pliku).
-  const extendedFields: Record<string, string> = {
-    "Obecna strona / social media": website,
-    "Funkcje interaktywne": features,
-    "Konkretne podstrony": subpages,
-    "Termin realizacji": timeline,
-    "Ma gotowe treści": hasContent,
-    Budżet: budget,
-    "Jak nas znalazł": howFound,
-    "Polecenie / grupa (od kogo)": referralSource,
-    "Kod promocyjny": promoCode,
-    "Rodzaj spotkania": meetingType,
-    "Wynik testu": testScore,
-  };
-
-  const fullFields: Record<string, string> = { ...coreFields };
-  for (const [key, value] of Object.entries(extendedFields)) {
-    if (value) fullFields[key] = value;
-  }
+  // Pola rozszerzone — tylko niepuste (patrz `extras` niżej). WYMAGAJĄ
+  // odpowiadających kolumn w Airtable (lista w nagłówku pliku).
+  const fullFields: Record<string, string> = { ...coreFields, ...lead.extras };
 
   // Nazwa tabeli może zawierać spacje/polskie znaki → kodujemy do URL.
   const endpoint = `${AIRTABLE_API}/${baseId}/${encodeURIComponent(table)}`;
@@ -146,47 +105,114 @@ export async function POST(req: Request) {
       // typecast: Airtable sam dopasuje wartości do istniejących typów pól
       // (np. dopisze brakującą opcję single-select). NIE tworzy kolumn.
       body: JSON.stringify({ typecast: true, records: [{ fields }] }),
+      // Twardy limit — bez niego zawieszone połączenie z Airtable trzymałoby
+      // całą funkcję (i powiadomienia) aż do limitu czasu na Vercelu.
+      signal: AbortSignal.timeout(4000),
     });
 
   try {
-    let res = await createRecord(fullFields);
+    const res = await createRecord(fullFields);
+    if (res.ok) return true;
 
-    if (!res.ok) {
-      const detail = await res.text();
+    const detail = await res.text();
 
-      // Zabezpieczenie: gdy w tabeli brakuje którejś z rozszerzonych kolumn,
-      // Airtable odrzuca CAŁY rekord (422 UNKNOWN_FIELD_NAME). Żeby nie zgubić
-      // leada, ponawiamy zapis z samymi polami podstawowymi. UWAGA: dane
-      // rozszerzone (budżet, termin, „jak nas znalazł" itd.) NIE zapiszą się,
-      // dopóki nie dodasz brakujących kolumn w Airtable.
-      if (res.status === 422 && detail.includes("UNKNOWN_FIELD_NAME")) {
-        console.error(
-          "[contact] Airtable 422 UNKNOWN_FIELD_NAME — brakuje kolumny w tabeli. " +
-            "Zapisuję tylko pola podstawowe; dodaj brakujące kolumny, aby zapisywać komplet danych. Szczegóły:",
-          detail,
-        );
-        res = await createRecord(coreFields);
-        if (!res.ok) {
-          const detail2 = await res.text();
-          console.error(`[contact] Airtable ${res.status} (fallback):`, detail2);
-          return NextResponse.json(
-            { ok: false, error: "Nie udało się zapisać zgłoszenia." },
-            { status: 502 },
-          );
-        }
-        return NextResponse.json({ ok: true });
-      }
-
-      console.error(`[contact] Airtable ${res.status}:`, detail);
-      return NextResponse.json(
-        { ok: false, error: "Nie udało się zapisać zgłoszenia." },
-        { status: 502 },
+    // Zabezpieczenie: gdy w tabeli brakuje którejś z rozszerzonych kolumn,
+    // Airtable odrzuca CAŁY rekord (422 UNKNOWN_FIELD_NAME). Żeby nie zgubić
+    // leada, ponawiamy zapis z samymi polami podstawowymi. UWAGA: dane
+    // rozszerzone (budżet, termin, „jak nas znalazł" itd.) NIE zapiszą się,
+    // dopóki nie dodasz brakujących kolumn w Airtable.
+    if (res.status === 422 && detail.includes("UNKNOWN_FIELD_NAME")) {
+      console.error(
+        "[contact] Airtable 422 UNKNOWN_FIELD_NAME — brakuje kolumny w tabeli. " +
+          "Zapisuję tylko pola podstawowe; dodaj brakujące kolumny, aby zapisywać komplet danych. Szczegóły:",
+        detail,
       );
+      const fallback = await createRecord(coreFields);
+      if (fallback.ok) return true;
+      console.error(`[contact] Airtable ${fallback.status} (fallback):`, await fallback.text());
+      return false;
     }
 
-    return NextResponse.json({ ok: true });
+    console.error(`[contact] Airtable ${res.status}:`, detail);
+    return false;
   } catch (err) {
     console.error("[contact] Błąd połączenia z Airtable:", err);
-    return NextResponse.json({ ok: false, error: "Błąd połączenia." }, { status: 502 });
+    return false;
   }
+}
+
+export async function POST(req: Request) {
+  let body: Record<string, unknown>;
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ ok: false, error: "Nieprawidłowe dane." }, { status: 400 });
+  }
+
+  const str = (v: unknown) => String(v ?? "").trim();
+
+  const name = str(body.name);
+  const email = str(body.email);
+
+  if (!email || !name) {
+    return NextResponse.json({ ok: false, error: "Brak wymaganych pól." }, { status: 400 });
+  }
+
+  // Pola rozszerzonego formularza (strona główna) i wynik testu z /lista.
+  // Na krótkim formularzu przychodzą puste — pomijamy je, żeby nie nadpisywać
+  // kolumn pustką i nie zaśmiecać powiadomienia.
+  const extendedFields: Record<string, string> = {
+    "Obecna strona / social media": str(body.website),
+    "Funkcje interaktywne": str(body.features),
+    "Konkretne podstrony": str(body.subpages),
+    "Termin realizacji": str(body.timeline),
+    "Ma gotowe treści": str(body.hasContent),
+    Budżet: str(body.budget),
+    "Jak nas znalazł": str(body.howFound),
+    "Polecenie / grupa (od kogo)": str(body.referralSource),
+    "Kod promocyjny": str(body.promoCode),
+    "Rodzaj spotkania": str(body.meetingType),
+    // Wynik testu z /lista, np. „7/15”.
+    "Wynik testu": str(body.testScore),
+  };
+
+  const extras: Record<string, string> = {};
+  for (const [key, value] of Object.entries(extendedFields)) {
+    if (value) extras[key] = value;
+  }
+
+  const lead: Lead = {
+    source: str(body.source) || "home",
+    name,
+    email,
+    phone: str(body.phone),
+    specialization: str(body.specialization),
+    message: str(body.message),
+    extras,
+  };
+
+  // Najpierw baza, zaraz potem powiadomienia. Kolejność jest celowa: dzięki
+  // niej w wiadomości na telefonie widać, czy rekord faktycznie wylądował
+  // w Airtable. Porażka zapisu NIE przerywa wysyłki — `saveToAirtable`
+  // zwraca `false` zamiast rzucać wyjątkiem, a timeout (4 s) pilnuje, żeby
+  // zawieszona baza nie opóźniła powiadomienia bardziej niż o chwilę.
+  const airtableOk = await saveToAirtable(lead);
+  const notified = await notifyLead(lead, airtableOk);
+
+  // Lead jest bezpieczny, jeśli trafił GDZIEKOLWIEK.
+  if (airtableOk || notified.telegram || notified.email) {
+    if (!airtableOk) {
+      console.error("[contact] Airtable padł, ale powiadomienie poszło — lead nie zginął.");
+    }
+    return NextResponse.json({ ok: true });
+  }
+
+  // Padło wszystko naraz — dopiero teraz formularz pokazuje błąd i kieruje
+  // na kontakt bezpośredni. Logujemy komplet danych, żeby dało się odzyskać
+  // zgłoszenie z logów Vercela.
+  console.error("[contact] WSZYSTKIE kanały zawiodły. Dane zgłoszenia:", JSON.stringify(lead));
+  return NextResponse.json(
+    { ok: false, error: "Nie udało się wysłać zgłoszenia." },
+    { status: 502 },
+  );
 }
