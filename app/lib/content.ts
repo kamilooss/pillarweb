@@ -26,20 +26,9 @@ const ICON_ASSET_BASE = "https://pillarweb.pl/wp-content/uploads/2026/04";
  * PortfolioVideo. Aby podmienić film: wgraj nowy do biblioteki w panelu Bunny
  * i wstaw jego GUID.
  *
- * Biblioteka REALIZACJI (Korona / Lennox / Horyzont) — konto założone 2026-10-01.
+ * Jedna biblioteka na wszystkie filmy (realizacje + VSL) — konto z 2026-10-01.
  */
 export const BUNNY_LIBRARY_ID = "767469";
-
-/**
- * VSL został w POPRZEDNIEJ bibliotece — nie przenieśliśmy go razem z
- * realizacjami, więc musi mieć własny Library ID. Inaczej zwraca 404 na stronie
- * głównej, /landing-page i /producenci-budowlani.
- *
- * TODO: wgrać public/videos/vsl.mp4 do biblioteki 767469, podmienić GUID VSL
- * w content.ts + content-landing-page.ts + content-producenci.ts i skasować tę
- * stałą. Stare konto wygasa, więc do tego czasu VSL przestanie działać.
- */
-export const BUNNY_LIBRARY_ID_VSL = "755871";
 
 /**
  * @deprecated Pozostałość po hostingu w Vercel Blob — żaden film już z tego nie
@@ -867,7 +856,7 @@ export const VSL = {
   headingPrefix:
     "Polecenia są nieprzewidywalne. Zbuduj firmę budowlaną, która ma",
   headingAccent: "stały dopływ zleceń.",
-  video: "3fcecca5-b66a-4d38-93a0-c2a4ab4e436e",
+  video: "fc36c2f1-0fba-4ad8-ac87-556e69105d8f",
   poster: "/images/vsl.jpg",
   aspect: "1600 / 900",
   duration: "7:36",

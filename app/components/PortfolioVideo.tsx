@@ -7,8 +7,6 @@ import { BUNNY_LIBRARY_ID } from "../lib/content";
 type Props = {
   /** Video GUID z biblioteki Bunny Stream (adaptacyjny streaming). */
   videoId: string;
-  /** Library ID Bunny. Domyślnie biblioteka realizacji; VSL ma własną — patrz BUNNY_LIBRARY_ID_VSL. */
-  libraryId?: string;
   /** Klatka-poster (ładuje się od razu; trzyma layout zanim wjedzie odtwarzacz). */
   poster: string;
   /** Natywne proporcje kadru, np. "1600 / 873" — brak przycinania. */
@@ -33,7 +31,6 @@ type Props = {
  */
 export function PortfolioVideo({
   videoId,
-  libraryId = BUNNY_LIBRARY_ID,
   poster,
   aspect,
   name,
@@ -92,7 +89,7 @@ export function PortfolioVideo({
 
       {active && (
         <iframe
-          src={`https://iframe.mediadelivery.net/embed/${libraryId}/${videoId}?${params}`}
+          src={`https://iframe.mediadelivery.net/embed/${BUNNY_LIBRARY_ID}/${videoId}?${params}`}
           title={`Film: ${name}`}
           loading="eager"
           allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen"

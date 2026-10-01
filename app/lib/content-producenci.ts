@@ -546,7 +546,7 @@ export const VSL_PRODUCENCI = {
   headingPrefix:
     "Specyfikacja, marża, hurtownia — wszystko zaczyna się od strony. Zobaczcie, jak",
   headingAccent: "zbudować pull-through dla swojej marki.",
-  video: "3fcecca5-b66a-4d38-93a0-c2a4ab4e436e",
+  video: "fc36c2f1-0fba-4ad8-ac87-556e69105d8f",
   poster: "/images/vsl.jpg",
   aspect: "1600 / 900",
   duration: "7:36",
