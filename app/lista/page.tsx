@@ -14,12 +14,18 @@
  *    i budżet. Wynik testu dokleja się sam (`attachTestScore`).
  *  - Zgłoszenia idą do własnej tabeli w Airtable przez `source="lista"`
  *    (zmienna AIRTABLE_TABLE_LISTA).
+ *  - Zaraz po wyniku testu wchodzą dwie sekcje ze strony głównej:
+ *    portfolio wideo i wyniki kampanii. Oba komponenty są te same co na „/",
+ *    więc wyglądają identycznie — tylko bez akapitu pod nagłówkiem
+ *    (`showIntro={false}`), bo tekstu jest na tej stronie aż nadto.
  */
 
 import type { Metadata } from "next";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { ChecklistTest } from "../components/ChecklistTest";
+import { PortfolioSection } from "../components/PortfolioSection";
+import { CampaignResults } from "../components/CampaignResults";
 import {
   ListaHero,
   ListaHowTo,
@@ -105,6 +111,12 @@ export default function ListaPage() {
         <ListaHowTo />
         <ListaScope />
         <ChecklistTest />
+        <PortfolioSection showIntro={false} />
+        <CampaignResults
+          headingPrefix="Wyniki skutecznych stron firm budowlanych,"
+          headingAccent="które zbudowaliśmy."
+          showIntro={false}
+        />
         <ListaPaths />
         <ContactSection
           content={LISTA_CONTACT as unknown as typeof CONTACT}

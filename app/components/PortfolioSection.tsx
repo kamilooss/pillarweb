@@ -16,6 +16,11 @@ interface PortfolioSectionProps {
   headingPrefix?: string;
   headingAccent?: string;
   intro?: string;
+  /**
+   * false = nagłówek bez akapitu pod spodem. Tak sekcja wchodzi na /lista:
+   * po teście czytelnik ma już sporo tekstu za sobą i liczą się same nagrania.
+   */
+  showIntro?: boolean;
 }
 
 export function PortfolioSection({
@@ -23,6 +28,7 @@ export function PortfolioSection({
   headingPrefix: headingPrefixOverride,
   headingAccent: headingAccentOverride,
   intro: introOverride,
+  showIntro = true,
 }: PortfolioSectionProps = {}) {
   const { projects } = content;
   const headingPrefix = headingPrefixOverride ?? content.headingPrefix;
@@ -44,13 +50,15 @@ export function PortfolioSection({
           <span className="underline-accent">{headingAccent}</span>
         </Reveal>
 
-        <Reveal
-          as="p"
-          delay={80}
-          className="mt-5 max-w-2xl text-lg leading-relaxed text-muted-strong"
-        >
-          {intro}
-        </Reveal>
+        {showIntro && (
+          <Reveal
+            as="p"
+            delay={80}
+            className="mt-5 max-w-2xl text-lg leading-relaxed text-muted-strong"
+          >
+            {intro}
+          </Reveal>
+        )}
 
         <div className="mt-14 space-y-16 lg:mt-20 lg:space-y-28">
           {projects.map((project, i) => (

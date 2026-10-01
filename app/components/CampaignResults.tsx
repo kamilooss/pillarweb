@@ -22,8 +22,22 @@ import { CAMPAIGN_RESULTS } from "../lib/content";
  * szybciej, niż zyskuje na czytelności (3 kreacje obok siebie = ~675 px
  * wysokości, co jeszcze mieści się w ekranie).
  */
-export function CampaignResults() {
+interface CampaignResultsProps {
+  /** Override nagłówka — na /lista sekcja wchodzi pod własnym tytułem. */
+  headingPrefix?: string;
+  headingAccent?: string;
+  /** false = nagłówek bez akapitu pod spodem (tak leci na /lista). */
+  showIntro?: boolean;
+}
+
+export function CampaignResults({
+  headingPrefix: headingPrefixOverride,
+  headingAccent: headingAccentOverride,
+  showIntro = true,
+}: CampaignResultsProps = {}) {
   const { heading, intro, labels, cases, cta } = CAMPAIGN_RESULTS;
+  const headingPrefix = headingPrefixOverride ?? heading.prefix;
+  const headingAccent = headingAccentOverride ?? heading.accent;
 
   return (
     <section
@@ -36,17 +50,19 @@ export function CampaignResults() {
           as="h2"
           className="max-w-4xl font-display text-[clamp(1.9rem,3.7vw,3rem)] font-extrabold leading-[1.08] tracking-tight"
         >
-          {heading.prefix}{" "}
-          <span className="underline-accent">{heading.accent}</span>
+          {headingPrefix}{" "}
+          <span className="underline-accent">{headingAccent}</span>
         </Reveal>
 
-        <Reveal
-          as="p"
-          delay={60}
-          className="mt-7 max-w-3xl text-[clamp(1rem,1.3vw,1.15rem)] leading-relaxed text-muted-strong"
-        >
-          {intro}
-        </Reveal>
+        {showIntro && (
+          <Reveal
+            as="p"
+            delay={60}
+            className="mt-7 max-w-3xl text-[clamp(1rem,1.3vw,1.15rem)] leading-relaxed text-muted-strong"
+          >
+            {intro}
+          </Reveal>
+        )}
 
         <div className="mt-16 space-y-16 lg:mt-20 lg:space-y-24">
           {cases.map((item, i) => (
