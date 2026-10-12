@@ -20,12 +20,14 @@ export type ProblemContent = {
   }[];
   image: string;
   imageAlt: string;
+  /** Pionowa grafika 4:5 (np. kreacja z social) — kadr bez przycinania, węższy, żeby kolumna mieściła się przy przyklejeniu. */
+  imagePortrait?: boolean;
   summary: string;
   cta: { label: string; href: string };
 };
 
 export function ProblemT({ content, id }: { content: ProblemContent; id?: string }) {
-  const { heading, title, items, image, imageAlt, summary, cta } = content;
+  const { heading, title, items, image, imageAlt, imagePortrait, summary, cta } = content;
 
   return (
     <section id={id} className="border-t border-card-border bg-surface-sunken py-20 lg:py-28">
@@ -79,24 +81,50 @@ export function ProblemT({ content, id }: { content: ProblemContent; id?: string
                 </Reveal>
               ))}
             </ol>
+
+            {/* Pionowa grafika: podsumowanie i CTA zamykają listę po lewej,
+                a prawa kolumna to sama grafika na pełną szerokość. */}
+            {imagePortrait ? (
+              <div className="mt-14 flex flex-col gap-8 border-t border-card-border pt-10">
+                <Reveal as="p" className="text-lg font-medium leading-snug text-foreground lg:text-xl">
+                  <FormattedText text={summary} />
+                </Reveal>
+                <Reveal>
+                  <Button href={cta.href} size="lg">
+                    {cta.label}
+                  </Button>
+                </Reveal>
+              </div>
+            ) : null}
           </div>
 
-          {/* PRAWA: realne zdjęcie + podsumowanie + CTA */}
-          <div className="flex flex-col gap-10 lg:sticky lg:top-28 lg:self-start">
-            <Reveal className="surface-panel aspect-[16/10] overflow-hidden">
-              <Image src={image} alt={imageAlt} width={1024} height={572} className="h-full w-full object-cover" />
-            </Reveal>
+          {imagePortrait ? (
+            /* PRAWA: sama grafika 4:5 — pełna szerokość kolumny, ale nie wyższa
+               niż ekran (żeby przyklejona mieściła się w całości).
+               Na telefonie: zaraz pod nagłówkiem sekcji. */
+            <div className="order-first lg:order-none lg:sticky lg:top-28 lg:self-start">
+              <Reveal className="mx-auto w-full max-w-[560px] overflow-hidden lg:mx-0 lg:w-[min(100%,calc((100dvh-9rem)*0.8))] lg:max-w-none">
+                <Image src={image} alt={imageAlt} width={1080} height={1350} className="h-auto w-full" />
+              </Reveal>
+            </div>
+          ) : (
+            /* PRAWA: realne zdjęcie + podsumowanie + CTA */
+            <div className="flex flex-col gap-10 lg:sticky lg:top-28 lg:self-start">
+              <Reveal className="surface-panel aspect-[16/10] overflow-hidden">
+                <Image src={image} alt={imageAlt} width={1024} height={572} className="h-full w-full object-cover" />
+              </Reveal>
 
-            <Reveal as="p" className="text-lg font-medium leading-snug text-foreground lg:text-xl">
-              <FormattedText text={summary} />
-            </Reveal>
+              <Reveal as="p" className="text-lg font-medium leading-snug text-foreground lg:text-xl">
+                <FormattedText text={summary} />
+              </Reveal>
 
-            <Reveal>
-              <Button href={cta.href} size="lg">
-                {cta.label}
-              </Button>
-            </Reveal>
-          </div>
+              <Reveal>
+                <Button href={cta.href} size="lg">
+                  {cta.label}
+                </Button>
+              </Reveal>
+            </div>
+          )}
         </div>
       </div>
     </section>

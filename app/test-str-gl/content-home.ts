@@ -6,7 +6,6 @@
 import {
   ABOUT as ABOUT_HOME,
   ASSET_BASE,
-  CONTENT_SECTION,
   PROCESS as PROCESS_HOME,
   SPECIALIZATIONS,
 } from "../lib/content";
@@ -99,8 +98,9 @@ export const PROBLEM_T: ProblemContent = nb({
     quote: "quote" in item ? item.quote : undefined,
     quoteBy: "quoteBy" in item ? item.quoteBy : undefined,
   })),
-  image: CONTENT_SECTION.problems.image,
-  imageAlt: "Porównanie problemu i efektów dobrze działającej strony internetowej dla firmy budowlanej",
+  image: "/images/te-5-rzeczy-firmy-budowlane-pillarweb.webp",
+  imageAlt: "Grafika Pillar Web: właściciel firmy budowlanej wieczorem nad wyceną, napis „Te 5 rzeczy niszczy biznes firm budowlanych”",
+  imagePortrait: true,
   summary: `${PROBLEM.closingBefore}**${PROBLEM.closingAccent}**`,
   cta: CTA,
 });
