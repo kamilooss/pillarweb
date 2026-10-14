@@ -28,14 +28,23 @@ interface CampaignResultsProps {
   headingAccent?: string;
   /** false = nagłówek bez akapitu pod spodem (tak leci na /lista). */
   showIntro?: boolean;
+  /**
+   * Branże (`industry`), których przypadki pomijamy. Strona główna od
+   * 2026-10-14 nie pokazuje remontów łazienek; /lista dalej pokazuje wszystkie.
+   */
+  excludeIndustries?: readonly string[];
 }
 
 export function CampaignResults({
   headingPrefix: headingPrefixOverride,
   headingAccent: headingAccentOverride,
   showIntro = true,
+  excludeIndustries = [],
 }: CampaignResultsProps = {}) {
-  const { heading, intro, labels, cases, cta } = CAMPAIGN_RESULTS;
+  const { heading, intro, labels, cta } = CAMPAIGN_RESULTS;
+  const cases = CAMPAIGN_RESULTS.cases.filter(
+    (item) => !excludeIndustries.includes(item.industry)
+  );
   const headingPrefix = headingPrefixOverride ?? heading.prefix;
   const headingAccent = headingAccentOverride ?? heading.accent;
 

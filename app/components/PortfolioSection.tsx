@@ -82,7 +82,7 @@ export function PortfolioSection({
               </header>
 
               <PortfolioVideo
-                videoId={project.video}
+                src={project.src}
                 poster={project.poster}
                 aspect={project.aspect}
                 name={project.name}

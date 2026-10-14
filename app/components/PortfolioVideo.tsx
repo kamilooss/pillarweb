@@ -2,11 +2,10 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { BUNNY_LIBRARY_ID } from "../lib/content";
 
 type Props = {
-  /** Video GUID z biblioteki Bunny Stream (adaptacyjny streaming). */
-  videoId: string;
+  /** Plik mp4 w Vercel Blob (`VIDEO_BLOB_BASE`) — Bunny 767469 zwraca 404 od 11.10.2026. */
+  src: string;
   /** Klatka-poster (ładuje się od razu; trzyma layout zanim wjedzie odtwarzacz). */
   poster: string;
   /** Natywne proporcje kadru, np. "1600 / 873" — brak przycinania. */
@@ -23,14 +22,14 @@ type Props = {
 
 /**
  * Kadr wideo w języku "PLAN": uniesiony arkusz (surface-panel), ostre narożniki.
- * Odtwarzacz Bunny Stream (adaptacyjny streaming) WŁĄCZA SIĘ SAM, wyciszony,
- * gdy kadr wejdzie w widok (IntersectionObserver) — i zatrzymuje się, gdy
- * wyjedzie z widoku, żeby nie marnować transferu. Dźwięk: kontrolki Bunny
- * (przycisk wyciszenia) lub kliknięcie plakatu przed startem = od razu z głosem.
+ * Natywny <video> (plik mp4 z Vercel Blob, jak na /test-str-gl) WŁĄCZA SIĘ SAM,
+ * wyciszony, gdy kadr wejdzie w widok (IntersectionObserver) — i zatrzymuje się,
+ * gdy wyjedzie z widoku, żeby nie marnować transferu. Dźwięk: kontrolki
+ * przeglądarki lub kliknięcie plakatu przed startem = od razu z głosem.
  * `prefers-reduced-motion` wyłącza autoplay (plakat + klik) — dostępność.
  */
 export function PortfolioVideo({
-  videoId,
+  src,
   poster,
   aspect,
   name,
@@ -64,14 +63,6 @@ export function PortfolioVideo({
     return () => io.disconnect();
   }, [reduced, sound]);
 
-  const params = new URLSearchParams({
-    autoplay: "true",
-    muted: sound ? "false" : "true",
-    loop: loop ? "true" : "false",
-    preload: "true",
-    responsive: "true",
-  }).toString();
-
   return (
     <div
       ref={ref}
@@ -88,13 +79,16 @@ export function PortfolioVideo({
       />
 
       {active && (
-        <iframe
-          src={`https://iframe.mediadelivery.net/embed/${BUNNY_LIBRARY_ID}/${videoId}?${params}`}
-          title={`Film: ${name}`}
-          loading="eager"
-          allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen"
-          allowFullScreen
-          className="absolute inset-0 h-full w-full border-0 bg-ink-block"
+        <video
+          src={src}
+          autoPlay
+          muted={!sound}
+          loop={loop}
+          playsInline
+          controls
+          preload="auto"
+          aria-label={`Film: ${name}`}
+          className="absolute inset-0 h-full w-full bg-ink-block object-cover"
         />
       )}
 

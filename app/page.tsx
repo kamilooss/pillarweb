@@ -29,7 +29,8 @@ export default function HomePage() {
         <LogosShowcase />
         <PortfolioSection />
         <ServicesAccordion />
-        <CampaignResults />
+        {/* Bez remontów łazienek — kopia wersji z nimi: /_backup/strona-glowna-2026-10-14 */}
+        <CampaignResults excludeIndustries={["Remonty łazienek"]} />
         <VslSection />
         <ContentVideoSection />
         <OverlayCTA />

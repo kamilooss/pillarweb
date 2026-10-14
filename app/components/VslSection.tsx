@@ -15,7 +15,7 @@ interface VslSectionProps {
 }
 
 export function VslSection({ content = VSL }: VslSectionProps = {}) {
-  const { headingPrefix, headingAccent, video, poster, aspect, duration, name, cta } =
+  const { headingPrefix, headingAccent, src, poster, aspect, duration, name, cta } =
     content;
 
   return (
@@ -35,7 +35,7 @@ export function VslSection({ content = VSL }: VslSectionProps = {}) {
 
         <Reveal delay={90} className="mx-auto mt-16 max-w-5xl lg:mt-20">
           <PortfolioVideo
-            videoId={video}
+            src={src}
             poster={poster}
             aspect={aspect}
             name={name}
