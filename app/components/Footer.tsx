@@ -14,6 +14,16 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-10 md:grid-cols-[1.5fr_1fr_1fr] md:gap-12">
           <div>
             <Logo />
+            <address className="mt-6 not-italic text-sm leading-relaxed text-muted">
+              <span className="block font-semibold text-muted-strong">
+                {FOOTER.company.name}
+              </span>
+              {FOOTER.company.lines.map((line) => (
+                <span key={line} className="block">
+                  {line}
+                </span>
+              ))}
+            </address>
           </div>
 
           <div>

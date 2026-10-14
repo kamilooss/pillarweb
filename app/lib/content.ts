@@ -860,5 +860,13 @@ export const VSL = {
 
 export const FOOTER = {
   links: [{ label: "Polityka Prywatności", href: "/polityka-prywatnosci" }],
+  /** Dane firmy — te same co w §1 polityki prywatności (app/polityka-prywatnosci/page.tsx). */
+  company: {
+    name: "Agencja Artex Artur Tomczyk",
+    lines: [
+      "ul. Lubelska 19/13, 30-003 Kraków",
+      "NIP: 6770065659, REGON: 350434003",
+    ],
+  },
   copyright: "© 2026 pillarweb.pl",
 } as const;
